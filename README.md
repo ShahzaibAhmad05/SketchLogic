@@ -11,6 +11,8 @@ This project aims to:
 - Detect Wires from the same images  
   (Output format: List of XY points)
 
+- Acheive >95% Accuracy in the said Criteria
+
 - Output all detected components and their coordinates in a clean JSON format
 
 - Visualize the detected circuit as a computer-generated image
