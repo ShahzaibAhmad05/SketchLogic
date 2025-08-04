@@ -1,10 +1,22 @@
-ML based Circuit Detector
+# ML-based Circuit Detector
 
-This project aims at:
-- Logic Gates type detection from handdrawn images (AND, OR, NOT, NAND, NOR, XOR, XNOR)
-- Logic Gates rotation detection from the same images (0, 90, 180, 270)
-- Wire detection from the same images (As a List of Points)
-- Outputting xy Coordinates of the Above in a Clean Json format
-- Visualling the output with a Computer Generated Image of the circuit
+This project aims to:
 
-STATUS: Currently in Initial phase
+- Detect Logic Gates from hand-drawn images  
+  (Supported gates: AND, OR, NOT, NAND, NOR, XOR, XNOR)
+
+- Detect Logic Gates' rotation from the same images  
+  (Supported rotations: 0°, 90°, 180°, 270°)
+
+- Detect Wires from the same images  
+  (Output format: List of XY points)
+
+- Acheive >95% Accuracy in the said Criteria
+
+- Output all detected components and their coordinates in a clean JSON format
+
+- Visualize the detected circuit as a computer-generated image
+
+---
+
+**STATUS:** Currently in Initial Phase
