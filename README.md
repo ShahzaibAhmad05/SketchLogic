@@ -11,7 +11,7 @@ This project aims to:
 - Detect Wires from the same images  
   (Output format: List of XY points)
 
-- Acheive >95% Accuracy in the said Criteria
+- Acheive >95% Accuracy on the said Criteria
 
 - Output all detected components and their coordinates in a clean JSON format
 
@@ -19,4 +19,4 @@ This project aims to:
 
 ---
 
-**STATUS:** Currently in Initial Phase
+**NOTE:** Currently in Initial Phase. The training script is error prone as of now. A stable release will be created along with the dataset soon.
