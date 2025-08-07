@@ -1,3 +1,5 @@
+![SketchLogic Preview](assets/social-preview.jpg)
+
 # ML-based Circuit Detector
 
 Created using multiple parts, this project aims to:
