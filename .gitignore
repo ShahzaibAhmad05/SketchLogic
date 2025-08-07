@@ -1,5 +1,5 @@
 temp_sample.txt
 sample.txt
-raw_data/
-yolo_dataset/
-dataset_yolo/
+yolo_ai/raw_data/
+yolo_ai/yolo_dataset/
+yolo_ai/dataset_yolo/
