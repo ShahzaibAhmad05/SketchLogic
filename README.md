@@ -1,6 +1,6 @@
 # ML-based Circuit Detector
 
-This project aims to:
+Created using multiple parts, this project aims to:
 
 - Detect Logic Gates from hand-drawn images  
   (Supported gates: AND, OR, NOT, NAND, NOR, XOR, XNOR)
