@@ -3,8 +3,8 @@ import cv2
 import json
 
 # --- CONFIGURATION ---
-IMAGE_DIR = "raw_data/images"
-ANNOTATION_DIR = "raw_data/annotations"
+IMAGE_DIR = "yolo_ai/raw_data/images"
+ANNOTATION_DIR = "yolo_ai/raw_data/annotations"
 
 # Map number keys to gate types
 gate_types = {
@@ -31,7 +31,7 @@ annotations = []
 
 def print_instructions():
     print("Instructions:")
-    print(" Default gate type: AND (press 1–7 to change, persists across images)")
+    print(" Gate type: AND (press 1–7 to change, persists across images)")
     print(" Draw bounding box: click + drag (axis-aligned, auto-confirm on release)")
     print(" Rotate (metadata only): 'r'=rotate CCW 90°, 'e'=rotate CW 90° (persists across images)")
     print(" Undo last annotation: 'z'")
