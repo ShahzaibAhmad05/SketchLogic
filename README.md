@@ -25,12 +25,14 @@ Created in multiple modules, this project aims to:
 
 - **Custom Annotation Tool**
   Associated File: "yolo_ai/dataset_annotator.py"
-  
+
   Description: Used to annotate the raw dataset for this YOLO model. It can also 
               be used to observe how the Json files label the images.
 
   Dependencies: os, cv2, json
 
-  Preview: ![Annotator Preview](assets/annotator-preview.jpg)
+  Preview: 
+  
+  ![Annotator Preview](assets/annotator-preview.jpg)
 
 ---
