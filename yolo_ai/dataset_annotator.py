@@ -30,12 +30,12 @@ annotations = []
 
 
 def print_instructions():
-    print("Instructions:")
-    print(" Gate type: AND (press 1–7 to change, persists across images)")
-    print(" Draw bounding box: click + drag (axis-aligned, auto-confirm on release)")
-    print(" Rotate (metadata only): 'r'=rotate CCW 90°, 'e'=rotate CW 90° (persists across images)")
+    print("Keys & Commands:")
+    print(" Gate type: AND=1, OR=2, NOT=3, NOR=4,\n            NAND=5, XOR=6, XNOR=7 (persists across images)")
+    print(" Rotate: 'r'and 'e' (persists across images)")
+    print(" Draw bounding box: click + drag (auto-confirm on release)")
     print(" Undo last annotation: 'z'")
-    print(" Save JSON manually: 's'")
+    print(" Save Annotation manually: 's'")
     print(" Previous image (auto-saves): 'p'")
     print(" Next image (auto-saves): 'n'")
     print(" Help: 'h'")
@@ -78,19 +78,19 @@ def draw_annotations(img):
     for ann in annotations:
         x, y = ann['x'], ann['y']
         w, h = ann['width'], ann['height']
-        cv2.rectangle(display, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        cv2.putText(display, f"{ann['id']}:{ann['type']} Rot:{ann['rotation']}°",
-                    (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 1)
-    # Draw preview of current box (axis-aligned)
+        cv2.rectangle(display, (x, y), (x + w, y + h), (0, 100, 0), 2)
+        cv2.putText(display, f"{ann['id']}:{ann['type']} Rot:{ann['rotation']}",
+                    (x, y + h- 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,100,0), 1)
+    # Draw preview of current box
     if current_box:
         (x1, y1), (x2, y2) = current_box
         x_min = min(x1, x2)
         y_min = min(y1, y2)
         w = abs(x2 - x1)
         h = abs(y2 - y1)
-        cv2.rectangle(display, (x_min, y_min), (x_min + w, y_min + h), (0, 0, 255), 2)
-        cv2.putText(display, f"Type:{current_type} Rot:{current_angle}°",
-                    (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
+        cv2.rectangle(display, (x_min, y_min), (x_min + w, y_min + h), (0, 0, 100), 2)
+        cv2.putText(display, f"Type:{current_type} Rot:{current_angle}",
+                    (x_min, y_min + h - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,100), 1)
     return display
 
 
@@ -144,12 +144,12 @@ def main():
             if key in gate_types:
                 current_type = gate_types[key]
                 print(f"Selected gate type: {current_type}")
-            elif key == ord('r'):
-                # rotate CCW
+            elif key == ord('e'):
+                # rotate counter-clock-wise
                 current_angle = (current_angle - 90) % 360
                 print(f"Rotation set to {current_angle}°")
-            elif key == ord('e'):
-                # rotate CW
+            elif key == ord('r'):
+                # rotate Clock-wise
                 current_angle = (current_angle + 90) % 360
                 print(f"Rotation set to {current_angle}°")
             elif key == ord('z'):
@@ -179,7 +179,8 @@ def main():
                 save_annotations(img_name)
                 cv2.destroyAllWindows()
                 return
-
+            
+    # Annotator closed
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
