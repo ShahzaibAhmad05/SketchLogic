@@ -1,7 +1,7 @@
 ![SketchLogic Preview](assets/social-preview.jpg)
 
 # ML-based Circuit Detector
-
+ 
 **NOTE:** Currently in Initial Phase. The training script is error prone as of now. A stable release will be created along with the dataset soon.
 
 Created in multiple modules, this project aims to:
