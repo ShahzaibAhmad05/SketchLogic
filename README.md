@@ -21,7 +21,10 @@ Created in multiple modules, this project aims to:
 
 - Visualize the detected circuit as a computer-generated image
 
-## Features & Usage:
+
+## Repository Usage:
+
+Bellow is a short description and dependencies of each tool associated with the project:
 
 - **Custom Annotation Tool**
   Associated File: "yolo_ai/dataset_annotator.py"
