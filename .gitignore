@@ -3,3 +3,6 @@ sample.txt
 yolo_ai/raw_data/
 yolo_ai/yolo_dataset/
 yolo_ai/dataset_yolo/
+yolo_ai/data_prep_tools/temp.py
+yolo_ai/data_prep_tools/temp2.py
+yolo_ai/data_prep_tools/temp3.py
