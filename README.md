@@ -2,6 +2,7 @@
 <p align="center">
   <img src="assets/social-preview.jpg" alt="SketchLogic Preview">
 </p>
+````
 
 # ML-based Circuit Detector
 
@@ -46,13 +47,13 @@ This project aims to recognize circuit components from hand-drawn images and pro
 ## Repository Structure
 ```
 
-.
+SketchLogic
 ├─ assets/
 │  ├─ social-preview\.jpg
 │  └─ annotator-preview\.jpg
 ├─ yolo\_ai/
 │  └─ dataset\_annotator.py     # Custom Annotation Tool
-├─ (other modules coming in first stable release)
+├─ 
 └─ README.md
 
 ````
