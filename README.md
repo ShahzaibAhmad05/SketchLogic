@@ -1,8 +1,4 @@
-```markdown
-<p align="center">
-  <img src="assets/social-preview.jpg" alt="SketchLogic Preview">
-</p>
-````
+![SketchLogic Preview](assets/social-preview.jpg)
 
 # ML-based Circuit Detector
 
