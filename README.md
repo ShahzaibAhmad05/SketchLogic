@@ -1,5 +1,3 @@
-![SketchLogic Preview](assets/social-preview.jpg)
-
 # ML-based Circuit Detector
 
 > Detect logic gates, rotations, and wires from hand-drawn circuit sketches; export results as structured JSON and render a clean visualization.
@@ -97,7 +95,9 @@ A simple inference entry point (image → JSON + visualization) will be added al
 ## Data & Output Format
 
 **Wire format:** list of XY points per wire (polyline).
+
 **Component format:** type, rotation, and bounding/anchor coordinates.
+
 **PLEASE NOTE:** This format is subject to change.
 
 **Example JSON (illustrative):**
