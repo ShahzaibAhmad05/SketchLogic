@@ -7,23 +7,17 @@
 ---
 
 ## 📌 Table of Contents
-1. [Overview](#overview)
-2. [Capabilities](#capabilities)
-3. [Repository Structure](#repository-structure)
-4. [Installation](#installation)
-5. [Usage](#usage)
+1. [Capabilities](#capabilities)
+2. [Repository Structure](#repository-structure)
+3. [Installation](#installation)
+4. [Usage](#usage)
     - [Annotation Tool](#annotation-tool)
     - [Training (WIP)](#training-wip)
     - [Inference (WIP)](#inference-wip)
-6. [Data & Output Format](#data--output-format)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Contact](#contact)
-
----
-
-## Overview
-This project aims to recognize circuit components from hand-drawn images and produce both a machine-readable representation and a rendered visualization.
+5. [Data & Output Format](#data--output-format)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Contact](#contact)
 
 ---
 
