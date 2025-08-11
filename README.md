@@ -38,11 +38,23 @@
 SketchLogic
 ├─ assets/
 │  ├─ social-preview\.jpg
-│  └─ annotator-preview\.jpg
+│  └─ logo\.jpg
+├─ backend/
+│  └─ no data
+├─ frontend/
+│  └─ no data
+├─ scripts/
+│  └─ no data
+├─ wire\_detection/
+│  └─ no data
 ├─ yolo\_ai/
-│  └─ dataset\_annotator.py     # Custom Annotation Tool
-├─ 
-└─ README.md
+│  ├─ running_script.py
+│  └─ training\_script.ipynb
+├─ CODE\_OF\_CONDUCT\.md
+├─ CONTRIBUTING\.md
+├─ SECURITY\.md
+├─ README\.md
+└─ LICENSE
 
 ````
 
@@ -109,8 +121,6 @@ A simple inference entry point (image → JSON + visualization) will be added al
   ]
 }
 ```
-
-> Replace with your final schema once stabilized.
 
 ---
 
