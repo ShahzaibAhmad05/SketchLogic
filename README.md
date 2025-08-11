@@ -37,23 +37,23 @@
 
 SketchLogic
 ├─ assets/
-│  ├─ social-preview\.jpg
-│  └─ logo\.jpg
+│  ├─ social-preview.jpg
+│  └─ logo.jpg
 ├─ backend/
 │  └─ no data
 ├─ frontend/
 │  └─ no data
 ├─ scripts/
 │  └─ no data
-├─ wire\_detection/
+├─ wire_detection/
 │  └─ no data
-├─ yolo\_ai/
+├─ yolo_ai/
 │  ├─ running_script.py
-│  └─ training\_script.ipynb
-├─ CODE\_OF\_CONDUCT\.md
-├─ CONTRIBUTING\.md
-├─ SECURITY\.md
-├─ README\.md
+│  └─ training_script.ipynb
+├─ CODE_OF_CONDUCT.md
+├─ CONTRIBUTING.md
+├─ SECURITY.md
+├─ README.md
 └─ LICENSE
 
 ````
@@ -71,18 +71,6 @@ Currently under development. Proper installation steps will be added before the 
 ---
 
 ## Usage
-
-### Annotation Tool
-
-Custom tool for labeling raw images and inspecting JSON label structure.
-
-* **Script:** `yolo_ai/dataset_annotator.py`
-* **Dependencies:** `os`, `cv2`, `json`
-* **Run:**
-
-```bash
-python yolo_ai/dataset_annotator.py
-```
 
 ---
 
