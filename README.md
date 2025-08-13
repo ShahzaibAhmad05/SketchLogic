@@ -28,7 +28,7 @@
 - Detect **wires** and return them as ordered XY polylines
 - Export **all components with coordinates** in structured JSON
 - Visualize the **reconstructed circuit**
-- Target: **>95% accuracy** on the above criteria
+- Target: **>90% accuracy** on the above criteria
 
 ---
 
