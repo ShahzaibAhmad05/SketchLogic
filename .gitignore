@@ -3,4 +3,5 @@ sample.txt
 yolo_ai/raw_data/
 yolo_ai/dataset_yolo/
 yolo_ai/dataset_tools/
-yolo_ai/dataset_script
+yolo_ai/best_model.pt
+yolo_ai/inputs/*
