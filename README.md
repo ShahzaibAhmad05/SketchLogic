@@ -2,7 +2,7 @@
 
 > Detect logic gates, rotations, and wires from hand-drawn circuit sketches; export results as structured JSON and render a clean visualization.
 
-**Project Status:** *Initial phase.* The training script is currently unstable. A first stable release and dataset will be published soon.
+**Project Status:** *Development phase.* The inference script is available. A first stable release, a YOLO model and dataset will be published soon.
 
 ---
 
@@ -28,7 +28,7 @@
 - Detect **wires** and return them as ordered XY polylines
 - Export **all components with coordinates** in structured JSON
 - Visualize the **reconstructed circuit**
-- Target: **>90% accuracy** on the above criteria
+- Accuracy: **>80% accuracy** on the above criteria
 
 ---
 
@@ -36,20 +36,31 @@
 ```
 
 SketchLogic
+│
 ├─ assets/
 │  ├─ social-preview.jpg
 │  └─ logo.jpg
+│
 ├─ backend/
 │  └─ no data
+│
 ├─ frontend/
 │  └─ no data
+│
 ├─ scripts/
 │  └─ no data
+│
 ├─ wire_detection/
 │  └─ no data
+│
 ├─ yolo_ai/
-│  ├─ running_script.py
-│  └─ training_script.ipynb
+│  │
+│  ├─ inputs/
+│  │   └─ image_1.jpg
+│  │
+│  ├─ best_model.pt
+│  └─ inference.py
+│
 ├─ CODE_OF_CONDUCT.md
 ├─ CONTRIBUTING.md
 ├─ SECURITY.md
@@ -74,13 +85,7 @@ Currently under development. Proper installation steps will be added before the 
 
 ---
 
-### Training (WIP)
-
-Training scripts are currently unstable. A stable training pipeline (with configs and dataset links) will be published in the first release.
-
----
-
-### Inference (WIP)
+### Inference
 
 A simple inference entry point (image → JSON + visualization) will be added alongside the stable release.
 
@@ -122,6 +127,7 @@ For security issues, please use **private email** (see `SECURITY.md`).
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+
 
 ---
 
