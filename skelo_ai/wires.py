@@ -198,10 +198,11 @@ def get_connections_info(gates, pixels, vision_threshold=10, max_points_skip=5):
     #         print(cluster)
     return gates
 
-def set_input_output_info(gates, inputs_gap_threshold=100):
+def set_input_output_info(gates, inputs_gap_threshold=100, debug=False):
     # Check which terminals are close to each other
     # Do this for each gate
     # Mark as input or output at index 0
+    if debug: print('entered set IO info')
     for gate in gates:
         if gate['type'] == 'NOT': 
             found_output_flag = False
@@ -216,6 +217,7 @@ def set_input_output_info(gates, inputs_gap_threshold=100):
                     break
             if found_output_flag: continue
 
+            if debug: print('getting gate center point')
             gate_center_point = average_of_pixels([(gate['x'], gate['y']), (gate['x'] + gate['width'], 
                                                   gate['y'] + gate['height'])])
             if (distance(gate_center_point, gate['connections'][0][0]) <
@@ -236,16 +238,18 @@ def set_input_output_info(gates, inputs_gap_threshold=100):
         inputs = []
         # Filter inputs based on threshold
         while True:
+            if debug: print('entered while loop')
             for pixel1 in wire_starting_points:
                 for pixel2 in wire_starting_points:
                     if pixel1 == pixel2: continue
 
+                    # If their gap is enough, then filter out
                     gap = distance(pixel1, pixel2)
                     if gap < inputs_gap_threshold:
                         if pixel1 not in inputs: inputs.append(pixel1)
                         if pixel2 not in inputs: inputs.append(pixel2)
             
-            if len(inputs) == len(wire_starting_points) - 1:
+            if len(inputs) == len(wire_starting_points) - 1 or inputs_gap_threshold >= 500:
                 break
             else:
                 inputs_gap_threshold += 25
@@ -262,6 +266,7 @@ def set_input_output_info(gates, inputs_gap_threshold=100):
     #     for cluster in gate['connections']:  # This gets the correct wires per gate
     #         print(cluster)
 
+    print('exiting IO info')
     return gates
 
 def process_wires(gates):
@@ -362,8 +367,7 @@ def add_toggles_probes(prev_results) -> dict:
     # Cleanup
     for gate in prev_results['gates']:
         if gate.get('connections') is not None:
-            # del gate['connections']
-            pass
+            del gate['connections']
     return prev_results
 
 def set_gate_rotations(gates):
@@ -374,17 +378,24 @@ def set_gate_rotations(gates):
     return gates
 
 def wires_detection_system(image_path, detected_gates, plot_images=False, save_json=False, debug=False) -> dict:
+    if debug: print('in wire detection')
     raw_image = cv2.imread(image_path)
     image = binarize_and_skeletonize(raw_image)
     image = blacken_gate_boxes(image, detected_gates)
 
+    if debug: print('processing wires')
     pixels = filter_white_pixels(image)
+    if debug: print('filter done')
     gates = get_gate_connections(detected_gates, pixels)
     gates = get_connections_info(gates, pixels)
+    if debug: print('connections done')
     gates = set_input_output_info(gates)
+    if debug: print('IO done')
     wires = process_wires(gates)
+    if debug: print('processing done')
     gates = set_gate_rotations(gates)
     
+    if debug: print('preparing results')
     results = {
         'gates': gates,
         'wires': wires
@@ -408,7 +419,8 @@ def wires_detection_system(image_path, detected_gates, plot_images=False, save_j
     if plot_images:
         draw_annotations(raw_image, points=collected_points, rectangles=detected_gates, 
                         output_path="z_output.jpg")
-        
+    
+    if debug: print('returning results')
     return results
     
 def detect_wires(image_path, gate_results: dict, debug=False) -> dict:

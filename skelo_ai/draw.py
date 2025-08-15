@@ -10,7 +10,6 @@ from PIL import Image, ImageDraw
 # Geometry helpers
 # -------------------------
 
-# Put this near your other helpers
 def _swap_90_270(rot):
     r = int(round(float(rot))) % 360
     if r == 90:
