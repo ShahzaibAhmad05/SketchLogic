@@ -1,0 +1,14 @@
+# pyproject.toml
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sketchlogic"
+version = "1.0"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["skelo_ai*"]
+exclude = ["tests*", "scripts*"]

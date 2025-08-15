@@ -53,7 +53,7 @@ SketchLogic
 ├─ wire_detection/
 │  └─ no data
 │
-├─ yolo_ai/
+├─ skelo_ai/
 │  │
 │  ├─ inputs/
 │  │   └─ image_1.jpg
