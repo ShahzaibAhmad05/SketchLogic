@@ -215,7 +215,7 @@ class SketchLogic():
                 break
             time.sleep(0.025)
 
-    def format_results(self, result, save_path) -> dict:
+    def format_results(self, result) -> dict:
         """ Get the inference results in a JSON format
         
         Args:
@@ -226,15 +226,7 @@ class SketchLogic():
         Returns:
             dict: A dictionary containing the formatted results
         """
-
-        p = Path(save_path)
-        if p.suffix.lower() == ".json":           # specific file
-            p.parent.mkdir(parents=True, exist_ok=True)
-            out_path = p
-        else:                                     # folder → auto filename.json
-            p.mkdir(parents=True, exist_ok=True)
-            out_path = p / (Path(result["filename"]).stem + ".json")
-
+        
         boxes, clss, names = result["boxes"], result["classes"], result.get("names", {})
 
         record = {

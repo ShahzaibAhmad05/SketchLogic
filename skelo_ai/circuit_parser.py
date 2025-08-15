@@ -1,20 +1,27 @@
 from inference import SketchLogic
+from wires import detect_wires
 from pathlib import Path
+import json
 
-def parse_circuit(file_path: str):
+
+def parse_circuit(file_path: str) -> dict:
     # PREPARATION
     model_path = Path("skelo_ai/SKELOv1n.pt")
     model = SketchLogic(model_path)
 
     # GET GATES INFO
-    results = model.infer(file_path, debug=True)
-    model.visualize(results)
-    gate_results = model.format_results(results, "skelo_ai/results.json")
-
+    gate_results = model.infer(file_path, debug=True)
+    # model.visualize(results)
+    gate_results = model.format_results(gate_results)['annotations']
     # GET WIRES INFO
-    
+    gate_wire_results = detect_wires(file_path, gate_results, debug=True)
 
-    return gate_results
+    with open('z_output.json', 'w') as file:
+        json.dump(gate_wire_results, file, indent=4)
+
+
+
+    return gate_wire_results
 
 def main() -> None:
     """ Test driver """
