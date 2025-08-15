@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+skelo_ai/__init__.py
+skelo_ai/inference.py
+skelo_ai/dataset_tools/dataset_script.py
+skelo_ai/dataset_tools/temp.py
+skelo_ai/dataset_tools/temp2.py
+skelo_ai/dataset_tools/temp3.py
+skelo_ai/dataset_tools/temp4.py
+sketchlogic.egg-info/PKG-INFO
+sketchlogic.egg-info/SOURCES.txt
+sketchlogic.egg-info/dependency_links.txt
+sketchlogic.egg-info/top_level.txt

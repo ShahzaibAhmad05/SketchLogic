@@ -1,7 +1,6 @@
-temp_sample.txt
-sample.txt
-yolo_ai/raw_data/
-yolo_ai/dataset_yolo/
-yolo_ai/dataset_tools/
-yolo_ai/best_model.pt
-yolo_ai/inputs/*
+temp.txt
+skelo_ai/raw_data/
+skelo_ai/dataset_yolo/
+skelo_ai/dataset_tools/
+skelo_ai/SKELOv1n.pt
+skelo_ai/inputs
