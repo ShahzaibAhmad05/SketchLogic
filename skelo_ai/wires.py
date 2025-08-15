@@ -333,14 +333,24 @@ def add_toggles_probes(prev_results) -> dict:
     for gate in prev_results['gates']:
         for idx, connection in enumerate(gate['connections']):
             if connection[-1] == 'null':
+
                 if connection[1] == 'input': 
                     connection[-1] = 'probe'
-                    point_to_add = fetch_wire_end(idx, gate['connected_wires'][idx])
-                    probes_to_add.add(point_to_add)
+
+                    for wire in prev_results['wires'].keys():
+                        if wire == gate['connected_wires'][idx]:
+                            points_to_add = (prev_results['wires'][wire][-2], prev_results['wires'][wire][-1])
+                            probes_to_add.add(points_to_add)
+                            break
+
                 elif connection[1] == 'output': 
                     connection[-1] = 'toggle'
-                    point_to_add = fetch_wire_end(idx, gate['connected_wires'][idx])
-                    toggles_to_add.add(point_to_add)
+
+                    for wire in prev_results['wires'].keys():
+                        if wire == gate['connected_wires'][idx]:
+                            points_to_add = (prev_results['wires'][wire][-2], prev_results['wires'][wire][-1])
+                            toggles_to_add.add(points_to_add)
+                            break
 
     prev_results['probes'] = []
     prev_results['toggles'] = []
@@ -352,14 +362,9 @@ def add_toggles_probes(prev_results) -> dict:
     # Cleanup
     for gate in prev_results['gates']:
         if gate.get('connections') is not None:
-            del gate['connections']
+            # del gate['connections']
+            pass
     return prev_results
-
-def fetch_wire_end(idx, wires):
-    for wire in wires:
-        if wires.index(wire) == idx:
-            return wire[-1]
-    return [0, 0]
 
 def set_gate_rotations(gates):
     for gate in gates:
