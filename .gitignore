@@ -1,6 +1,3 @@
 temp.txt
-skelo_ai/raw_data/
-skelo_ai/dataset_yolo/
-skelo_ai/dataset_tools/
 skelo_ai/SKELOv1n.pt
-skelo_ai/inputs
+skelo_ai/inputs/
