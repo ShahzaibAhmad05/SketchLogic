@@ -1,4 +1,4 @@
-from skelo_ai import SketchLogic
+from inference import SketchLogic
 from pathlib import Path
 
 def parse_circuit(file_path: str):
