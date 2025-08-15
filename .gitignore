@@ -1,5 +1,6 @@
 temp.txt
-skelo_ai/SKELOv1n.pt
+skelo_ai/SKELOv1.pt
 skelo_ai/inputs/
+skelo_ai/__pycache__
 z_output.jpg
 z_output.json

@@ -1,12 +1,13 @@
 from inference import SketchLogic
 from wires import detect_wires
+from draw import render_circuit
 from pathlib import Path
 import json
 
 
 def parse_circuit(file_path: str) -> dict:
     # PREPARATION
-    model_path = Path("skelo_ai/SKELOv1n.pt")
+    model_path = Path("skelo_ai/SKELOv1.pt")
     model = SketchLogic(model_path)
 
     # GET GATES INFO
@@ -19,9 +20,11 @@ def parse_circuit(file_path: str) -> dict:
     with open('z_output.json', 'w') as file:
         json.dump(gate_wire_results, file, indent=4)
 
+    # VISUALIZE
+    print(gate_wire_results)
+    rendered_image = render_circuit(gate_wire_results, "z_output.jpg", "white", 40)
 
-
-    return gate_wire_results
+    return gate_wire_results, rendered_image
 
 def main() -> None:
     """ Test driver """
