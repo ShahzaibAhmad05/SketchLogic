@@ -121,7 +121,7 @@ NOTE: This is currently under development. Cloning is meant for development and 
 
 - Early-stage project. Bug reports, suggestions, and small PRs are welcome anytime.
 
-- If you would like to contribute directly, please contact the owner using the information provided in the [Contact](#contact) section.
+- If you would like to collaborate, please contact the owner using the information provided in the [Contact](#contact) section.
 
 - For security issues, please use **private email** (see `SECURITY.md`).
 
