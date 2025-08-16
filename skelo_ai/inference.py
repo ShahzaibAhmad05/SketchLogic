@@ -7,6 +7,7 @@ import glob
 import numpy as np
 import time
 import json
+from PIL import Image
 
 class SketchLogic():
     def __init__(self, model_path: Path, debug: bool=False) -> None:
@@ -112,7 +113,7 @@ class SketchLogic():
             img_bgr = cv2.resize(img_bgr, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
         return img_bgr
 
-    def infer(self, file_path, debug=False) -> dict:
+    def infer(self, file_path: str, debug=False) -> dict:
         """ Does Inference on a single image file 
         
         Args:

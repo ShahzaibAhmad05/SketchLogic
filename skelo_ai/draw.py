@@ -1,4 +1,10 @@
-# render_circuit.py
+""" 
+This file contains functions for rendering circuits on images.
+It is not being used currently.
+
+It might be removed in the future.
+"""
+
 import math
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
