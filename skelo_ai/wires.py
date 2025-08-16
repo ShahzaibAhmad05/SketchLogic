@@ -367,7 +367,8 @@ def add_toggles_probes(prev_results) -> dict:
     # Cleanup
     for gate in prev_results['gates']:
         if gate.get('connections') is not None:
-            del gate['connections']
+            # del gate['connections']
+            pass
     return prev_results
 
 def set_gate_rotations(gates):

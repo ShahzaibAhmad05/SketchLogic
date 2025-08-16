@@ -1,117 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circuit Analysis System</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>⚡ CIRCUIT ANALYZER</h1>
-            <p class="subtitle">Advanced Digital Circuit Analysis & Visualization System</p>
-        </div>
-
-        <div class="main-content">
-            <div class="upload-panel">
-                <h2>📡 Upload Circuit</h2>
-                
-                <div class="drag-drop-area" id="dragDropArea">
-                    <div class="icon">🔌</div>
-                    <p>Drop circuit diagram here</p>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">or click to browse</p>
-                    
-                    <div class="file-input-wrapper">
-                        <input type="file" id="imageFile" class="file-input" accept="image/*">
-                        <button class="btn">BROWSE FILES</button>
-                    </div>
-                </div>
-                
-                <div id="fileName" class="terminal-text" style="margin-bottom: 15px; font-size: 0.9rem;"></div>
-                
-                <button class="btn btn-process" id="uploadBtn" disabled>
-                    🚀 ANALYZE CIRCUIT
-                </button>
-            </div>
-
-            <div class="status-panel">
-                <h2>📊 System Status</h2>
-                <div class="status-item">
-                    <span>Server Status</span>
-                    <span class="status-value" id="serverStatus">CHECKING...</span>
-                </div>
-                <div class="status-item">
-                    <span>Circuit Parser</span>
-                    <span class="status-value" id="parserStatus">UNKNOWN</span>
-                </div>
-                <div class="status-item">
-                    <span>Max File Size</span>
-                    <span class="status-value">32 MB</span>
-                </div>
-                <div class="status-item">
-                    <span>Supported Formats</span>
-                    <span class="status-value">JPG, PNG, BMP, WebP</span>
-                </div>
-                <div class="status-item">
-                    <span>Processing Time</span>
-                    <span class="status-value" id="processingTime">--</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <p class="loading-text">ANALYZING CIRCUIT TOPOLOGY...</p>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">
-                Detecting gates, wires, and connections
-            </p>
-        </div>
-
-        <div class="error" id="error"></div>
-
-        <div class="results" id="results">
-            <div class="results-header">
-                <h2>📈 ANALYSIS COMPLETE</h2>
-            </div>
-            
-            <div class="processing-stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="processingTimeStat">--</div>
-                    <div class="stat-label">Processing Time (s)</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="componentsCount">--</div>
-                    <div class="stat-label">Components Detected</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="wiresCount">--</div>
-                    <div class="stat-label">Wire Connections</div>
-                </div>
-            </div>
-
-            <div class="results-grid">
-                <div class="image-panel">
-                    <h3>📷 Original Circuit</h3>
-                    <img id="originalImage" alt="Original Circuit">
-                </div>
-                <div class="image-panel">
-                    <h3>🔬 Analyzed Circuit</h3>
-                    <img id="processedImage" alt="Processed Circuit">
-                </div>
-            </div>
-
-            <div class="json-panel">
-                <h3>
-                    📋 Analysis Data
-                    <button class="copy-btn" id="copyBtn">COPY JSON</button>
-                </h3>
-                <div class="json-container" id="jsonContainer"></div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js">
-    </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SketchLogic</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
