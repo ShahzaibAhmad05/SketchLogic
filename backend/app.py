@@ -7,6 +7,13 @@ from skelo_ai import CircuitParser
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}})  # React dev origin
 
+CORS(app, resources={r"/api/*": {
+    "origins": [
+        "http://localhost:5173",
+        "https://sketchlogic-frontend.onrender.com" 
+    ]
+}})
+
 engine = CircuitParser()
 engine.load_model()
 engine.parse_circuit("skelo_ai/inputs/3.jpg")

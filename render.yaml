@@ -1,0 +1,24 @@
+services:
+  # ---- Flask API ----
+  - type: web
+    name: sketchlogic-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app -w 2 -k gthread -b 0.0.0.0:$PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    # optional: pin region/plan, add env vars, etc.
+
+  # ---- React Static Site ----
+  - type: static
+    name: sketchlogic-frontend
+    buildCommand: npm ci --prefix frontend && npm run build --prefix frontend
+    staticPublishPath: frontend/dist
+    envVars:
+      # Set VITE_API_BASE to the API's external URL (with scheme).
+      # Render will populate this at build time.
+      - key: VITE_API_BASE
+        fromService:
+          name: sketchlogic-api
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL

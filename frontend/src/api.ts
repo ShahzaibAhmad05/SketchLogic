@@ -18,7 +18,11 @@ export type AnalyzeResponse = {
   timestamp?: number
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+let API_BASE = import.meta.env.VITE_API_BASE || '/api';
+// Ensure it ends with /api
+if (!API_BASE.endsWith('/api')) {
+  API_BASE = API_BASE.replace(/\/+$/, '') + '/api';
+}
 
 async function toJson<T>(res: Response): Promise<T> {
   const text = await res.text();
