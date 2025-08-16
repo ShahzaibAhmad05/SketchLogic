@@ -1,5 +1,10 @@
-Flask==2.3.3
-Flask-CORS==4.0.0
-Pillow==10.0.1
-Werkzeug==2.3.7
-gunicorn==21.2.0
+gunicorn
+Flask
+Flask-Cors
+Pillow
+torch
+opencv-python-headless
+numpy
+scipy
+scikit-image
+ultralytics
