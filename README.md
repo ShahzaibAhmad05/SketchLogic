@@ -1,4 +1,4 @@
-# ML-based Circuit Detector
+# Circuit Metadata Detector
 
 > Detect logic gates, rotations, and wires from hand-drawn circuit sketches; export results as structured JSON and render a clean visualization.
 
@@ -10,14 +10,9 @@
 1. [Capabilities](#capabilities)
 2. [Repository Structure](#repository-structure)
 3. [Installation](#installation)
-4. [Usage](#usage)
-    - [Annotation Tool](#annotation-tool)
-    - [Training (WIP)](#training-wip)
-    - [Inference (WIP)](#inference-wip)
-5. [Data & Output Format](#data--output-format)
-6. [Contributing](#contributing)
-7. [License](#license)
-8. [Contact](#contact)
+4. [Contributing](#contributing)
+5. [License](#license)
+6. [Contact](#contact)
 
 ---
 
@@ -36,91 +31,99 @@
 ```
 
 SketchLogic
-│
 ├─ assets/
-│  ├─ social-preview.jpg
 │  └─ logo.jpg
-│
 ├─ backend/
-│  └─ no data
-│
+│  └─ app.py
 ├─ frontend/
-│  └─ no data
-│
-├─ scripts/
-│  └─ no data
-│
-├─ wire_detection/
-│  └─ no data
-│
+│  ├─ public/
+│  │  └─ vite.svg
+│  ├─ src/
+│  │  ├─ assets/
+│  │  │  ├─ banner.jpg
+│  │  │  └─ react.svg
+│  │  ├─ api.ts
+│  │  ├─ App.css
+│  │  ├─ App.tsx
+│  │  ├─ index.css
+│  │  ├─ main.tsx
+│  │  └─ vite-env.d.ts
+│  ├─ eslint.config.js
+│  ├─ index.html
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ postcss.config.js
+│  ├─ README.md
+│  ├─ tailwind.config.js
+│  ├─ tsconfig.app.json
+│  ├─ tsconfig.json
+│  ├─ tsconfig.node.json
+│  └─ vite.config.ts
 ├─ skelo_ai/
-│  │
-│  ├─ inputs/
-│  │   └─ image_1.jpg
-│  │
-│  ├─ best_model.pt
-│  └─ inference.py
-│
+│  ├─ __init__.py
+│  ├─ boolean.py
+│  ├─ circuit_parser.py
+│  ├─ draw.py
+│  ├─ inference.py
+│  ├─ label.py
+│  └─ wires.py
 ├─ CODE_OF_CONDUCT.md
 ├─ CONTRIBUTING.md
-├─ SECURITY.md
+├─ LICENSE
+├─ package-lock.json
+├─ package.json
+├─ pyproject.toml
 ├─ README.md
-└─ LICENSE
+├─ render.yaml
+├─ requirements.txt
+├─ SECURITY.md
+└─ wsgi.py
 
 ````
 
 ---
 
 ## Installation
+
+Clone the repository:
+
 ```bash
-# Clone repository
 git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
 ````
-Currently under development. Proper installation steps will be added before the first release.
 
----
+Install dependencies:
 
-## Usage
+```bash
+pip install -r requirements.txt
+````
 
----
+Launch backend locally (Flask api):
 
-### Inference
+```bash
+python backend/app.py
+````
 
-A simple inference entry point (image → JSON + visualization) will be added alongside the stable release.
+Move to frontend/ and run:
 
----
+```bash
+cd frontend
+npm run dev
+````
 
-## Data & Output Format
+It will run at port 5173, paste http://localhost:5173/ in your browser and press Enter.
 
-**Wire format:** list of XY points per wire (polyline).
-
-**Component format:** type, rotation, and bounding/anchor coordinates.
-
-**PLEASE NOTE:** This format is subject to change.
-
-**Example JSON (illustrative):**
-
-```json
-{
-  "image": "sample_001.png",
-  "components": [
-    {"type": "AND",  "rotation": 90,  "bbox": [x1, y1, x2, y2]},
-    {"type": "NOT",  "rotation": 0,   "bbox": [x1, y1, x2, y2]}
-  ],
-  "wires": [
-    {"points": [[x, y], [x, y], [x, y]]},
-    {"points": [[x, y], [x, y]]}
-  ]
-}
-```
+NOTE: This is currently under development. Cloning is meant for development and testing only.
 
 ---
 
 ## Contributing
 
-Early-stage project. Bug reports, suggestions, and small PRs are welcome once the first release lands.
-For security issues, please use **private email** (see `SECURITY.md`).
+- Early-stage project. Bug reports, suggestions, and small PRs are welcome anytime.
+
+- If you would like to collaborate, please contact the owner using the information provided in the [Contact](#contact) section.
+
+- For security issues, please use **private email** (see `SECURITY.md`).
 
 ---
 

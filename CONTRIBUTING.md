@@ -13,8 +13,8 @@ We welcome contributions from everyone. By participating in this project, you ag
 - Search existing issues before creating a new one.
 - If none exist, open a new issue with:
   - A clear title
-  - Steps to reproduce (if applicable)
   - Expected and actual behavior
+  - Suggested fix (optional)
   - Screenshots or logs (if helpful)
 
 ### 2. Suggesting Enhancements
@@ -39,5 +39,13 @@ Push to your fork and open a Pull Request.
 - Reference related issues in your PR description (e.g., Fixes #123).
   
 For development setup and project structure, check out README.md.
+
+### 5. Become a Collaborator
+- Does this project peak your interest?
+- Can you contribute as much as current collaborators?
+
+If you answered yes to the above questions, you **should** become a collaborator!
+
+Check out the README.md for owner contact information.
 
 ✔️ By contributing, you agree that your contributions will be **licensed under the same license** as the project.
