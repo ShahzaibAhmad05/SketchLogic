@@ -5,6 +5,8 @@
 
 SketchLogic is a Circuit Metadata Detector that can detect logic gates, rotations, and wires from hand-drawn circuit sketches, export results as structured JSON and render a clean visualization.
 
+It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper as input. (no lines on the paper) 
+
 **Project Status:** *Development phase.* 
 
 ---
