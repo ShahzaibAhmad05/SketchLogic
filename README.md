@@ -145,7 +145,7 @@ Open another terminal to host the backend and navigate to the project root direc
 cd PASTE_PROJECT_ROOT_DIRECTORY
 ````
 
-- Launch backend locally (Flask api):
+- On one terminal, launch backend locally (Flask api):
 
 ```bash
 python backend/app.py
