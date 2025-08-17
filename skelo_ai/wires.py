@@ -1,14 +1,15 @@
+"""
+This file might still need large cleanup and refactoring.
+For Developers: Add additional comments wherever you find necessary
+
+"""
+
 import cv2
 import numpy as np
 from skimage.morphology import skeletonize
-from skimage.util import invert
-from ultralytics import YOLO
 import uuid
 import math
-import time
 from scipy.spatial import cKDTree
-import json
-import copy
 
 def change_resolution(image, scale):
     width = int(image.shape[1] * scale)
@@ -261,12 +262,6 @@ def set_input_output_info(gates, inputs_gap_threshold=100, debug=False):
                 else:
                     cluster.insert(0, 'output')
 
-    # for gate in gates:
-    #     print('___ NEW GATE ___')
-    #     for cluster in gate['connections']:  # This gets the correct wires per gate
-    #         print(cluster)
-
-    print('exiting IO info')
     return gates
 
 def process_wires(gates):
@@ -313,20 +308,13 @@ def process_wires(gates):
         if gate.get('confidence') is not None:
             del gate['confidence']
 
-    # Cleanup gate connections
+    # Update gate connections
     for gate in gates:
         new_gate_connections = []
         for connection in gate['connections']:
             if len(connection) > 2: new_gate_connections.append([connection[0], connection[1], connection[-1]])
         
         gate['connections'] = new_gate_connections
-
-    # for wire, points in returning_wires.items(): 
-    #     print(wire)
-    #     print(points)
-    # for gate in gates:
-    #     print('___ NEW GATE ___')
-    #     print(gate)
 
     return returning_wires
 
@@ -367,8 +355,7 @@ def add_toggles_probes(prev_results) -> dict:
     # Cleanup
     for gate in prev_results['gates']:
         if gate.get('connections') is not None:
-            # del gate['connections']
-            pass
+            del gate['connections']
     return prev_results
 
 def set_gate_rotations(gates):
@@ -378,39 +365,27 @@ def set_gate_rotations(gates):
         gate['rotation'] = int(gate_type[-1])
     return gates
 
-def wires_detection_system(image_path, detected_gates, plot_images=False, save_json=False, debug=False) -> dict:
-    if debug: print('in wire detection')
+def wires_detection_system(image_path, detected_gates, plot_images=False) -> dict:
+    # PREPARE IMAGE
     raw_image = cv2.imread(image_path)
     image = binarize_and_skeletonize(raw_image)
     image = blacken_gate_boxes(image, detected_gates)
-
-    if debug: print('processing wires')
+    # GET WANTED PIXELS
     pixels = filter_white_pixels(image)
-    if debug: print('filter done')
+
+    # PREPARE INFO
     gates = get_gate_connections(detected_gates, pixels)
     gates = get_connections_info(gates, pixels)
-    if debug: print('connections done')
     gates = set_input_output_info(gates)
-    if debug: print('IO done')
     wires = process_wires(gates)
-    if debug: print('processing done')
     gates = set_gate_rotations(gates)
     
-    if debug: print('preparing results')
     results = {
         'gates': gates,
         'wires': wires
     }
-    updated_results = add_toggles_probes(results)
-    # results = rescale_logic_layout(results, 0.5, 0.5, toggle_positions, probe_positions)
-    # print(results)
-    if save_json:
-        with open('z_output.json', 'w') as file:
-            json.dump(updated_results, file, indent=4)
-    # json_data = json.dumps(results)
-    # xml_data = convert_json_to_xml('z_output.json', 'z_output.xml')
-    # with open('z_output.xml', 'w') as file:
-    #     xml_data.write(file)
+    # TODO: Provide Usable Toggle/Probes metadata instead of just 2 pixels
+    # updated_results = add_toggles_probes(results)       
 
     collected_points = []
     for _, points in wires.items():
@@ -421,16 +396,15 @@ def wires_detection_system(image_path, detected_gates, plot_images=False, save_j
         draw_annotations(raw_image, points=collected_points, rectangles=detected_gates, 
                         output_path="z_output.jpg")
     
-    if debug: print('returning results')
     return results
     
-def detect_wires(image_path, gate_results: dict, debug=False) -> dict:
-    results = wires_detection_system(image_path, gate_results, debug=debug)
+def detect_wires(image_path, gate_results: dict) -> dict:
+    results = wires_detection_system(image_path, gate_results)
     return results
 
-def main():
+def main() -> None:
     """ Test Driver """
-    image_path = "skelo_ai/inputs/3.jpg"
+    image_path = "example.jpg"
     gate_results = detect_wires(image_path, gate_results={})
     detect_wires(image_path, gate_results)
 

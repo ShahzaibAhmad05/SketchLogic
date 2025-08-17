@@ -1,12 +1,11 @@
 temp.txt
-
-skelo_ai/*.pt
-skelo_ai/inputs/
 skelo_ai/__pycache__
+skelo_ai/*.pt
 
 __pycache__
 z_output.jpg
 z_output.json
+temp.jpg
 
 frontend/node_modules/
 frontend/dist/

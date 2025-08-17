@@ -1,22 +1,56 @@
 # Circuit Metadata Detector
 
-> Detect logic gates, rotations, and wires from hand-drawn circuit sketches; export results as structured JSON and render a clean visualization.
+<img src="frontend/src/assets/banner.jpg" alt="Banner" width="500"/>
 
-**Project Status:** *Development phase.* The inference script is available. A first stable release, a YOLO model and dataset will be published soon.
+
+SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations, and wires from hand-drawn circuit sketches, export results as structured JSON and render a clean visualization.
+
+**Project Status:** *Development phase.* 
 
 ---
 
-## 📌 Table of Contents
-1. [Capabilities](#capabilities)
+## 📑 Table of Contents
+1. [Tech Stack](#tech-stack)
+1. [Key Features](#key-features)
+1. [Components](#components)
 2. [Repository Structure](#repository-structure)
-3. [Installation](#installation)
+3. [Installation & Usage](#installation-&-usage)
 4. [Contributing](#contributing)
 5. [License](#license)
 6. [Contact](#contact)
 
 ---
 
-## Capabilities
+## 🛠️ Tech Stack
+
+### Frontend
+- React (Vite)
+- TypeScript
+- Tailwind CSS
+  
+### Backend / API
+- Flask
+- Pillow (PIL) for image processing
+- Custom CircuitParser
+
+### Machine Learning / Computer Vision
+- YOLOv8n (Ultralytics)
+- PyTorch
+- OpenCV
+- scikit-image
+- SciPy
+
+### Data & Training
+- Custom Dataset: published on kaggle
+- Kaggle Notebook for Training
+
+### Version Control
+- Git
+- GitHub
+
+---
+
+## 📋 Key Features
 - Detect **logic gates** from sketches  
   *Supported:* AND, OR, NOT, NAND, NOR, XOR, XNOR
 - Detect **gate rotation** (0°, 90°, 180°, 270°)
@@ -27,16 +61,23 @@
 
 ---
 
-## Repository Structure
+## 🔧 Components
+- Custom YOLO model named **SKELO** used for gates detection
+- Wire Detection Algorithms for detecting wires
+- Frontend
+- Backend API
+
+---
+
+## 📂 Repository Structure
 ```
 
 SketchLogic
-├─ assets/
-│  └─ logo.jpg
 ├─ backend/
 │  └─ app.py
 ├─ frontend/
 │  ├─ public/
+│  │  ├─ logo.jpg
 │  │  └─ vite.svg
 │  ├─ src/
 │  │  ├─ assets/
@@ -61,7 +102,6 @@ SketchLogic
 │  └─ vite.config.ts
 ├─ skelo_ai/
 │  ├─ __init__.py
-│  ├─ boolean.py
 │  ├─ circuit_parser.py
 │  ├─ draw.py
 │  ├─ inference.py
@@ -69,27 +109,34 @@ SketchLogic
 │  └─ wires.py
 ├─ CODE_OF_CONDUCT.md
 ├─ CONTRIBUTING.md
+├─ example.jpg
 ├─ LICENSE
-├─ package-lock.json
-├─ package.json
 ├─ pyproject.toml
 ├─ README.md
-├─ render.yaml
 ├─ requirements.txt
-├─ SECURITY.md
-└─ wsgi.py
+└─ SECURITY.md
 
 ````
 
 ---
 
-## Installation
+## 📦 Installation & Usage
 
 Clone the repository:
 
 ```bash
 git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
+````
+
+Download the latest SKELO model from this [Google Drive Link](https://drive.google.com/drive/folders/1NRbsy8lcZ2MH3S7Gwx_btxaXnI0i2sdP?usp=sharing)
+
+Unzip and place the model weights at:
+
+```
+SketchLogic
+├─ skelo_ai/
+│  └─ SKELOv*.pt
 ````
 
 Install dependencies:
@@ -113,11 +160,11 @@ npm run dev
 
 It will run at port 5173, paste http://localhost:5173/ in your browser and press Enter.
 
-NOTE: This is currently under development. Cloning is meant for development and testing only.
+NOTE: This is currently under development. Installation is meant for development and testing only.
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 - Early-stage project. Bug reports, suggestions, and small PRs are welcome anytime.
 
@@ -127,14 +174,14 @@ NOTE: This is currently under development. Cloning is meant for development and 
 
 ---
 
-## License
+## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
 ---
 
-## Contact
+## ✉️ Contact
 
-* **LinkedIn:** [https://www.linkedin.com/in/shahzaibahmad05](https://www.linkedin.com/in/shahzaibahmad05)
+* **LinkedIn:** [ShahzaibAhmad05](https://www.linkedin.com/in/shahzaibahmad05)
 * **Email:** [shahzaibahmad6789@gmail.com](mailto:shahzaibahmad6789@gmail.com)

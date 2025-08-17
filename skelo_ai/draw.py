@@ -2,7 +2,7 @@
 This file contains functions for rendering circuits on images.
 It is not being used currently.
 
-It might be removed in the future.
+It might be added to the project or removed from it, in the future.
 """
 
 import math
@@ -12,9 +12,7 @@ from typing import Dict, List, Tuple, Any
 import numpy as np
 from PIL import Image, ImageDraw
 
-# -------------------------
-# Geometry helpers
-# -------------------------
+# HELPERS
 
 def _swap_90_270(rot):
     r = int(round(float(rot))) % 360
@@ -42,9 +40,8 @@ def rotated_rect_bounds(x: float, y: float, w: float, h: float, deg: float) -> T
 def mid_point(p1: Tuple[int, int], p2: Tuple[int, int]) -> Tuple[float, float]:
     return ((p1[0] + p2[0]) / 2.0, (p1[1] + p2[1]) / 2.0)
 
-# -------------------------
-# Gate symbol drawing (local RGBA image; then rotated & pasted)
-# -------------------------
+# GATE SYMBOLS DRAWING
+
 def _new_gate_layer(w: int, h: int) -> Tuple[Image.Image, ImageDraw.ImageDraw]:
     # Transparent layer to draw crisp symbols, then rotate & paste
     layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
@@ -176,9 +173,7 @@ def gate_rgba(type_name: str, w: int, h: int) -> Image.Image:
         draw.rectangle([left, top, right, bot], outline="black", width=lw)
     return base
 
-# -------------------------
-# Canvas & drawing
-# -------------------------
+# CANVAS
 def compute_canvas_bounds(results: Dict[str, Any], margin: int = 40) -> Tuple[int, int, Tuple[int, int]]:
     """Return (W,H,offset) so all content fits with margin. Offset is the translation to apply when drawing."""
     gates = results.get("gates", [])
