@@ -31,8 +31,6 @@
 ```
 
 SketchLogic
-├─ assets/
-│  └─ logo.jpg
 ├─ backend/
 │  └─ app.py
 ├─ frontend/
@@ -66,18 +64,15 @@ SketchLogic
 │  ├─ draw.py
 │  ├─ inference.py
 │  ├─ label.py
+│  ├─ SKELOv1.pt
 │  └─ wires.py
 ├─ CODE_OF_CONDUCT.md
 ├─ CONTRIBUTING.md
 ├─ LICENSE
-├─ package-lock.json
-├─ package.json
 ├─ pyproject.toml
 ├─ README.md
-├─ render.yaml
 ├─ requirements.txt
-├─ SECURITY.md
-└─ wsgi.py
+└─ SECURITY.md
 
 ````
 

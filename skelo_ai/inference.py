@@ -6,11 +6,9 @@ import torch
 import glob
 import numpy as np
 import time
-import json
-from PIL import Image
 
 class SketchLogic():
-    def __init__(self, model_path: Path, debug: bool=False) -> None:
+    def __init__(self, model_path: Path) -> None:
         """ Initialize the SketchLogic model
 
         Args:
@@ -38,8 +36,6 @@ class SketchLogic():
         # MODEL INITIALIZATION
         start_time = time.time()
         self.model = YOLO(self.MODEL_PATH)
-        if debug: print("Model loaded in {:.3f}s".format(time.time() - start_time))
-
 
     @staticmethod
     def list_images(folder):
@@ -113,7 +109,7 @@ class SketchLogic():
             img_bgr = cv2.resize(img_bgr, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
         return img_bgr
 
-    def infer(self, file_path: str, debug=False) -> dict:
+    def infer(self, file_path: str) -> dict:
         """ Does Inference on a single image file 
         
         Args:
@@ -140,7 +136,6 @@ class SketchLogic():
             source=img, imgsz=self.IMGSZ, conf=self.CONF, iou=self.IOU,
             device=device, verbose=False
         )[0]
-        if debug: print(f"Inference Time for {Path(file_path).name}: {time.time()-start_time:.3f}s")
 
         # Load results
         boxes = r.boxes
@@ -221,8 +216,6 @@ class SketchLogic():
         
         Args:
             result (dict): A dictionary containing the inference results
-            save_path (str): Path to save the JSON file. 
-                            Creates the path if it does not exist.
 
         Returns:
             dict: A dictionary containing the formatted results
@@ -251,14 +244,15 @@ class SketchLogic():
 def main() -> None:
     """ Test Driver """
     model_path = Path("skelo_ai/SKELOv1.pt")
-    image_path = Path("skelo_ai/inputs/3.jpg")
+    image_path = Path("example.jpg")
 
     model = SketchLogic(model_path, debug=True)  # debug=True to print debug info
     results = model.infer(image_path, debug=True)
 
     model.visualize(results)
     # Get the results in json format
-    # model.format_results(results, "skelo_ai/results.json")
+    formatted_results = model.format_results(results)
+    print(formatted_results)
 
 if __name__ == "__main__":
     main()
