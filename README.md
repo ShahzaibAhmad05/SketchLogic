@@ -58,7 +58,7 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-***NOTE:** This is currently under development. Installation is meant for development and testing purposes only.*
+***NOTE:** This project is currently under development. Installation is meant for development and testing purposes only.*
 
 ---
 
