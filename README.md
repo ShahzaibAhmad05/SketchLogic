@@ -62,35 +62,6 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-## 🛠️ Tech Stack
-
-### Frontend
-- React (Vite)
-- TypeScript
-- Tailwind CSS
-  
-### Backend / API
-- Flask
-- Pillow (PIL) for image processing
-- Custom CircuitParser
-
-### Machine Learning / Computer Vision
-- YOLOv8n (Ultralytics)
-- PyTorch
-- OpenCV
-- scikit-image
-- SciPy
-
-### Data & Training
-- Custom Dataset: published on kaggle
-- Kaggle Notebook for Training
-
-### Version Control
-- Git
-- GitHub
-
----
-
 ## 📋 Key Features
 - Detect **logic gates** from sketches  
   *Supported:* AND, OR, NOT, NAND, NOR, XOR, XNOR
