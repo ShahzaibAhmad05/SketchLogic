@@ -15,7 +15,6 @@ def draw_circuit_on_image(
     bg_pad: int = 4,                         # padding around label text inside its background
     gate_outline_color=(0, 255, 0, 255),
     gate_outline_width: int = 6,             # thicker rectangle border
-    fake_bold: bool = True,                  # simulate bold by multi-draw edges
 ) -> Image.Image:
     """
     Draw gates (rectangles) with bottom-centered labels and wires (red polylines).
@@ -30,8 +29,8 @@ def draw_circuit_on_image(
     # DEFAULT FONT SIZING
     if font_size == -1:
         imgWidth, imgHeight = img.size  # width, height in pixels
-        font_size = int(min(imgWidth, imgHeight) * 0.03)
-        bg_pad = int(font_size * 0.1)
+        font_size = int(imgWidth * 0.02)
+        bg_pad = int(font_size * 0.05)
 
     draw = ImageDraw.Draw(img)
     font = _load_font_fixed_size(font_size)
@@ -67,12 +66,8 @@ def draw_circuit_on_image(
         tx = int(bg_left + (bg_w - tw) / 2)
         ty = int(bg_top + (bg_h - th) / 2)
 
-        # Draw text in black, simulate bold if requested
-        if fake_bold:
-            for dx, dy in [(0, 0), (1, 0), (0, 1), (1, 1)]:
-                draw.text((tx + dx, ty + dy - (bg_pad*2)), label, font=font, fill=(0, 0, 0, 255))
-        else:
-            draw.text((tx, ty), label, font=font, fill=(0, 0, 0, 255))
+        # Draw text in black
+        draw.text((tx, ty), label, font=font, fill=(0, 0, 0, 255))
 
     # POLYLINES FOR WIRES
     for poly in data.get("wires", {}).values():

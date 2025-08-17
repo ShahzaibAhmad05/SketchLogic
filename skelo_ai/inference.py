@@ -134,7 +134,7 @@ class SketchLogic():
         start_time = time.time()
         r = self.model.predict(
             source=img, imgsz=self.IMGSZ, conf=self.CONF, iou=self.IOU,
-            device=device, verbose=False
+            device=device, verbose=False, agnostic_nms=True
         )[0]
 
         # Load results
