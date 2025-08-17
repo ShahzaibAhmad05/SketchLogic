@@ -11,17 +11,17 @@ SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations,
 
 ## 📌 Table of Contents
 1. [Tech Stack](#tech-stack)
-1. [Capabilities](#capabilities)
+1. [Key Features](#key-features)
 1. [Components](#components)
 2. [Repository Structure](#repository-structure)
-3. [Installation](#installation)
+3. [Installation & Usage](#installation-&-usage)
 4. [Contributing](#contributing)
 5. [License](#license)
 6. [Contact](#contact)
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
 - React (Vite)
@@ -50,7 +50,7 @@ SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations,
 
 ---
 
-## Capabilities
+## 📋 Key Features
 - Detect **logic gates** from sketches  
   *Supported:* AND, OR, NOT, NAND, NOR, XOR, XNOR
 - Detect **gate rotation** (0°, 90°, 180°, 270°)
@@ -61,7 +61,7 @@ SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations,
 
 ---
 
-## Components
+## 🔧 Components
 - Custom YOLO model named **SKELO** used for gates detection
 - Wire Detection Algorithms for detecting wires
 - Frontend
@@ -69,7 +69,7 @@ SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations,
 
 ---
 
-## Repository Structure
+## 📂 Repository Structure
 ```
 
 SketchLogic
@@ -120,7 +120,7 @@ SketchLogic
 
 ---
 
-## Installation
+## 📦 Installation & Usage
 
 Clone the repository:
 
@@ -160,11 +160,11 @@ npm run dev
 
 It will run at port 5173, paste http://localhost:5173/ in your browser and press Enter.
 
-NOTE: This is currently under development. Cloning is meant for development and testing only.
+NOTE: This is currently under development. Installation is meant for development and testing only.
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 - Early-stage project. Bug reports, suggestions, and small PRs are welcome anytime.
 
@@ -174,14 +174,14 @@ NOTE: This is currently under development. Cloning is meant for development and 
 
 ---
 
-## License
+## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
 ---
 
-## Contact
+## ✉️ Contact
 
 * **LinkedIn:** [ShahzaibAhmad05](https://www.linkedin.com/in/shahzaibahmad05)
 * **Email:** [shahzaibahmad6789@gmail.com](mailto:shahzaibahmad6789@gmail.com)
