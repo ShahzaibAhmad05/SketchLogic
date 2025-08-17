@@ -3,7 +3,7 @@ Flask
 Flask-Cors
 Pillow
 torch
-opencv-python-headless
+opencv-python
 numpy
 scipy
 scikit-image
