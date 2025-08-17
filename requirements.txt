@@ -7,3 +7,5 @@ numpy
 scipy
 scikit-image
 ultralytics
+gdown
+pathlib
