@@ -35,6 +35,7 @@ SketchLogic
 │  └─ app.py
 ├─ frontend/
 │  ├─ public/
+│  │  ├─ logo.jpg
 │  │  └─ vite.svg
 │  ├─ src/
 │  │  ├─ assets/
@@ -59,15 +60,14 @@ SketchLogic
 │  └─ vite.config.ts
 ├─ skelo_ai/
 │  ├─ __init__.py
-│  ├─ boolean.py
 │  ├─ circuit_parser.py
 │  ├─ draw.py
 │  ├─ inference.py
 │  ├─ label.py
-│  ├─ SKELOv1.pt
 │  └─ wires.py
 ├─ CODE_OF_CONDUCT.md
 ├─ CONTRIBUTING.md
+├─ example.jpg
 ├─ LICENSE
 ├─ pyproject.toml
 ├─ README.md
@@ -85,6 +85,16 @@ Clone the repository:
 ```bash
 git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
+````
+
+Download the latest from this [link](https://drive.google.com/drive/folders/1NRbsy8lcZ2MH3S7Gwx_btxaXnI0i2sdP?usp=sharing)
+
+Unzip and place the model weights at:
+
+```
+SketchLogic
+├─ skelo_ai/
+│  └─ SKELOv*.pt
 ````
 
 Install dependencies:
@@ -131,5 +141,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-* **LinkedIn:** [https://www.linkedin.com/in/shahzaibahmad05](https://www.linkedin.com/in/shahzaibahmad05)
+* **LinkedIn:** [ShahzaibAhmad05](https://www.linkedin.com/in/shahzaibahmad05)
 * **Email:** [shahzaibahmad6789@gmail.com](mailto:shahzaibahmad6789@gmail.com)
