@@ -160,7 +160,7 @@ cd frontend
 npm run dev
 ````
 
-It will run at port 5173, paste http://localhost:5173/ in your browser and press Enter.
+It will run at port 5173, copy and paste http://localhost:5173/ in your browser and press Enter.
 
 NOTE: This is currently under development. Installation is meant for development and testing only.
 
