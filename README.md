@@ -14,7 +14,7 @@ SketchLogic is a Circuit Metadata Detector that can detect logic gates, rotation
 1. [Key Features](#key-features)
 1. [Components](#components)
 2. [Repository Structure](#repository-structure)
-3. [Installation & Usage](#installation-&-usage)
+3. [Installation & Usage](#installation--usage)
 4. [Contributing](#contributing)
 5. [License](#license)
 6. [Contact](#contact)
@@ -122,6 +122,8 @@ SketchLogic
 
 ## 📦 Installation & Usage
 
+Bellow is the recommended installation process for testing of this project. Please feel free to use any other approaches you prefer.
+
 Clone the repository:
 
 ```bash
@@ -129,29 +131,29 @@ git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
 ````
 
-Download the latest SKELO model from this [Google Drive Link](https://drive.google.com/drive/folders/1NRbsy8lcZ2MH3S7Gwx_btxaXnI0i2sdP?usp=sharing)
-
-Unzip and place the model weights at:
-
-```
-SketchLogic
-├─ skelo_ai/
-│  └─ SKELOv*.pt
-````
-
-Install dependencies:
+Automatically install missing dependencies & SKELO model:
 
 ```bash
-pip install -r requirements.txt
+python prerequisites.py
 ````
 
-Launch backend locally (Flask api):
+This script will print the project root directory if no errors occured. Copy it.
+
+Open another terminal to host the backend and navigate to the project root directory using cd:
+
+(you may include the double quotes as well)
+
+```bash
+cd "PASTE_PROJECT_ROOT_DIRECTORY"
+````
+
+- On one terminal, launch backend locally (Flask api):
 
 ```bash
 python backend/app.py
 ````
 
-Move to frontend/ and run:
+- On the other terminal, launch the frontend (React App):
 
 ```bash
 cd frontend

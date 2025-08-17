@@ -3,9 +3,9 @@ Controller file for circuit parsing used by Flask api
 
 """
 
-from inference import SketchLogic
-from wires import detect_wires
-from label import draw_circuit_on_image
+from skelo_ai.inference import SketchLogic
+from skelo_ai.wires import detect_wires
+from skelo_ai.label import draw_circuit_on_image
 from pathlib import Path
 from PIL import Image
 import sys

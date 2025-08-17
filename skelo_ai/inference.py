@@ -246,8 +246,8 @@ def main() -> None:
     model_path = Path("skelo_ai/SKELOv1.pt")
     image_path = Path("example.jpg")
 
-    model = SketchLogic(model_path, debug=True)  # debug=True to print debug info
-    results = model.infer(image_path, debug=True)
+    model = SketchLogic(model_path)  # debug=True to print debug info
+    results = model.infer(image_path)
 
     model.visualize(results)
     # Get the results in json format
