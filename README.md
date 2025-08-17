@@ -124,6 +124,11 @@ SketchLogic
 
 ## 📦 Installation & Usage
 
+Requirements: (Recommended versions; Older versions may work, but compatibility is not guaranteed)
+
+- Python 3.13.6 -> [Download here](https://www.python.org/downloads/)
+- Node.js 22.18.0  -> [Download here](https://nodejs.org/en/download/)
+
 Bellow is the recommended installation process for testing of this project. Please feel free to use any other approaches you prefer.
 
 Clone the repository:
@@ -133,36 +138,28 @@ git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
 ````
 
-Automatically install missing dependencies & SKELO model:
+Automatically install missing dependencies (including python & node modules) and SKELO model:
 
 ```bash
 python prerequisites.py
 ````
 
-This script will print the project root directory if no errors occured. Copy it.
+At this point you’ll need **two terminal windows** open, both in the project root (the folder where you cloned the repository):
 
-Open another terminal to host the backend and navigate to the project root directory using cd:
-
-(you may include the double quotes as well)
-
-```bash
-cd "PASTE_PROJECT_ROOT_DIRECTORY"
-````
-
-- On one terminal, launch backend locally (Flask api):
+- In the **first terminal**, start the backend (Flask API):
 
 ```bash
 python backend/app.py
 ````
 
-- On the other terminal, launch the frontend (React App):
+- In the second terminal, start the frontend (React app)
 
 ```bash
 cd frontend
 npm run dev
 ````
 
-It will run at port 5173, copy and paste http://localhost:5173/ in your browser and press Enter.
+The frontend will run on port 5173. Open <a href="http://localhost:5173/" target="_blank">localhost:5173</a> in your browser to view the app.
 
 NOTE: This is currently under development. Installation is meant for development and testing only.
 
