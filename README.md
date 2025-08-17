@@ -124,7 +124,7 @@ SketchLogic
 
 ## 📦 Installation & Usage
 
-Requirements: (Recommended versions; Older versions may work, but compatibility is not guaranteed)
+Requirements: (Recommended versions; Older or Newer versions may work, but compatibility is not guaranteed)
 
 - Python 3.13.6 -> [Download here](https://www.python.org/downloads/)
 - Node.js 22.18.0  -> [Download here](https://nodejs.org/en/download/)
