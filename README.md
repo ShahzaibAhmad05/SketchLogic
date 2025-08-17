@@ -138,36 +138,28 @@ git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
 ````
 
-Automatically install missing dependencies & SKELO model:
+Automatically install missing dependencies (including python & node modules) and SKELO model:
 
 ```bash
 python prerequisites.py
 ````
 
-This script will print the project root directory if no errors occured. Copy it.
+At this point you’ll need **two terminal windows** open, both in the project root (the folder where you cloned the repository):
 
-Open another terminal to host the backend and navigate to the project root directory using cd:
-
-(you may include the double quotes as well)
-
-```bash
-cd "PASTE_PROJECT_ROOT_DIRECTORY"
-````
-
-- On one terminal, launch backend locally (Flask api):
+- In the **first terminal**, start the backend (Flask API):
 
 ```bash
 python backend/app.py
 ````
 
-- On the other terminal, launch the frontend (React App):
+- In the second terminal, start the frontend (React app)
 
 ```bash
 cd frontend
 npm run dev
 ````
 
-It will run at port 5173, copy and paste http://localhost:5173/ in your browser and press Enter.
+The frontend will run on port 5173. Open <a href="http://localhost:5173/" target="_blank">localhost:5173</a> in your browser to view the app.
 
 NOTE: This is currently under development. Installation is meant for development and testing only.
 
