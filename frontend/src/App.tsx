@@ -131,17 +131,11 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {data.original_image && (
-                <div className="bg-slate-900/60 rounded-lg p-3">
-                  <h3 className="mb-2 font-medium text-slate-300">Original</h3>
-                  <img src={data.original_image} alt="Original" className="w-full rounded-md" />
-                </div>
-              )}
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-3">
               {data.processed_image && (
                 <div className="bg-slate-900/60 rounded-lg p-3">
-                  <h3 className="mb-2 font-medium text-slate-300">Processed</h3>
-                  <img src={data.processed_image} alt="Processed" className="w-full rounded-md" />
+                  <h3 className="mb-2 font-medium text-slate-300">Labelled Image</h3>
+                  <img src={data.processed_image} alt="Labelled Image" className="w-full h-auto rounded-md" />
                 </div>
               )}
             </div>
