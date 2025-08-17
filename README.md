@@ -9,7 +9,7 @@ SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations,
 
 ---
 
-## 📌 Table of Contents
+## 📑 Table of Contents
 1. [Tech Stack](#tech-stack)
 1. [Key Features](#key-features)
 1. [Components](#components)
