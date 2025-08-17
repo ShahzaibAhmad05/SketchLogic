@@ -141,8 +141,10 @@ This script will print the project root directory if no errors occured. Copy it.
 
 Open another terminal to host the backend and navigate to the project root directory using cd:
 
+(you may include the double quotes as well)
+
 ```bash
-cd PASTE_PROJECT_ROOT_DIRECTORY
+cd "PASTE_PROJECT_ROOT_DIRECTORY"
 ````
 
 - On one terminal, launch backend locally (Flask api):
