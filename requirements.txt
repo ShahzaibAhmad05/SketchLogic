@@ -1,3 +1,5 @@
+-e .
+
 Flask
 Flask-Cors
 Pillow

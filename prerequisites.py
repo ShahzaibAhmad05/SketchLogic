@@ -7,40 +7,27 @@ try:    # Will be imported later anyways
     from pathlib import Path
 except: pass
 
-def install_if_missing(module_name, install_key) -> bool:
-    """ Returns True if a module was missing """
+def is_python_compatible(min_major=3, min_minor=9) -> bool:
+    """Return True if Python version >= 3.9 (default)."""
+    import sys
+    major, minor = sys.version_info.major, sys.version_info.minor
+    return (major, minor) >= (min_major, min_minor)
+
+def is_node_compatible(min_major=18) -> bool:
+    """Return True if Node.js version >= 18 is installed."""
     try:
-        __import__(module_name)
+        import subprocess
+        result = subprocess.run(
+            ["node", "--version"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        version_str = result.stdout.strip().lstrip("v")  # e.g., "v18.16.0" → "18.16.0"
+        major = int(version_str.split(".")[0])
+        return major >= min_major
+    except Exception:
         return False
-    except ImportError:
-        print(f"{module_name} is not installed.")
-        print(f"Installing {module_name}...")
-        try:
-            import subprocess
-            subprocess.check_call(['pip', 'install', install_key])
-            print("Installation complete.")
-            return True
-        except Exception as e:
-            print("An unexpected error occured while installing dependencies: ", e)
-            print()
-            sys.exit(1)
-
-def check_modules(modules: dict) -> None:
-    print("Checking Missing Dependencies...")
-
-    # INSTALL MISSING MODULES
-    new_modules_installed = False
-    new_modules = []
-    for name, key in modules.items(): 
-        new_modules_installed = install_if_missing(name, key)
-        if new_modules_installed:
-            new_modules.append(name)
-    # LOG RESULTS
-    if new_modules_installed:
-        print("The following modules were installed: ")
-        for module in new_modules:
-            print(module)
-    else: print("No Missing Dependencies.")
 
 def fetch_model(model_url: str, out_dir: str | Path) -> Path:
     output_path = str(out_dir / "SKELOv1.pt")  # directory target; gdown will put the file here
@@ -69,24 +56,50 @@ def create_api_base() -> None:
         f.write(f"VITE_API_BASE={api_url}\n")
     print(f"API base created for {api_url}")
 
+def install_python_packages() -> None:
+    """
+    Installs dependencies from a requirements.txt file.
+    Returns only if installation succeeds, fails otherwise.
+
+    """
+    import subprocess
+    import sys
+    
+    requirements_file = "requirements.txt"
+    try:
+        print(f"Installing Python dependencies from {requirements_file}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_file])
+        print("Requirements installed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] Failed to install requirements: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"[ERROR] Unexpected error while installing requirements: {e}")
+        sys.exit(1)
+
+def check_system_requirements() -> None:
+    print("Checking system requirements...")
+    if not is_python_compatible():
+        print("[ERROR] Python version >= 3.9 is required.")
+        print("Please download the latest from: https://www.python.org/downloads/")
+        sys.exit(1)
+    if not is_node_compatible():
+        print("[ERROR] Node.js version >= 18 is required.")
+        print("Please download the latest from: https://nodejs.org/en/download/")
+        sys.exit(1)
+    print("System requirements met.")
+
 if __name__ == "__main__":
     print()
     print("________ PREREQUISITES INSTALLER ________")
     print()
-    modules = {
-        "flask": "Flask",
-        "flask_cors": "Flask-Cors",
-        "PIL": "Pillow",
-        "torch": "torch",
-        "cv2": "opencv-python",
-        "numpy": "numpy",
-        "scipy": "scipy",
-        "skimage": "scikit-image",
-        "ultralytics": "ultralytics",
-        "gdown": "gdown",
-        "pathlib": "pathlib"
-    }
-    check_modules(modules)
+
+    # CHECK SYSTEM REQUIREMENTS
+    check_system_requirements()     # Blocks immediately if required versions are not installed
+    print()
+
+    # INSTALL PYTHON PACKAGES
+    install_python_packages()
     print()
     # NOW SAFELY IMPORT
     from pathlib import Path
@@ -105,6 +118,7 @@ if __name__ == "__main__":
         else:
             print("Model Installation cancelled by user.")
             cancelled = True
+            
     # DOWNLOAD FROM GOOGLE DRIVE
     if not cancelled:
         OUTPUT_DIR = Path("skelo_ai")
