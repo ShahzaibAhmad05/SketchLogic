@@ -1,18 +1,52 @@
 # Circuit Metadata Detector
 
-> Detect logic gates, rotations, and wires from hand-drawn circuit sketches; export results as structured JSON and render a clean visualization.
+<img src="frontend/src/assets/banner.jpg" alt="Banner" width="500"/>
 
-**Project Status:** *Development phase.* The inference script is available. A first stable release, a YOLO model and dataset will be published soon.
+
+SketchLogic is Circuit Metadata Detector that can detect logic gates, rotations, and wires from hand-drawn circuit sketches, export results as structured JSON and render a clean visualization.
+
+**Project Status:** *Development phase.* 
 
 ---
 
 ## 📌 Table of Contents
+1. [Tech Stack](#tech-stack)
 1. [Capabilities](#capabilities)
+1. [Components](#components)
 2. [Repository Structure](#repository-structure)
 3. [Installation](#installation)
 4. [Contributing](#contributing)
 5. [License](#license)
 6. [Contact](#contact)
+
+---
+
+## Tech Stack
+
+### Frontend
+- React (Vite)
+- TypeScript
+- Tailwind CSS
+  
+### Backend / API
+- Flask
+- Pillow (PIL) for image processing
+- Custom CircuitParser
+
+### Machine Learning / Computer Vision
+- YOLOv8n (Ultralytics)
+- PyTorch
+- OpenCV
+- scikit-image
+- SciPy
+
+### Data & Training
+- Custom Dataset: published on kaggle
+- Kaggle Notebook for Training
+
+### Version Control
+- Git
+- GitHub
 
 ---
 
@@ -24,6 +58,14 @@
 - Export **all components with coordinates** in structured JSON
 - Visualize the **reconstructed circuit**
 - Accuracy: **>80% accuracy** on the above criteria
+
+---
+
+## Components
+- Custom YOLO model named **SKELO** used for gates detection
+- Wire Detection Algorithms for detecting wires
+- Frontend
+- Backend API
 
 ---
 
@@ -87,7 +129,7 @@ git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 cd SketchLogic
 ````
 
-Download the latest from this [link](https://drive.google.com/drive/folders/1NRbsy8lcZ2MH3S7Gwx_btxaXnI0i2sdP?usp=sharing)
+Download the latest SKELO model from this [Google Drive Link](https://drive.google.com/drive/folders/1NRbsy8lcZ2MH3S7Gwx_btxaXnI0i2sdP?usp=sharing)
 
 Unzip and place the model weights at:
 
