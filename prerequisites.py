@@ -142,9 +142,8 @@ if __name__ == "__main__":
     create_api_base()
     print()
 
-    print("✨ Prerequisites installed.")
+    print("Prerequisites installed.")
     print()
 
-    print("Root Directory: ")
-    print(os.getcwd())
+    print(f"Project Directory: {os.getcwd()}")
     print()
