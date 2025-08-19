@@ -39,7 +39,7 @@ python prerequisites.py
 
 ### Usage:
 
-At this point you’ll need **two terminal windows** open, both in the project root (the folder where you cloned the repository):
+For this you’ll need **two terminal windows** open, both in the project root (the folder where you cloned the repository):
 
 - In the **first terminal**, start the backend (Flask API):
 
@@ -58,7 +58,7 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-***NOTE:** This project is currently under development. Installation is meant for development and testing purposes only.*
+***NOTE:** This project is currently under development. Installation is meant for development and/or testing purposes only.*
 
 ---
 
