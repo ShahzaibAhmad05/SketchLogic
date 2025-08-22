@@ -17,6 +17,15 @@ It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper
 
 - Python 3.9 or Higher -> <a href="https://www.python.org/downloads/" target="_blank">Download here</a>
 - Node.js version 18 or Higher (includes npm) -> <a href="https://nodejs.org/en/download/" target="_blank">Download here</a>
+
+Make sure both are installed properly by running these in a terminal:
+
+```bash
+python --version
+node --version
+npm --version
+````
+
 - MacOS, Linux, or Windows
 
 ### Installation:
