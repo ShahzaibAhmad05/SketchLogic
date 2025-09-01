@@ -1,6 +1,10 @@
 # Circuit Metadata Detector
 
-<img src="frontend/src/assets/banner.jpg" alt="Banner" width="500"/>
+<img
+  src="https://drive.google.com/uc?export=view&id=1ZD5lsfOeOi-xSQmtKoMcgPF3g8Xy_MFE"
+  alt="SketchLogic Banner"
+  width="500"
+/>
 
 
 SketchLogic is a Circuit Metadata Detector that can detect logic gates, rotations, and wires from hand-drawn circuit sketches, export results as structured JSON and render a clean visualization.

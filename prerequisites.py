@@ -126,6 +126,17 @@ if __name__ == "__main__":
         fetch_model(MODEL_URL, OUTPUT_DIR)
     print()
 
+    # DOWNLOAD ASSETS
+    xmp_img_url = "https://drive.google.com/uc?id=1J14cpmGsXOk9QjlC6kARyNqDHXQr5FAV"
+    logo_url = "https://drive.google.com/uc?id=13ZXEp4fvuKEZadgTTMT4NYT6ScylOe-k"
+    banner_url = "https://drive.google.com/uc?id=1ZD5lsfOeOi-xSQmtKoMcgPF3g8Xy_MFE"
+    print("Downloading assets...")
+    gdown.download(banner_url, output=str(Path("frontend/src/assets/banner.jpg")))
+    gdown.download(logo_url, output=str(Path("frontend/public/logo.jpg")))
+    gdown.download(logo_url, output=str(Path("example.jpg")))
+    print("Assets downloaded.")
+    print()
+
     # INSTALL DEPS
     print("Checking Node Modules Installation...")
     cancelled = False

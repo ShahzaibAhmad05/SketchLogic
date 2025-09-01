@@ -4,6 +4,8 @@ Flask
 Flask-Cors
 Pillow
 torch
+torchvision
+torchaudio
 opencv-python
 numpy
 scipy

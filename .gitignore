@@ -7,6 +7,10 @@ __pycache__
 z_output.jpg
 z_output.json
 temp.jpg
+example.jpg
+**/banner.jpg
+**/logo.jpg
+# frontend/src/assets/banner.jpg
 
 frontend/node_modules/
 frontend/dist/
