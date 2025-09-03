@@ -13,6 +13,8 @@ It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper
 
 **Project Status:** *Development phase.* 
 
+**Contributions are Welcome!**
+
 ---
 
 ## Development & Testing
@@ -87,11 +89,13 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ## Contributing
 
-- Early-stage project. Bug reports, suggestions, and small PRs are welcome anytime.
+- Bug reports, suggestions, and PRs are absolutely WELCOME!
+
+- See `CONTRIBUTING.md` for more details.
 
 - If you would like to collaborate, please contact the owner using the information provided in the [Contact](#contact) section.
 
-- For security issues, please use **private email** (see `SECURITY.md`).
+- For security issues, see `SECURITY.md`.
 
 ---
 
