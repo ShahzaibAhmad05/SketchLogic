@@ -29,7 +29,7 @@ It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper
 
 Bellow is the recommended installation process for testing of this project. Please feel free to use any other approaches you prefer.
 
-Clone the repository:
+Clone the repository :
 
 ```bash
 git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
@@ -43,11 +43,12 @@ Run the following script to automatically install all missing dependencies
 python prerequisites.py
 ````
 
-### Usage:
+### Usage :
 
 For this you’ll need **two terminal windows** open, both in the project root (the folder where you cloned the repository):
 
 - In the **first terminal**, start the backend (Flask API):
+
 
 ```bash
 python backend/app.py
@@ -68,7 +69,8 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-## Key Features
+## Key Features :
+
 - Detect **logic gates** from sketches  
   *Supported:* AND, OR, NOT, NAND, NOR, XOR, XNOR
 - Detect **gate rotation** (0°, 90°, 180°, 270°)
@@ -79,7 +81,8 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-## Components
+## Components :
+
 - Custom YOLO model named **SKELO** used for gates detection
 - Wire Detection Algorithms for detecting wires
 - Frontend
@@ -87,7 +90,7 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-## Contributing
+## Contributing :
 
 - Bug reports, suggestions, and PRs are absolutely WELCOME!
 
@@ -99,14 +102,14 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 
 ---
 
-## License
+## License :
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
 ---
 
-## Contact
+## Contact :
 
 * **LinkedIn:** [ShahzaibAhmad05](https://www.linkedin.com/in/shahzaibahmad05)
 * **Email:** [shahzaibahmad6789@gmail.com](mailto:shahzaibahmad6789@gmail.com)
