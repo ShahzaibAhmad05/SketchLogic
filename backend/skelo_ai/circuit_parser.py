@@ -13,7 +13,7 @@ import sys
 class CircuitParser():
     def __init__(self) -> None:
         self.model = None
-        self.model_path = Path("skelo_ai/SKELOv1.pt")
+        self.model_path = Path("backend/skelo_ai/SKELOv1.pt")
 
     def load_model(self) -> None:
         self.model = SketchLogic(self.model_path)

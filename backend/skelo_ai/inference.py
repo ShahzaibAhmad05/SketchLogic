@@ -17,7 +17,11 @@ class SketchLogic():
         """
 
         # CONFIGURATION 
-        self.MODEL_PATH = model_path
+        # self.MODEL_PATH = model_path
+        if model_path is None:
+            self.MODEL_PATH = Path(__file__).parent / "SKELOv1.pt"
+        else:
+            self.MODEL_PATH = Path(model_path)
 
         self.IMGSZ = 1024
         self.CONF  = 0.25

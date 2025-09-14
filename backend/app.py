@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import time, io, base64
 from PIL import Image, ImageOps
-from skelo_ai import CircuitParser
+from skelo_ai.circuit_parser import CircuitParser
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}})  # React dev origin
@@ -10,7 +10,7 @@ CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}})  # Reac
 # PREPARE THE CIRCUIT PARSER
 engine = CircuitParser()
 engine.load_model()
-engine.parse_circuit("example.jpg")
+engine.parse_circuit("backend/example.jpg")
 
 @app.route("/api/health")
 def health():
