@@ -109,7 +109,7 @@ if __name__ == "__main__":
     
     # FETCH THE MODEL
     print("Checking Model Installation...")
-    model_path = Path("skelo_ai/SKELOv1.pt")
+    model_path = Path("backend/skelo_ai/SKELOv1.pt")
     cancelled = False
     if model_path.exists():
         if (input("WARNING: SKELO Model is already installed. Reinstall? (y) ")).strip() in ['y', 'Y']:
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             
     # DOWNLOAD FROM GOOGLE DRIVE
     if not cancelled:
-        OUTPUT_DIR = Path("skelo_ai")
+        OUTPUT_DIR = Path("backend/skelo_ai")
         MODEL_URL = "https://drive.google.com/uc?id=18T0X30kh4I2EVv0G93hwnP3h4O2i5tqb"
         fetch_model(MODEL_URL, OUTPUT_DIR)
     print()
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     print("Downloading assets...")
     gdown.download(banner_url, output=str(Path("frontend/src/assets/banner.jpg")))
     gdown.download(logo_url, output=str(Path("frontend/public/logo.jpg")))
-    gdown.download(logo_url, output=str(Path("example.jpg")))
+    gdown.download(logo_url, output=str(Path("backend/example.jpg")))
     print("Assets downloaded.")
     print()
 
