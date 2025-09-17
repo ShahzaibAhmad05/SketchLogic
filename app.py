@@ -1,22 +1,23 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import time, io, base64
 from PIL import Image, ImageOps
-from skelo_ai.circuit_parser import CircuitParser
+from skelo.circuit_parser import CircuitParser
+from pathlib import Path
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}})  # React dev origin
+
+MODEL_PATH = Path("skelo/SKELOv1.pt")
 
 # PREPARE THE CIRCUIT PARSER
-engine = CircuitParser()
+engine = CircuitParser(MODEL_PATH)
 engine.load_model()
-engine.parse_circuit("backend/example.jpg")
+engine.parse_circuit("example.jpg")
 
 @app.route("/api/health")
 def health():
     return jsonify({
         "status": "healthy",
-        "circuit_parser_loaded": True,  # set real value in your app
+        "circuit_parser_loaded": True,  # TODO: set real value later
         "timestamp": time.time()
     })
 
