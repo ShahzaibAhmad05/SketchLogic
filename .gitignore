@@ -1,7 +1,7 @@
 temp.txt
-skelo_ai/__pycache__
-skelo_ai/*.pt
-skelo_ai/SKELOv1.pt
+skelo/__pycache__
+skelo/*.pt
+test.py
 
 __pycache__
 z_output.jpg
@@ -10,51 +10,15 @@ temp.jpg
 example.jpg
 **/banner.jpg
 **/logo.jpg
-# frontend/src/assets/banner.jpg
-
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
-frontend/*.log
 
 .venv/
 venv/
-frontend/.env*
 .env
 .env.local
 
 build/
 dist/
-*.egg-info/
 
 temp/
 *.tmp
 *.log
-
-# Logs
-frontend/logs
-frontend/*.log
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-frontend/pnpm-debug.log*
-frontend/lerna-debug.log*
-
-frontend/node_modules
-frontend/dist
-frontend/dist-ssr
-frontend/*.local
-
-# Editor directories and files
-frontend/.vscode/*
-frontend/!.vscode/extensions.json
-frontend/.idea
-frontend/.DS_Store
-frontend/*.suo
-frontend/*.ntvs*
-frontend/*.njsproj
-frontend/*.sln
-frontend/*.sw?
-
-frontend/.env.development
-sketchlogic.egg-info
