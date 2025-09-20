@@ -247,7 +247,7 @@ class SketchLogic():
 
 def main() -> None:
     """ Test Driver """
-    model_path = Path("skelo_ai/SKELOv1.pt")
+    model_path = Path("skelo/SKELOv1.pt")
     image_path = Path("example.jpg")
 
     model = SketchLogic(model_path)  # debug=True to print debug info
