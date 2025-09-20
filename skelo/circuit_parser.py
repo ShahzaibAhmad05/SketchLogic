@@ -3,12 +3,13 @@ Controller file for circuit parsing used by Flask api
 
 """
 
-from skelo.inference import SketchLogic
-from skelo.wires import detect_wires
-from skelo.label import draw_circuit_on_image
+from inference import SketchLogic
+from wires import detect_wires
+from label import draw_circuit_on_image
 from pathlib import Path
 from PIL import Image
 import sys
+import json
 
 class CircuitParser():
     def __init__(self, model_path: Path) -> None:
@@ -38,17 +39,22 @@ class CircuitParser():
         # VISUALIZE
         rendered_image = draw_circuit_on_image(file_path, gate_wire_results)
 
+        # For Debugging Purposes
+        # rendered_image.show()
+        # with open('circuit.json', 'w') as file:
+        #     json.dump(gate_wire_results, file, indent=4)
+
         return (gate_wire_results, rendered_image)
 
 def main() -> None:
     """ Test driver """
-    engine = CircuitParser()
+    engine = CircuitParser('skelo/SKELOv1.pt')
     engine.load_model()
     test_image_path = Path("example.jpg")
 
     # Make sure the test image is present
     if test_image_path.exists():
-        engine.parse_circuit(test_image_path.absolute())
+        engine.parse_circuit(str(test_image_path))
     else:
         print("Test image not found")
 
