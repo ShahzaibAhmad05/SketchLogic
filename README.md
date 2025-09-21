@@ -45,22 +45,13 @@ python prerequisites.py
 
 ### Usage:
 
-For this you’ll need **two terminal windows** open, both in the project root (the folder where you cloned the repository):
+For this you’ll need **a terminal window** open  in the project root (the folder where you cloned the repository):
 
-- In the **first terminal**, start the backend (Flask API):
+- In the terminal, start the backend (Flask API):
 
 ```bash
 python backend/app.py
 ````
-
-- In the second terminal, start the frontend (React app)
-
-```bash
-cd frontend
-npm run dev
-````
-
-The frontend will run on port 5173. Open <a href="http://localhost:5173/" target="_blank">localhost:5173</a> in your browser to view the app.
 
 ---
 
@@ -82,7 +73,6 @@ The frontend will run on port 5173. Open <a href="http://localhost:5173/" target
 ## Components
 - Custom YOLO model named **SKELO** used for gates detection
 - Wire Detection Algorithms for detecting wires
-- Frontend
 - Backend API
 
 ---
