@@ -45,7 +45,7 @@ python prerequisites.py
 
 ### Usage:
 
-For this you’ll need **a terminal window** open  in the project root (the folder where you cloned the repository):
+For this you’ll need your terminal open in the project root (the folder where you cloned the repository):
 
 - In the terminal, start the backend (Flask API):
 
