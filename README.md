@@ -69,7 +69,9 @@ py -m venv .venv
 
 # 2) Install Python dependencies
 pip install -r requirements.txt
+```
 
+```powershell
 # 3) Download the custom YOLO model (SKELO) to skelo/SKELOv1.pt
 python -m gdown "https://drive.google.com/uc?id=18T0X30kh4I2EVv0G93hwnP3h4O2i5tqb" -O "skelo/SKELOv1.pt"
 
@@ -88,9 +90,7 @@ If you cannot or prefer not to use `gdown`, download the files via your browser 
 
 Ensure the `skelo` folder exists in the project root (create it if it doesn't), then move the file into `skelo/SKELOv1.pt`.
 
-2. Download the example asset image to your Downloads folder. Asset URL: <https://drive.google.com/uc?id=1J14cpmGsXOk9QjlC6kARyNqDHXQr5FAV>. Rename it to `example.jpg` if needed, then move it into the project root as `example.jpg`.
-
-Move the file into the project root as `example.jpg`.
+2. Download the example asset image to your Downloads folder. Asset URL: <https://drive.google.com/uc?id=1J14cpmGsXOk9QjlC6kARyNqDHXQr5FAV>. Rename it to `example.jpg`, then move it into the project root as `example.jpg`.
 
 3. Then run the backend API as described in the Usage section.
 
