@@ -11,3 +11,4 @@ scikit-image
 ultralytics
 gdown
 pathlib
+gunicorn

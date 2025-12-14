@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import time, io, base64
+import time, io, base64, os
 from PIL import Image, ImageOps
 from skelo.circuit_parser import CircuitParser
 from pathlib import Path
@@ -11,15 +11,21 @@ CORS(app)
 MODEL_PATH = Path("skelo/SKELOv1.pt")
 
 # PREPARE THE CIRCUIT PARSER
-engine = CircuitParser(MODEL_PATH)
-engine.load_model()
-engine.parse_circuit("example.jpg")
+engine = None
+def get_engine():
+    global engine
+    if engine is None:
+        e = CircuitParser(MODEL_PATH)
+        e.load_model()
+        engine = e
+    return engine
+
 
 @app.route("/api/health")
 def health():
     return jsonify({
         "status": "healthy",
-        "circuit_parser_loaded": True,  # TODO: set real value later
+        "circuit_parser_loaded": engine is not None,
         "timestamp": time.time()
     })
 
@@ -41,7 +47,7 @@ def process_circuit():
     start = time.time()
 
     # Parser always returns (analysis_results, processed PIL image)
-    analysis_results, processed_pil = engine.parse_circuit(img)
+    analysis_results, processed_pil = get_engine().parse_circuit(img)
 
     # Original image as data URL (use the uploaded mimetype if available)
     orig_mime = f.mimetype or (f"image/{(img.format or 'jpeg').lower()}")
@@ -78,4 +84,6 @@ def process_circuit():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", "5000"))
+    app.run(host="0.0.0.0", port=port, debug=False)
+
