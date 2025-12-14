@@ -18,7 +18,7 @@ export type AnalyzeResponse = {
   timestamp?: number
 }
 
-let API_BASE = import.meta.env.VITE_API_BASE || '/api';
+export let API_BASE = import.meta.env.VITE_API_BASE || '/api';
 // Ensure it ends with /api
 if (!API_BASE.endsWith('/api')) {
   API_BASE = API_BASE.replace(/\/+$/, '') + '/api';
