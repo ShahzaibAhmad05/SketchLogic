@@ -96,6 +96,13 @@ python testRun.py
 
 Feel free to edit the test run script to try out the backend api.
 
+<br>
+
+<img
+  src="https://drive.google.com/uc?export=view&id=1a7QAICEi8O-BeXW93BRRvke0Alu2M7RW"
+  alt="Image"
+/>
+
 ### Frontend Setup:
 
 - Refer to [frontend/README.md](https://github.com/ShahzaibAhmad05/SketchLogic/blob/main/frontend/README.md) for instructions on setting up the frontend.
@@ -116,6 +123,13 @@ npm run dev
 For this, make sure the backend is already running on `localhost:5000` by using the `testRun.py` script.
 
 Open `localhost:5173` on your browser to interact with the frontend.
+
+<br>
+
+<img
+  src="https://drive.google.com/uc?export=view&id=1PdzPCUk-wtRykdIT4UhUo3hRslEnPjDy"
+  alt="Image"
+/>
 
 ## Key Features
 
