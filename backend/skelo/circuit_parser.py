@@ -3,20 +3,20 @@ Controller file for circuit parsing used by Flask api
 
 """
 
-from inference import SketchLogic
-from wires import detect_wires
-from label import draw_circuit_on_image
+from skelo.inference import SketchLogic
+from skelo.wires import detect_wires
+from skelo.label import draw_circuit_on_image
 from pathlib import Path
 from PIL import Image
 import sys
 import json
-from normalizer import convert_to_simulator_format
-from normalizer import normalize_output
-from normalizer import normalize_wire_points
-from normalizer import relocate_circuit
-from normalizer import remove_close_points
-from normalizer import snap_coords_to_grid
-from normalizer import remove_duplicate_points
+from skelo.normalizer import convert_to_simulator_format
+from skelo.normalizer import normalize_output
+from skelo.normalizer import normalize_wire_points
+from skelo.normalizer import relocate_circuit
+from skelo.normalizer import remove_close_points
+from skelo.normalizer import snap_coords_to_grid
+from skelo.normalizer import remove_duplicate_points
 
 class CircuitParser():
     def __init__(self, model_path: Path) -> None:
