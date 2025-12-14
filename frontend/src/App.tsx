@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
-import banner from './assets/banner.jpg' // <-- add your banner here
+import banner from './assets/banner.jpg'
 
 type Gate = { id?: string; connected_wires?: string[] | Record<string, unknown> }
 type AnalysisResults = { gates?: Gate[]; wires?: Record<string, unknown> }
@@ -68,11 +68,10 @@ export default function App() {
             alt="SketchLogic banner"
             className="mx-auto mb-4 w-full max-w-[560px] md:max-w-[720px] lg:max-w-[880px] select-none"
           />
-          
-          {/* <h1 className="text-3xl font-bold tracking-tight">SketchLogic</h1> */}
-          {/* <p className="text-slate-400 mt-1">
+
+          <p className="text-slate-400 mt-1">
             Status: <b>{online}</b> &nbsp;|&nbsp; Parser: <b>{parser}</b>
-          </p> */}
+          </p>
         </header>
 
         <section className="mt-6">
@@ -99,9 +98,7 @@ export default function App() {
             />
           </div>
 
-          {file && (
-            <p className="text-slate-400 mt-2">Selected: {file.name}</p>
-          )}
+          {file && <p className="text-slate-400 mt-2">Selected: {file.name}</p>}
 
           <button
             disabled={!file || loading}
