@@ -59,7 +59,7 @@ def printIntro() -> None:
     print()
 
 if __name__ == "__main__":
-    import os
+    import os, sys
     os.system("cls")
     print("________ SETUP FOR IRIS BACKEND ________")
     print()
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     
     # FETCH THE MODEL
     print("Checking SKELO Model Installation...")
-    model_path = Path("skelo/SKELOv1.pt")
+    model_path = Path("backend/skelo/SKELOv1.pt")
     model_install_cancelled = False
     if model_path.exists():
         if (input("WARNING: SKELO Model is already installed. Reinstall? (y) ")).strip() in ['y', 'Y']:
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             
     # DOWNLOAD FROM GOOGLE DRIVE
     if not model_install_cancelled:
-        OUTPUT_DIR = Path("skelo")
+        OUTPUT_DIR = Path("backend/skelo")
         MODEL_URL = "https://drive.google.com/uc?id=18T0X30kh4I2EVv0G93hwnP3h4O2i5tqb"
         try:
             fetch_model(MODEL_URL, OUTPUT_DIR)
