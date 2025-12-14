@@ -114,7 +114,8 @@ class SketchLogic():
         return img_bgr
 
     def infer(self, file_path: str) -> dict:
-        """ Does Inference on a single image file 
+        """ 
+        Does Inference on a single image file.
         
         Args:
             file_path (str): Path to the image file
@@ -135,7 +136,6 @@ class SketchLogic():
             raise FileNotFoundError(f"Could not read image: {file_path}")
 
         # Inference
-        start_time = time.time()
         r = self.model.predict(
             source=img, imgsz=self.IMGSZ, conf=self.CONF, iou=self.IOU,
             device=device, verbose=False, agnostic_nms=True

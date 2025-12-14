@@ -1,22 +1,36 @@
 """
-Controller file for circuit parsing used by Flask api
+Controller file for circuit parsing used by Flask api.
+
+To test run this file, cd to the backend folder, and type:
+
+    python backend/circuit_parser.py
+
+
 
 """
 
-from skelo.inference import SketchLogic
-from skelo.wires import detect_wires
-from skelo.label import draw_circuit_on_image
 from pathlib import Path
 from PIL import Image
 import sys
 import json
-from skelo.normalizer import convert_to_simulator_format
-from skelo.normalizer import normalize_output
-from skelo.normalizer import normalize_wire_points
-from skelo.normalizer import relocate_circuit
-from skelo.normalizer import remove_close_points
-from skelo.normalizer import snap_coords_to_grid
-from skelo.normalizer import remove_duplicate_points
+try:
+    from skelo.inference import SketchLogic
+    from skelo.wires import detect_wires
+    from skelo.label import draw_circuit_on_image
+    from skelo.normalizer import convert_to_simulator_format
+    from skelo.normalizer import normalize_output
+    from skelo.normalizer import normalize_wire_points
+    from skelo.normalizer import relocate_circuit
+    from skelo.normalizer import remove_close_points
+    from skelo.normalizer import snap_coords_to_grid
+    from skelo.normalizer import remove_duplicate_points
+except:
+    print("Modular Imports Failed, trying to import directly...")
+    from inference import SketchLogic
+    from wires import detect_wires
+    from label import draw_circuit_on_image
+    from normalizer import *
+    print("Success")
 
 class CircuitParser():
     def __init__(self, model_path: Path) -> None:
@@ -43,23 +57,23 @@ class CircuitParser():
         gate_results = self.model.format_results(gate_results)['annotations']
         # GET WIRES INFO
         gate_wire_results = detect_wires(file_path, gate_results)
-        # VISUALIZE
         # Normalize
-        gate_wire_results = normalize_output(gate_wire_results)
-        finalized_results = convert_to_simulator_format(gate_wire_results)
-        finalized_results = normalize_wire_points(finalized_results)
+        # gate_wire_results = normalize_output(gate_wire_results)
+        # finalized_results = convert_to_simulator_format(gate_wire_results)
+        # finalized_results = normalize_wire_points(finalized_results)
         # finalized_results = relocate_circuit(finalized_results)
-        finalized_results = snap_coords_to_grid(finalized_results, grid_size=10.0)
-        finalized_results = remove_duplicate_points(finalized_results)
+        # finalized_results = snap_coords_to_grid(finalized_results, grid_size=10.0)
+        # finalized_results = remove_duplicate_points(gate_wire_results)
         # finalized_results = remove_close_points(finalized_results, threshold=10.0)
-        rendered_image = draw_circuit_on_image(file_path, finalized_results)
+        print(gate_wire_results)
+        rendered_image = draw_circuit_on_image(file_path, gate_wire_results)
 
         # For Debugging Purposes
         rendered_image.show()
         with open('circuit.json', 'w') as file:
-            json.dump(finalized_results, file, indent=4)
+            json.dump(gate_wire_results, file, indent=4)
 
-        return (finalized_results, rendered_image)
+        return (gate_wire_results, rendered_image)
 
 def main() -> None:
     """ Test driver """

@@ -1,0 +1,13 @@
+Flask
+Flask-Cors
+Pillow
+torch
+torchvision
+torchaudio
+opencv-python
+numpy
+scipy
+scikit-image
+ultralytics
+gdown
+pathlib

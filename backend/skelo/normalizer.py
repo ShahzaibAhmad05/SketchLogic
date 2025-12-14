@@ -105,9 +105,11 @@ def find_reduc_factor(data: dict) -> dict:
 
 def normalize_output(data: dict) -> dict:
     target_w, target_h = 65, 60
-
     # Use first gate as reference for global scaling
-    ref_gate = data["gates"][0]
+    try:
+        ref_gate = data["gates"][0]
+    except: # Fallback
+        return data
     scale_x = target_w / ref_gate["width"]
     scale_y = target_h / ref_gate["height"]
 
