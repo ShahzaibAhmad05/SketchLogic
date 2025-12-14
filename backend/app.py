@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import time, io, base64
 from PIL import Image, ImageOps
 from skelo.circuit_parser import CircuitParser
 from pathlib import Path
 
 app = Flask(__name__)
+CORS(app)
 
 MODEL_PATH = Path("skelo/SKELOv1.pt")
 
