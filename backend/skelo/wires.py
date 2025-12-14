@@ -397,9 +397,11 @@ def wires_detection_system(image_path, detected_gates, plot_images=False) -> dic
                         output_path="z_output.jpg")
     
     return results
-    
+
+
 def detect_wires(image_path, gate_results: dict) -> dict:
     results = wires_detection_system(image_path, gate_results)
+    # results = normalize_output(results)
     return results
 
 def main() -> None:

@@ -3,18 +3,25 @@ Controller file for circuit parsing used by Flask api
 
 """
 
-from skelo_ai.inference import SketchLogic
-from skelo_ai.wires import detect_wires
-from skelo_ai.label import draw_circuit_on_image
+from inference import SketchLogic
+from wires import detect_wires
+from label import draw_circuit_on_image
 from pathlib import Path
 from PIL import Image
 import sys
 import json
+from normalizer import convert_to_simulator_format
+from normalizer import normalize_output
+from normalizer import normalize_wire_points
+from normalizer import relocate_circuit
+from normalizer import remove_close_points
+from normalizer import snap_coords_to_grid
+from normalizer import remove_duplicate_points
 
 class CircuitParser():
-    def __init__(self) -> None:
+    def __init__(self, model_path: Path) -> None:
         self.model = None
-        self.model_path = Path("backend/skelo_ai/SKELOv1.pt")
+        self.model_path = model_path
 
     def load_model(self) -> None:
         self.model = SketchLogic(self.model_path)
@@ -37,14 +44,22 @@ class CircuitParser():
         # GET WIRES INFO
         gate_wire_results = detect_wires(file_path, gate_results)
         # VISUALIZE
-        rendered_image = draw_circuit_on_image(file_path, gate_wire_results)
+        # Normalize
+        gate_wire_results = normalize_output(gate_wire_results)
+        finalized_results = convert_to_simulator_format(gate_wire_results)
+        finalized_results = normalize_wire_points(finalized_results)
+        # finalized_results = relocate_circuit(finalized_results)
+        finalized_results = snap_coords_to_grid(finalized_results, grid_size=10.0)
+        finalized_results = remove_duplicate_points(finalized_results)
+        # finalized_results = remove_close_points(finalized_results, threshold=10.0)
+        rendered_image = draw_circuit_on_image(file_path, finalized_results)
 
         # For Debugging Purposes
-        # rendered_image.show()
-        # with open('circuit.json', 'w') as file:
-        #     json.dump(gate_wire_results, file, indent=4)
+        rendered_image.show()
+        with open('circuit.json', 'w') as file:
+            json.dump(finalized_results, file, indent=4)
 
-        return (gate_wire_results, rendered_image)
+        return (finalized_results, rendered_image)
 
 def main() -> None:
     """ Test driver """

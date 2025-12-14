@@ -15,14 +15,15 @@ def draw_circuit_on_image(
     bg_pad: int = 4,                         # padding around label text inside its background
     gate_outline_color=(0, 255, 0, 255),
     gate_outline_width: int = 6,             # thicker rectangle border
+    gate_width: int = 100,                   # default gate width since not in new format
+    gate_height: int = 60,                   # default gate height since not in new format
 ) -> Image.Image:
     """
     Draw gates (rectangles) with bottom-centered labels and wires (red polylines).
-    Also draws a list of Boolean formulas bottom-right, right-aligned.
+    Updated to work with the new JSON format.
 
     - Gate label: black text, no outline, bold simulated, on a filled background
       (same color as the rectangle outline), vertically centered within that background.
-    - Boolean formulas: black text, no outline, bold simulated, stacked at bottom-right.
     """
     img = Image.open(image_path).convert("RGBA")
 
@@ -35,13 +36,17 @@ def draw_circuit_on_image(
     draw = ImageDraw.Draw(img)
     font = _load_font_fixed_size(font_size)
 
-    # RECTANGLES FOR GATES
-    for gate in data.get("gates", []):
-        x = int(gate.get("x", 0))
-        y = int(gate.get("y", 0))
-        w = int(gate.get("width", 0))
-        h = int(gate.get("height", 0))
-        label = f"{gate.get('type', '')} @ {gate.get('rotation', '')}"
+    # RECTANGLES FOR GATES (updated for new format)
+    for component in data.get("Components", []):
+        # Extract coordinates and properties from new format
+        x = int(component.get("X", 0))
+        y = int(component.get("Y", 0))
+        w = gate_width   # Use default width since not provided in new format
+        h = gate_height  # Use default height since not provided in new format
+        gate_type = component.get("Type", "Unknown")
+        rotation = component.get("Rotation", 0)
+        
+        label = f"{gate_type} @ {rotation}°"
 
         # Rectangle (thicker border)
         draw.rectangle([(x, y), (x + w, y + h)], outline=gate_outline_color, width=gate_outline_width)
@@ -69,11 +74,25 @@ def draw_circuit_on_image(
         # Draw text in black
         draw.text((tx, ty), label, font=font, fill=(0, 0, 0, 255))
 
-    # POLYLINES FOR WIRES
-    for poly in data.get("wires", {}).values():
-        if poly and len(poly) >= 2:
-            pts = [(int(p[0]), int(p[1])) for p in poly if isinstance(p, (list, tuple)) and len(p) >= 2]
+    # POLYLINES FOR WIRES (updated for new format)
+    for wire in data.get("Wires", []):
+        points = wire.get("Points", [])
+        if len(points) >= 2:
+            # Convert points from new format: [{"X": x, "Y": y}, ...] to [(x, y), ...]
+            pts = [(int(point["X"]), int(point["Y"])) for point in points 
+                   if isinstance(point, dict) and "X" in point and "Y" in point]
             if len(pts) >= 2:
                 draw.line(pts, fill=(255, 0, 0, 255), width=wire_width)
+
+    # DRAW WIRE POINTS as small circles
+    for wire in data.get("Wires", []):
+        points = wire.get("Points", [])
+        for point in points:
+            if isinstance(point, dict) and "X" in point and "Y" in point:
+                x, y = int(point["X"]), int(point["Y"])
+                # Draw a small circle at each wire point
+                radius = 3
+                draw.ellipse([(x - radius, y - radius), (x + radius, y + radius)], 
+                           fill=(0, 0, 255, 255))  # Blue circles for wire points
 
     return img
