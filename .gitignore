@@ -6,6 +6,8 @@ skelo_ai/SKELOv1.pt
 __pycache__
 z_output.jpg
 z_output.json
+*.jpg
+*.json
 temp.jpg
 example.jpg
 **/banner.jpg
