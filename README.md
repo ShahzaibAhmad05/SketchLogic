@@ -14,6 +14,53 @@ It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper
 
 ---
 
+## Project Structure
+
+````
+SketchLogic
+├─ backend/
+│  ├─ skelo/
+│  │  ├─ __init__.py
+│  │  ├─ circuit_parser.py
+│  │  ├─ draw.py
+│  │  ├─ inference.py
+│  │  ├─ label.py
+│  │  ├─ normalizer.py
+│  │  ├─ SKELOv1.pt
+│  │  └─ wires.py
+│  ├─ app.py
+│  ├─ downloads.py
+│  ├─ README.md
+│  └─ requirements.txt
+├─ frontend/
+│  ├─ public/
+│  │  └─ vite.svg
+│  ├─ src/
+│  │  ├─ assets/
+│  │  │  └─ react.svg
+│  │  ├─ api.ts
+│  │  ├─ App.css
+│  │  ├─ App.tsx
+│  │  ├─ index.css
+│  │  ├─ main.tsx
+│  │  └─ vite-env.d.ts
+│  ├─ eslint.config.js
+│  ├─ index.html
+│  ├─ postcss.config.js
+│  ├─ README.md
+│  ├─ tailwind.config.js
+│  └─ vite.config.ts
+├─ CODE_OF_CONDUCT.md
+├─ CONTRIBUTING.md
+├─ LICENSE
+├─ prerequisites.py
+├─ README.md
+├─ SECURITY.md
+└─ testRun.py
+````
+
+---
+
 ## Development & Testing
 
 ### System Requirements:
