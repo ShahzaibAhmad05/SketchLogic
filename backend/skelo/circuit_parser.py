@@ -1,12 +1,6 @@
 """
 Controller file for circuit parsing used by Flask api.
 
-To test run this file, cd to the backend folder, and type:
-
-    python backend/circuit_parser.py
-
-
-
 """
 
 from pathlib import Path
@@ -17,13 +11,7 @@ try:
     from skelo.inference import SketchLogic
     from skelo.wires import detect_wires
     from skelo.label import draw_circuit_on_image
-    from skelo.normalizer import convert_to_simulator_format
-    from skelo.normalizer import normalize_output
-    from skelo.normalizer import normalize_wire_points
-    from skelo.normalizer import relocate_circuit
-    from skelo.normalizer import remove_close_points
-    from skelo.normalizer import snap_coords_to_grid
-    from skelo.normalizer import remove_duplicate_points
+    from skelo.normalizer import *
 except:
     print("Modular Imports Failed, trying to import directly...")
     from inference import SketchLogic
@@ -69,14 +57,18 @@ class CircuitParser():
         rendered_image = draw_circuit_on_image(file_path, gate_wire_results)
 
         # For Debugging Purposes
-        rendered_image.show()
+        # rendered_image.show()
         with open('circuit.json', 'w') as file:
             json.dump(gate_wire_results, file, indent=4)
 
         return (gate_wire_results, rendered_image)
 
 def main() -> None:
-    """ Test driver """
+
+    if input("Direct run is only allowed for debugging purposes..."
+                "\nDo you wish to proceed? (y) ") not in ["Y", "y"]:
+        sys.exit(0)
+
     engine = CircuitParser('skelo/SKELOv1.pt')
     engine.load_model()
     test_image_path = Path("example.jpg")
