@@ -10,8 +10,6 @@ SketchLogic is a Circuit Metadata Detector that can detect logic gates, rotation
 
 It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper as input. (no lines on the paper)
 
-**Project Status:** _Development phase._
-
 **Contributions are Welcome!**
 
 ---
@@ -24,87 +22,53 @@ It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper
 - Node.js version 18 or Higher (includes npm) -> <a href="https://nodejs.org/en/download/" target="_blank">Download here</a>
 - MacOS, Linux, or Windows
 
-### Installation:
+**Note:** The term *root directory* refers to the main directory of the project. In this case, it would be the folder "*SketchLogic*".
 
-Bellow is the recommended installation process for testing of this project. Please feel free to use any other approaches you prefer.
+### Backend Setup:
 
-Clone the repository:
-
-```bash
-git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
-cd SketchLogic
-```
-
-Run the following script to automatically install all missing dependencies
-(Python packages, Node.js modules) and download the featured SKELO model:
-
-```bash
-python prerequisites.py
-```
+- Refer to [backend/README.md](https://github.com/ShahzaibAhmad05/SketchLogic/blob/main/backend/README.md) for instructions on setting up the backend.
 
 ### Usage:
 
-For this you’ll need your terminal open in the project root (the folder where you cloned the repository):
+For this you’ll need your terminal open in the root directory:
 
 - In the terminal, start the backend (Flask API):
 
 ```bash
-python backend/app.py
+cd backend
+python app.py
 ```
 
-### Manual Development Setup (backend only)
+### Testing:
 
-If you’d rather perform the backend setup manually (without the script), follow these steps. These mirror what `setup.py` does.
+Open another terminal in the root directory, and enter:
 
-Prerequisites
+````
+python testRun.py
+````
 
-- Python 3.9 or higher
+Feel free to edit the test run script to try out the backend api.
 
-From the project root, run the following in Windows PowerShell:
+### Frontend Setup:
 
-```powershell
-# 1) (Optional) Create and activate a virtual environment
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
+- Refer to [frontend/README.md](https://github.com/ShahzaibAhmad05/SketchLogic/blob/main/frontend/README.md) for instructions on setting up the frontend.
 
-# 2) Install Python dependencies
-pip install -r requirements.txt
+### Usage:
+
+For this you’ll need your terminal open in the root directory:
+
+- In the terminal, start the frontend (using npm):
+
+```bash
+cd frontend
+npm run dev
 ```
 
-```powershell
-# 3) Download the custom YOLO model (SKELO) to skelo/SKELOv1.pt
-python -m gdown "https://drive.google.com/uc?id=18T0X30kh4I2EVv0G93hwnP3h4O2i5tqb" -O "skelo/SKELOv1.pt"
+### Testing:
 
-# 4) Download example asset image to project root (example.jpg)
-python -m gdown "https://drive.google.com/uc?id=1J14cpmGsXOk9QjlC6kARyNqDHXQr5FAV" -O "example.jpg"
+For this, make sure the backend is already running on `localhost:5000` by using the `testRun.py` script.
 
-# 5) Run the backend API (this repository)
-python .\app.py
-```
-
-#### Without gdown (manual download)
-
-If you cannot or prefer not to use `gdown`, download the files via your browser and place them in the correct locations:
-
-1. Download the SKELO model (YOLO) file to your Downloads folder. Model URL: <https://drive.google.com/uc?id=18T0X30kh4I2EVv0G93hwnP3h4O2i5tqb>. Rename the downloaded file to `SKELOv1.pt` if needed, then move it into the project at `skelo/SKELOv1.pt`.
-
-Ensure the `skelo` folder exists in the project root (create it if it doesn't), then move the file into `skelo/SKELOv1.pt`.
-
-2. Download the example asset image to your Downloads folder. Asset URL: <https://drive.google.com/uc?id=1J14cpmGsXOk9QjlC6kARyNqDHXQr5FAV>. Rename it to `example.jpg`, then move it into the project root as `example.jpg`.
-
-3. Then run the backend API as described in the Usage section.
-
-Notes
-
-- The model file must be located at `skelo/SKELOv1.pt` (this is the path used by the app).
-- The example asset downloads to `example.jpg` in the project root.
-- After the server starts, check health at: <http://localhost:5000/api/health>
-
----
-
-**\*NOTE:** This project is currently under development. Installation is meant for development and/or testing purposes only.\*
-
----
+Open `localhost:5173` on your browser to interact with the frontend.
 
 ## Key Features
 
@@ -123,6 +87,7 @@ Notes
 - Custom YOLO model named **SKELO** used for gates detection
 - Wire Detection Algorithms for detecting wires
 - Backend API
+- React Frontend
 
 ---
 

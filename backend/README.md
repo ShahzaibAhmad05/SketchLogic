@@ -18,15 +18,11 @@ pip install -r requirements.txt
 python downloads.py
 ````
 
-- Run backend as a python script:
-
-````
-python app.py
-````
+and Done! Backend is now set up and ready to use.
 
 **Note:** If any of the above steps causes problems, please email the developer on [shahzaibahmad6789@gmail.com](shahzaibahmad6789@gmail.com)
 
 
 OR
 
-Create an issue for this in [issues](https://github.com/ShahzaibAhmad05/SketchLogic/issues) section.
+Create an issue for the problem in the [issues](https://github.com/ShahzaibAhmad05/SketchLogic/issues) section.
