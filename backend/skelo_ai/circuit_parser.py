@@ -3,18 +3,18 @@ Controller file for circuit parsing used by Flask api
 
 """
 
-from inference import SketchLogic
-from wires import detect_wires
-from label import draw_circuit_on_image
+from skelo_ai.inference import SketchLogic
+from skelo_ai.wires import detect_wires
+from skelo_ai.label import draw_circuit_on_image
 from pathlib import Path
 from PIL import Image
 import sys
 import json
 
 class CircuitParser():
-    def __init__(self, model_path: Path) -> None:
+    def __init__(self) -> None:
         self.model = None
-        self.model_path = model_path
+        self.model_path = Path("backend/skelo_ai/SKELOv1.pt")
 
     def load_model(self) -> None:
         self.model = SketchLogic(self.model_path)
