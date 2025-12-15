@@ -1,8 +1,9 @@
 import CopyButton from '../ui/CopyButton'
 import Button from '../ui/Button'
+import type { AnalysisResults } from '../../api'
+import LabeledCanvas from './LabeledCanvas'
 
-type Gate = { id?: string; connected_wires?: string[] | Record<string, unknown> }
-type AnalysisResults = { gates?: Gate[]; wires?: Record<string, unknown> }
+// type Gate = { id?: string; connected_wires?: string[] | Record<string, unknown> }
 
 function downloadText(filename: string, text: string) {
   const blob = new Blob([text], { type: 'application/json;charset=utf-8' })
@@ -17,11 +18,11 @@ function downloadText(filename: string, text: string) {
 }
 
 export default function ResultsPanel({
-  processedImage,
+  file,
   analysis,
   onIrisImport,
 }: {
-  processedImage?: string
+  file?: File | null
   analysis: AnalysisResults
   onIrisImport?: (json: AnalysisResults) => void
 }) {
@@ -29,23 +30,10 @@ export default function ResultsPanel({
 
   return (
     <div className="space-y-4">
-      {processedImage && (
+      {file && (
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-sm font-medium text-slate-700">Labelled Image</h3>
-            <a
-              href={processedImage}
-              download="sketchlogic_labelled.png"
-              className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium hover:bg-slate-100"
-            >
-              Download image
-            </a>
-          </div>
-          <img
-            src={processedImage}
-            alt="Labelled Image"
-            className="w-full h-auto rounded-xl"
-          />
+          {/* LabeledCanvas already contains the Download button and renders the canvas */}
+          <LabeledCanvas file={file} analysis={analysis} />
         </div>
       )}
 
@@ -62,7 +50,6 @@ export default function ResultsPanel({
               Download JSON
             </Button>
 
-            {/* IRis stub hook */}
             {onIrisImport && (
               <Button type="button" onClick={() => onIrisImport(analysis)}>
                 Import into IRis (stub)

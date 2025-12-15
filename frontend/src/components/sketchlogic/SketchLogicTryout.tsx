@@ -36,7 +36,7 @@ export default function SketchLogicTryout() {
         const ready =
           typeof h.circuit_parser_loaded === 'boolean'
             ? h.circuit_parser_loaded
-            : (h.circuit_parser === 'available')
+            : h.circuit_parser === 'available'
         setParser(ready ? 'READY' : 'OFFLINE')
       })
       .catch((e) => {
@@ -75,8 +75,6 @@ export default function SketchLogicTryout() {
   }
 
   function irisImportStub(json: AnalysisResults) {
-    // Later: hand off to IRis page/state/store.
-    // For now: just confirm it’s wired.
     console.log('[IRis stub] import JSON', json)
     alert('IRis import stub: JSON is ready to be passed into the simulator.')
   }
@@ -90,9 +88,7 @@ export default function SketchLogicTryout() {
         </div>
 
         <details className="text-sm text-slate-600">
-          <summary className="cursor-pointer select-none text-slate-700">
-            Health details
-          </summary>
+          <summary className="cursor-pointer select-none text-slate-700">Health details</summary>
           <pre className="mt-2 max-h-48 overflow-auto rounded-xl bg-slate-50 p-3 text-xs text-slate-800">
             {JSON.stringify(healthRaw, null, 2)}
           </pre>
@@ -122,7 +118,7 @@ export default function SketchLogicTryout() {
           </div>
 
           <ResultsPanel
-            processedImage={data.processed_image}
+            file={file}
             analysis={data.analysis_results}
             onIrisImport={irisImportStub}
           />

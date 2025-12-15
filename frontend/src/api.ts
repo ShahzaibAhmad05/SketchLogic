@@ -6,7 +6,19 @@ export type HealthResponse = {
   timestamp?: number
 }
 
-export type Gate = { id?: string; connected_wires?: string[] | Record<string, unknown> }
+export type Gate = {
+  id?: string
+  type?: string
+  rotation?: number
+  x?: number
+  y?: number
+  width?: number
+  height?: number
+  connected_wires?: string[] | Record<string, unknown>
+}
+
+export type WirePoint = [number, number]
+
 export type AnalysisResults = { gates?: Gate[]; wires?: Record<string, unknown> }
 export type AnalyzeResponse = {
   success: boolean
