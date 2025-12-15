@@ -5,15 +5,15 @@ from PIL import Image, ImageOps
 from skelo.circuit_parser import CircuitParser
 from pathlib import Path
 
+
 app = Flask(__name__)
 CORS(app)
-
 MODEL_PATH = Path("skelo/SKELOv1.pt")
 
-# PREPARE THE CIRCUIT PARSER
+
 engine = None
-def get_engine():
-    global engine
+def get_engine():     # Returns the circuit parser engine if available
+    global engine     # else prepares and returns it
     if engine is None:
         e = CircuitParser(MODEL_PATH)
         e.load_model()
@@ -28,6 +28,7 @@ def health():
         "circuit_parser_loaded": engine is not None,
         "timestamp": time.time()
     })
+
 
 @app.route("/api/process-circuit", methods=["POST"])
 def process_circuit():
@@ -47,31 +48,12 @@ def process_circuit():
     start_time = time.time()    # Record time taken for processing
 
     # Parse img in engine
-    analysis_results, processed_pil = get_engine().parse_circuit(img)
-
-    # Processed PIL -> data URL (PNG if alpha, else JPEG)
-    buf = io.BytesIO()
-    has_alpha = (
-        processed_pil.mode in ("RGBA", "LA")
-        or (processed_pil.mode == "P" and "transparency" in processed_pil.info)
-    )
-    if has_alpha:
-        processed_pil.save(buf, format="PNG", optimize=True)
-        proc_mime = "image/png"
-    else:
-        if processed_pil.mode not in ("RGB", "L"):
-            processed_pil = processed_pil.convert("RGB")
-        processed_pil.save(buf, format="JPEG", quality=85, optimize=True)
-        proc_mime = "image/jpeg"
-
-    processed_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
-    processed_data_url = f"data:{proc_mime};base64,{processed_b64}"
+    analysis_results = get_engine().parse_circuit(img)
 
     return jsonify({
         "success": True,
         "processing_time": round(time.time() - start_time, 6),
-        "analysis_results": analysis_results,  
-        "processed_image": processed_data_url,
+        "analysis_results": analysis_results,
         "filename": f.filename,
         "timestamp": time.time()
     })
@@ -80,4 +62,3 @@ def process_circuit():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=False)
-

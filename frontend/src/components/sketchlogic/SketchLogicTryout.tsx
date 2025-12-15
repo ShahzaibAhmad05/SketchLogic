@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { api, API_BASE } from '../../api'
+import { api } from '../../api'
 import Button from '../ui/Button'
 import Stat from '../ui/Stat'
 import Badge from '../ui/Badge'
@@ -87,7 +87,6 @@ export default function SketchLogicTryout() {
         <div className="flex flex-wrap items-center gap-2">
           <Badge>Status: {online}</Badge>
           <Badge>Parser: {parser}</Badge>
-          <Badge>API: {API_BASE}</Badge>
         </div>
 
         <details className="text-sm text-slate-600">

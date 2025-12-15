@@ -57,7 +57,7 @@ export default function ResultsPanel({
             <Button
               type="button"
               onClick={() => downloadText('sketchlogic_results.json', jsonText)}
-              className="bg-white text-slate-900 border-slate-300 hover:bg-slate-50"
+              className="bg-black text-slate-900 border-slate-300 hover:bg-slate-50"
             >
               Download JSON
             </Button>

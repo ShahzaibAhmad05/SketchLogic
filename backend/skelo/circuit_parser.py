@@ -10,13 +10,11 @@ import json
 try:
     from skelo.inference import SketchLogic
     from skelo.wires import detect_wires
-    from skelo.label import draw_circuit_on_image
     from skelo.normalizer import *
 except:
     print("Modular Imports Failed, trying to import directly...")
     from inference import SketchLogic
     from wires import detect_wires
-    from label import draw_circuit_on_image
     from normalizer import *
     print("Success")
 
@@ -28,7 +26,7 @@ class CircuitParser():
     def load_model(self) -> None:
         self.model = SketchLogic(self.model_path)
 
-    def parse_circuit(self, file_path: str) -> tuple[dict, Image.Image]:
+    def parse_circuit(self, file_path: str) -> dict:
         if self.model is None:
             print("[ERROR] model is not loaded")
             print("Please load the model before calling parse_circuit()")
@@ -54,14 +52,13 @@ class CircuitParser():
         # finalized_results = remove_duplicate_points(gate_wire_results)
         # finalized_results = remove_close_points(finalized_results, threshold=10.0)
         print(gate_wire_results)
-        rendered_image = draw_circuit_on_image(file_path, gate_wire_results)
 
         # For Debugging Purposes
         # rendered_image.show()
         with open('circuit.json', 'w') as file:
             json.dump(gate_wire_results, file, indent=4)
 
-        return (gate_wire_results, rendered_image)
+        return gate_wire_results
 
 def main() -> None:
 

@@ -41,7 +41,7 @@ export default function CopyButton({
     <Button
       type="button"
       onClick={copy}
-      className={`bg-white text-slate-900 border-slate-300 hover:bg-slate-50 ${className}`}
+      className={`bg-black text-slate-900 border-slate-300 hover:bg-slate-50 ${className}`}
     >
       {state === 'COPIED' ? 'Copied ✓' : state === 'FAILED' ? 'Copy failed' : label}
     </Button>
