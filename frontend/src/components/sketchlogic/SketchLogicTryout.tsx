@@ -21,7 +21,6 @@ type AnalyzeResponse = {
 export default function SketchLogicTryout() {
   const [online, setOnline] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING')
   const [parser, setParser] = useState<'READY' | 'OFFLINE' | 'UNKNOWN'>('UNKNOWN')
-  const [healthRaw, setHealthRaw] = useState<any>(null)
 
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
@@ -31,7 +30,6 @@ export default function SketchLogicTryout() {
   useEffect(() => {
     api.health()
       .then((h: any) => {
-        setHealthRaw(h)
         setOnline('ONLINE')
         const ready =
           typeof h.circuit_parser_loaded === 'boolean'
@@ -39,10 +37,9 @@ export default function SketchLogicTryout() {
             : h.circuit_parser === 'available'
         setParser(ready ? 'READY' : 'OFFLINE')
       })
-      .catch((e) => {
+      .catch(() => {
         setOnline('OFFLINE')
         setParser('UNKNOWN')
-        setHealthRaw({ error: e?.message || String(e) })
       })
   }, [])
 
@@ -86,13 +83,6 @@ export default function SketchLogicTryout() {
           <Badge>Status: {online}</Badge>
           <Badge>Parser: {parser}</Badge>
         </div>
-
-        <details className="text-sm text-slate-600">
-          <summary className="cursor-pointer select-none text-slate-700">Health details</summary>
-          <pre className="mt-2 max-h-48 overflow-auto rounded-xl bg-slate-50 p-3 text-xs text-slate-800">
-            {JSON.stringify(healthRaw, null, 2)}
-          </pre>
-        </details>
       </div>
 
       <Dropzone file={file} onPick={setFile} onError={setError} />
