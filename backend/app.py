@@ -31,6 +31,7 @@ def health():
 
 @app.route("/api/process-circuit", methods=["POST"])
 def process_circuit():
+    # Verify the image file is in the request
     if "image" not in request.files:
         return jsonify({"error": "No circuit image file provided"}), 400
 
@@ -43,16 +44,10 @@ def process_circuit():
         img = ImageOps.exif_transpose(img)
     except Exception:
         pass
+    start_time = time.time()    # Record time taken for processing
 
-    start = time.time()
-
-    # Parser always returns (analysis_results, processed PIL image)
+    # Parse img in engine
     analysis_results, processed_pil = get_engine().parse_circuit(img)
-
-    # Original image as data URL (use the uploaded mimetype if available)
-    orig_mime = f.mimetype or (f"image/{(img.format or 'jpeg').lower()}")
-    original_b64 = base64.b64encode(img_bytes).decode("utf-8")
-    original_data_url = f"data:{orig_mime};base64,{original_b64}"
 
     # Processed PIL -> data URL (PNG if alpha, else JPEG)
     buf = io.BytesIO()
@@ -74,8 +69,8 @@ def process_circuit():
 
     return jsonify({
         "success": True,
-        "processing_time": round(time.time() - start, 2),
-        "analysis_results": analysis_results,   # real results from the parser
+        "processing_time": round(time.time() - start_time, 6),
+        "analysis_results": analysis_results,  
         "processed_image": processed_data_url,
         "filename": f.filename,
         "timestamp": time.time()
