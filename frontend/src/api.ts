@@ -12,7 +12,6 @@ export type AnalyzeResponse = {
   success: boolean
   processing_time?: number
   analysis_results: AnalysisResults
-  original_image?: string
   processed_image?: string
   filename?: string
   timestamp?: number

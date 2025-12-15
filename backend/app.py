@@ -75,8 +75,7 @@ def process_circuit():
     return jsonify({
         "success": True,
         "processing_time": round(time.time() - start, 2),
-        "analysis_results": analysis_results,   # ← real results from the parser
-        "original_image": original_data_url,
+        "analysis_results": analysis_results,   # real results from the parser
         "processed_image": processed_data_url,
         "filename": f.filename,
         "timestamp": time.time()
