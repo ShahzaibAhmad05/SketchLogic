@@ -1,6 +1,9 @@
 """
 Controller file for circuit parsing used by Flask api.
 
+Direct run is only allowed for Debugging purposes, otherwise, 
+please use the backend API with testRun.py or frontend.
+
 """
 
 from pathlib import Path
@@ -17,6 +20,7 @@ except:
     from wires import detect_wires
     from normalizer import *
     print("Success")
+
 
 class CircuitParser():
     def __init__(self, model_path: Path) -> None:
@@ -40,25 +44,16 @@ class CircuitParser():
 
         # GET GATES INFO
         gate_results = self.model.infer(file_path)
-        gate_results = self.model.format_results(gate_results)['annotations']
         # GET WIRES INFO
         gate_wire_results = detect_wires(file_path, gate_results)
-        # Normalize
-        # gate_wire_results = normalize_output(gate_wire_results)
-        # finalized_results = convert_to_simulator_format(gate_wire_results)
-        # finalized_results = normalize_wire_points(finalized_results)
-        # finalized_results = relocate_circuit(finalized_results)
-        # finalized_results = snap_coords_to_grid(finalized_results, grid_size=10.0)
-        # finalized_results = remove_duplicate_points(gate_wire_results)
-        # finalized_results = remove_close_points(finalized_results, threshold=10.0)
-        print(gate_wire_results)
 
-        # For Debugging Purposes
+        # Uncomment For Debugging Purposes
         # rendered_image.show()
-        with open('circuit.json', 'w') as file:
-            json.dump(gate_wire_results, file, indent=4)
+        # with open('circuit.json', 'w') as file:
+        #     json.dump(gate_wire_results, file, indent=4)
 
         return gate_wire_results
+
 
 def main() -> None:
 
