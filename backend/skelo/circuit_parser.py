@@ -1,25 +1,15 @@
 """
 Controller file for circuit parsing used by Flask api.
 
-Direct run is only allowed for Debugging purposes, otherwise, 
-please use the backend API with testRun.py or frontend.
+For debugging purposes, please use the backend API with testRun.py or frontend.
 
 """
 
 from pathlib import Path
 from PIL import Image
-import sys
-import json
-try:
-    from skelo.inference import SketchLogic
-    from skelo.wires import detect_wires
-    from skelo.normalizer import *
-except:
-    print("Modular Imports Failed, trying to import directly...")
-    from inference import SketchLogic
-    from wires import detect_wires
-    from normalizer import *
-    print("Success")
+import sys, cv2
+from skelo.inference import SketchLogic
+from skelo.wires import wires_detection_system
 
 
 class CircuitParser():
@@ -43,9 +33,11 @@ class CircuitParser():
             file_path = "temp.jpg"
 
         # GET GATES INFO
-        gate_results = self.model.infer(file_path)
+        img = cv2.imread(file_path)
+        gate_results = self.model.infer(img=img)
         # GET WIRES INFO
-        gate_wire_results = detect_wires(file_path, gate_results)
+        gate_wire_results = wires_detection_system(raw_image=img, 
+                                                   detected_gates=gate_results)
 
         # Uncomment For Debugging Purposes
         # rendered_image.show()
@@ -53,23 +45,3 @@ class CircuitParser():
         #     json.dump(gate_wire_results, file, indent=4)
 
         return gate_wire_results
-
-
-def main() -> None:
-
-    if input("Direct run is only allowed for debugging purposes..."
-                "\nDo you wish to proceed? (y) ") not in ["Y", "y"]:
-        sys.exit(0)
-
-    engine = CircuitParser('skelo/SKELOv1.pt')
-    engine.load_model()
-    test_image_path = Path("example.jpg")
-
-    # Make sure the test image is present
-    if test_image_path.exists():
-        engine.parse_circuit(str(test_image_path))
-    else:
-        print("Test image not found")
-
-if __name__ == "__main__":
-    main()
