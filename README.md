@@ -156,17 +156,13 @@ Open `localhost:5173` on your browser to interact with the frontend.
 
 - Bug reports, suggestions, and PRs are absolutely WELCOME!
 
-- See `CONTRIBUTING.md` for more details.
-
 - If you would like to collaborate, please contact the owner using the information provided in the [Contact](#contact) section.
-
-- For security issues, see `SECURITY.md`.
 
 ---
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+This code is Proprietary and Confidential. See `LICENSE` for more information.
 
 ---
 
