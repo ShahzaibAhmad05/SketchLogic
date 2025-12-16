@@ -72,29 +72,6 @@ def filter_white_pixels(binary_image):
     return white_pixels
 
 
-def draw_annotations(image, points=None, rectangles=None, lines=None, output_path="output.jpg"):
-    img_copy = image.copy()
-
-    # Draw points (small red circles)
-    if points:
-        for (x, y) in points:
-            cv2.circle(img_copy, (int(x), int(y)), radius=3, color=(0, 0, 255), thickness=-1)
-    # Draw rectangles (green)
-    if rectangles:
-        for rect in rectangles:
-            x1, y1 = int(rect['x']), int(rect['y'])
-            x2, y2 = x1 + int(rect['width']), y1 + int(rect['height'])
-            cv2.rectangle(img_copy, (x1, y1), (x2, y2), color=(0, 255, 0), thickness=2)
-    # Draw lines (blue)
-    if lines:
-        for (pt1, pt2) in lines:
-            x1, y1 = map(int, pt1)
-            x2, y2 = map(int, pt2)
-            cv2.line(img_copy, (x1, y1), (x2, y2), color=(255, 0, 0), thickness=2)
-    # Save result
-    cv2.imwrite(output_path, img_copy)
-
-
 def filter_close_pixels(pixels, threshold=10):
     filtered = []
     for p in pixels:
@@ -336,7 +313,7 @@ def set_gate_rotations(gates):
     return gates
 
 
-def wires_detection_system(raw_image: np.ndarray, detected_gates, plot_images=False) -> dict:
+def wires_detection_system(raw_image: np.ndarray, detected_gates) -> dict:
     # PREPARE IMAGE
     image = binarize_and_skeletonize(raw_image)
     image = blacken_gate_boxes(image, detected_gates)
@@ -361,9 +338,5 @@ def wires_detection_system(raw_image: np.ndarray, detected_gates, plot_images=Fa
     for _, points in wires.items():
         for point in points:
             collected_points.append(point)
-
-    if plot_images:
-        draw_annotations(raw_image, points=collected_points, rectangles=detected_gates, 
-                        output_path="z_output.jpg")
     
     return results
