@@ -11,12 +11,14 @@ import uuid
 import math
 from scipy.spatial import cKDTree
 
+
 def change_resolution(image, scale):
     width = int(image.shape[1] * scale)
     height = int(image.shape[0] * scale)
     resized = cv2.resize(image, (width, height), interpolation=cv2.INTER_AREA)
 
     return resized
+
 
 def binarize_and_skeletonize(image):
     # Step 1: Load image to grey
@@ -30,6 +32,7 @@ def binarize_and_skeletonize(image):
 
     return skeleton_image
 
+
 def blacken_gate_boxes(image, gates, scale=1.0):
     for gate in gates:
         x = int(gate['x'] * scale)
@@ -40,6 +43,7 @@ def blacken_gate_boxes(image, gates, scale=1.0):
         image[y:y+h, x:x+w] = 0  # Set region to black
 
     return image
+
 
 def point_distance_to_box(point, bbox) -> int:
     px, py = point
@@ -61,10 +65,12 @@ def point_distance_to_box(point, bbox) -> int:
     # Return nearest distance
     return int(round(math.hypot(dx, dy)))
 
+
 def filter_white_pixels(binary_image):
     y_coords, x_coords = np.where(binary_image == 255)
     white_pixels = [(int(x), int(y)) for x, y in zip(x_coords, y_coords)]
     return white_pixels
+
 
 def draw_annotations(image, points=None, rectangles=None, lines=None, output_path="output.jpg"):
     img_copy = image.copy()
@@ -88,6 +94,7 @@ def draw_annotations(image, points=None, rectangles=None, lines=None, output_pat
     # Save result
     cv2.imwrite(output_path, img_copy)
 
+
 def filter_close_pixels(pixels, threshold=10):
     filtered = []
     for p in pixels:
@@ -99,9 +106,11 @@ def filter_close_pixels(pixels, threshold=10):
 
     return filtered
 
+
 def distance(p1, p2):
     """Calculate Euclidean distance between two 2D points."""
     return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
 
 def get_gate_connections(gates, pixels, terminal_threshold=5):
     for gate in gates:
@@ -115,6 +124,7 @@ def get_gate_connections(gates, pixels, terminal_threshold=5):
         gate['connected_pixels'] = connected_pixels
     return gates
 
+
 def average_of_pixels(pixels):
     average = [0, 0]
 
@@ -125,6 +135,7 @@ def average_of_pixels(pixels):
     average[1] = int(average[1] / len(pixels))
     average = (average[0], average[1])
     return average
+
 
 def get_connections_info(gates, pixels, vision_threshold=10, max_points_skip=5):
     # Initialize k-d tree for fast spatial queries
@@ -199,6 +210,7 @@ def get_connections_info(gates, pixels, vision_threshold=10, max_points_skip=5):
     #         print(cluster)
     return gates
 
+
 def set_input_output_info(gates, inputs_gap_threshold=100, debug=False):
     # Check which terminals are close to each other
     # Do this for each gate
@@ -265,9 +277,6 @@ def set_input_output_info(gates, inputs_gap_threshold=100, debug=False):
     return gates
 
 def process_wires(gates):
-    built_wires = []
-    gate_connected_wires = []
-
     wires = []
     for gate in gates:
         gate['connected_wires'] = []    # This is useful later
@@ -319,45 +328,6 @@ def process_wires(gates):
     return returning_wires
 
 
-def add_toggles_probes(prev_results) -> dict:
-    probes_to_add = set()
-    toggles_to_add = set()
-
-    for gate in prev_results['gates']:
-        for idx, connection in enumerate(gate['connections']):
-            if connection[-1] == 'null':
-
-                if connection[1] == 'input': 
-                    connection[-1] = 'probe'
-
-                    for wire in prev_results['wires'].keys():
-                        if wire == gate['connected_wires'][idx]:
-                            points_to_add = (prev_results['wires'][wire][-2], prev_results['wires'][wire][-1])
-                            probes_to_add.add(points_to_add)
-                            break
-
-                elif connection[1] == 'output': 
-                    connection[-1] = 'toggle'
-
-                    for wire in prev_results['wires'].keys():
-                        if wire == gate['connected_wires'][idx]:
-                            points_to_add = (prev_results['wires'][wire][-2], prev_results['wires'][wire][-1])
-                            toggles_to_add.add(points_to_add)
-                            break
-
-    prev_results['probes'] = []
-    prev_results['toggles'] = []
-    for probe in probes_to_add:
-        prev_results['probes'].append(probe)
-    for toggle in toggles_to_add:
-        prev_results['toggles'].append(toggle)
-
-    # Cleanup
-    for gate in prev_results['gates']:
-        if gate.get('connections') is not None:
-            del gate['connections']
-    return prev_results
-
 def set_gate_rotations(gates):
     for gate in gates:
         gate_type = gate['type'].split('_')
@@ -365,9 +335,9 @@ def set_gate_rotations(gates):
         gate['rotation'] = int(gate_type[-1])
     return gates
 
-def wires_detection_system(image_path, detected_gates, plot_images=False) -> dict:
+
+def wires_detection_system(raw_image: np.ndarray, detected_gates, plot_images=False) -> dict:
     # PREPARE IMAGE
-    raw_image = cv2.imread(image_path)
     image = binarize_and_skeletonize(raw_image)
     image = blacken_gate_boxes(image, detected_gates)
     # GET WANTED PIXELS
@@ -397,18 +367,3 @@ def wires_detection_system(image_path, detected_gates, plot_images=False) -> dic
                         output_path="z_output.jpg")
     
     return results
-
-
-def detect_wires(image_path, gate_results: dict) -> dict:
-    results = wires_detection_system(image_path, gate_results)
-    # results = normalize_output(results)
-    return results
-
-def main() -> None:
-    """ Test Driver """
-    image_path = "example.jpg"
-    gate_results = detect_wires(image_path, gate_results={})
-    detect_wires(image_path, gate_results)
-
-if __name__ == "__main__":
-    main()
