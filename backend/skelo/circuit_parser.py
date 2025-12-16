@@ -1,25 +1,15 @@
 """
 Controller file for circuit parsing used by Flask api.
 
-Direct run is only allowed for Debugging purposes, otherwise, 
-please use the backend API with testRun.py or frontend.
+For debugging purposes, please use the backend API with testRun.py or frontend.
 
 """
 
 from pathlib import Path
 from PIL import Image
 import sys
-import json
-try:
-    from skelo.inference import SketchLogic
-    from skelo.wires import detect_wires
-    from skelo.normalizer import *
-except:
-    print("Modular Imports Failed, trying to import directly...")
-    from inference import SketchLogic
-    from wires import detect_wires
-    from normalizer import *
-    print("Success")
+from skelo.inference import SketchLogic
+from skelo.wires import detect_wires
 
 
 class CircuitParser():
