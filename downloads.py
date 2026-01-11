@@ -9,11 +9,6 @@ Please install the requirements file before opting to run this file.
 from pathlib import Path
 import os, sys
 
-# Check if this is run from the correct dir
-if not os.getcwd().endswith("backend"):
-    print("Please run this script from backend dir.")
-    sys.exit(1)
-
 # This package might not be present
 try: import gdown
 except Exception: 
@@ -106,7 +101,7 @@ if __name__ == "__main__":
     for key, val in assets.items():
         try:
             if noconfirm or input(f"Download {key}? (y) ") in ["y", "Y"]:
-                fetch_from_gdrive(url=val, out_dir=".", out_file_name=key)
+                fetch_from_gdrive(url=val, out_dir=Path("."), out_file_name=key)
         except:
             print("[ERROR] Could not download project assets")
             print("Please check your internet and try again.")

@@ -22,6 +22,7 @@ venv/
 frontend/.env*
 .env
 .env.local
+circuit.json
 
 build/
 dist/
