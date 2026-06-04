@@ -1,172 +1,48 @@
-# Circuit Metadata Detector
+# Image to Simulation Converter for Basic Logic Circuits
 
-<img
-  src="https://drive.google.com/uc?export=view&id=1ZD5lsfOeOi-xSQmtKoMcgPF3g8Xy_MFE"
-  alt="SketchLogic Banner"
-  width="500"
-/>
+A sketch to simulation converter for logic circuits built through a lightweight and portable YOLO model and connection analysis algorithms.
 
-SketchLogic is a Circuit Metadata Detector that can detect logic gates, rotations, and wires from hand-drawn circuit sketches, export results as structured JSON and render a clean visualization.
+It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper as input.
 
-It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper as input. (no lines on the paper)
-
-**Contributions are Welcome!**
 
 ---
 
-## Project Structure
 
-````
-SketchLogic
-├─ backend/
-│  ├─ skelo/
-│  │  ├─ __init__.py
-│  │  ├─ circuit_parser.py
-│  │  ├─ draw.py
-│  │  ├─ inference.py
-│  │  ├─ label.py
-│  │  ├─ normalizer.py
-│  │  ├─ SKELOv1.pt
-│  │  └─ wires.py
-│  ├─ app.py
-│  ├─ downloads.py
-│  ├─ README.md
-│  └─ requirements.txt
-├─ frontend/
-│  ├─ public/
-│  │  └─ vite.svg
-│  ├─ src/
-│  │  ├─ assets/
-│  │  │  └─ react.svg
-│  │  ├─ api.ts
-│  │  ├─ App.css
-│  │  ├─ App.tsx
-│  │  ├─ index.css
-│  │  ├─ main.tsx
-│  │  └─ vite-env.d.ts
-│  ├─ eslint.config.js
-│  ├─ index.html
-│  ├─ postcss.config.js
-│  ├─ README.md
-│  ├─ tailwind.config.js
-│  └─ vite.config.ts
-├─ CODE_OF_CONDUCT.md
-├─ CONTRIBUTING.md
-├─ LICENSE
-├─ prerequisites.py
-├─ README.md
-├─ SECURITY.md
-└─ testRun.py
-````
+## ML Model for Detecting Logic Gates
 
----
+The scripts in `models/` can be used to train a computer vision model that is capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation in an image. (using OBB)
 
-## Development & Testing
 
-### System Requirements:
+### YOLOv8 nano as a Starter
 
-- Python 3.9 or Higher -> <a href="https://www.python.org/downloads/" target="_blank">Download here</a>
-- Node.js version 18 or Higher (includes npm) -> <a href="https://nodejs.org/en/download/" target="_blank">Download here</a>
-- MacOS, Linux, or Windows
+YOLO is super lightweight and easy to fine-tune. The ultralytics library provides us with tooling to load, fine-tune, and export YOLO models which are pre-trained on the COCO dataset (80 classes). We fine-tune from this checkpoint to our logic gates detector in this script.
 
-**Note:** The term *root directory* refers to the main directory of the project. In this case, it would be the folder "*SketchLogic*".
+Configuration for the model can be found in `model/training_script.py`.
 
-### Backend Setup:
 
-- Refer to [backend/README.md](https://github.com/ShahzaibAhmad05/SketchLogic/blob/main/backend/README.md) for instructions on setting up the backend.
+### Farming GPUs from Kaggle 
 
-### Usage:
+Kaggle provides us with enough GPU support for running this script. Although there are other options available too, but [Kaggle](https://www.kaggle.com/) is currently offering more flexibility than any other GPU providers. (since we are working for free)
 
-For this you’ll need your terminal open in the root directory:
+With that said, the dataset is also uploaded to Kaggle. This will make our work significantly easier long-term.
 
-- In the terminal, start the backend (Flask API):
 
-```bash
-cd backend
-python app.py
+### Dataset Collection & Annotation
+
+The dataset consists of publicily available logic circuit images and some other datasets that had an MIT License, and no requirements for citations, so it is legal.
+
+For annotation, we have used [X-AnyLabelling]() which is a free and open-source tool. The dataset can be downloaded from [here](). Consider infering information about the dataset from `config.yaml`.
+
+IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com/CVHub520/X-AnyLabeling#citing):
+
+```js
+@misc{X-AnyLabeling,
+  year = {2023},
+  author = {Wei Wang},
+  publisher = {Github},
+  organization = {CVHub},
+  journal = {Github repository},
+  title = {Advanced Auto Labeling Solution with Added Features},
+  howpublished = {\url{https://github.com/CVHub520/X-AnyLabeling}}
+}
 ```
-
-### Testing:
-
-Open another terminal in the root directory, and enter:
-
-````
-python testRun.py
-````
-
-Feel free to edit the test run script to try out the backend api.
-
-<br>
-
-<img
-  src="https://drive.google.com/uc?export=view&id=1a7QAICEi8O-BeXW93BRRvke0Alu2M7RW"
-  alt="Image"
-/>
-
-### Frontend Setup:
-
-- Refer to [frontend/README.md](https://github.com/ShahzaibAhmad05/SketchLogic/blob/main/frontend/README.md) for instructions on setting up the frontend.
-
-### Usage:
-
-For this you’ll need your terminal open in the root directory:
-
-- In the terminal, start the frontend (using npm):
-
-```bash
-cd frontend
-npm run dev
-```
-
-### Testing:
-
-For this, make sure the backend is already running on `localhost:5000` by using the `testRun.py` script.
-
-Open `localhost:5173` on your browser to interact with the frontend.
-
-<br>
-
-<img
-  src="https://drive.google.com/uc?export=view&id=1PdzPCUk-wtRykdIT4UhUo3hRslEnPjDy"
-  alt="Image"
-/>
-
-## Key Features
-
-- Detect **logic gates** from sketches  
-  _Supported:_ AND, OR, NOT, NAND, NOR, XOR, XNOR
-- Detect **gate rotation** (0°, 90°, 180°, 270°)
-- Detect **wires** and return them as ordered XY polylines
-- Export **all components with coordinates** in structured JSON
-- Visualize the **reconstructed circuit**
-- Accuracy: **>80% accuracy** on the above criteria
-
----
-
-## Components
-
-- Custom YOLO model named **SKELO** used for gates detection
-- Wire Detection Algorithms for detecting wires
-- Backend API
-- React Frontend
-
----
-
-## Contributing
-
-- Bug reports, suggestions, and PRs are absolutely WELCOME!
-
-- If you would like to collaborate, please contact the owner using the information provided in the [Contact](#contact) section.
-
----
-
-## License
-
-This code is Proprietary and Confidential. See `LICENSE` for more information.
-
----
-
-## Contact
-
-- **LinkedIn:** [ShahzaibAhmad05](https://www.linkedin.com/in/shahzaibahmad05)
-- **Email:** [shahzaibahmad6789@gmail.com](mailto:shahzaibahmad6789@gmail.com)
