@@ -1,0 +1,12 @@
+path: SketchLogic\model\data
+train: images/train
+val: images/val
+nc: 7
+names:
+- AND
+- OR
+- NOT
+- NAND
+- NOR
+- XOR
+- XNOR
