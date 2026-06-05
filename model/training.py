@@ -14,6 +14,9 @@ def main():
         plots=True
     )
 
+    best = YOLO("runs/train/run/weights/best.pt")
+    best.export(format="onnx")
+
 
 if __name__ == "__main__":
     main()
