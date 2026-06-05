@@ -2,10 +2,25 @@
 
 A sketch to simulation converter for logic circuits built through a lightweight and portable YOLO model and connection analysis algorithms.
 
-It takes scanned jpg images of one (or more) Handdrawn circuits on a plain paper as input.
+It takes scanned jpg images of Handdrawn circuits on a plain paper as input.
 
 
 ---
+
+
+## Open-Source usage of this project
+
+This project comes with `MIT LICENSE`. See [LICENSE]() file for more details.
+
+This system can be integrated in any circuit simulation software. It mainly has two parts:
+
+- ML Model
+
+This can be either compiled with all the python dependencies into an executable, or used directly inside your app's technical stack (if applicable). Refer to the inference script to figure out what this model outputs.
+
+- Connector System
+
+This is purely python. A feasible option here is to compile it to `.exe` and run it via command-line args. OR a bitter approach would be to translate the entire system into your app's language.
 
 
 ## ML Model for Detecting Logic Gates
@@ -46,3 +61,18 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
   howpublished = {\url{https://github.com/CVHub520/X-AnyLabeling}}
 }
 ```
+
+<summary>
+  <details>How to re-Train the model yourself</details>
+
+- Get the dataset from [here]()
+- 
+
+</summary>
+
+
+---
+
+
+## Connector for Detecting Circuit Connections
+
