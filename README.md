@@ -76,7 +76,7 @@ The model was last trained 05/06/2026 for ~4 hours on Kaggle. The Jupyter notebo
 ---
 
 
-## Connector for Detecting Circuit Connections
+## Connector for Circuit Connections
 
 
 
