@@ -11,6 +11,13 @@ results.json
 temp.jpg
 example.jpg
 # frontend/src/assets/banner.jpg
+*.json
+.vscode/
+model/data/images/
+model/data/labels/
+model/runs/
+X-AnyLabeling/
+**/*.zip
 
 frontend/node_modules/
 frontend/dist/
