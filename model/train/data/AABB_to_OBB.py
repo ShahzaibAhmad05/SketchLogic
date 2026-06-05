@@ -114,8 +114,8 @@ def convert_points(x: float, y: float, w: float, h: float, rotation_angle: int) 
 
 def main():
     paths = [
-        Path("./data/labels/train"),
-        Path("./data/labels/val")
+        Path("./labels/train"),
+        Path("./labels/val")
     ]
 
     for path in paths:
