@@ -1,8 +1,9 @@
 from pathlib import Path
 from ultralytics.models import YOLO
+import json
 
 
-def infer(image_path: Path) -> list:
+def infer(image_path: Path, output_path: Path) -> None:
     """
     Does inference on a single image file.
 
@@ -19,4 +20,5 @@ def infer(image_path: Path) -> list:
     model = YOLO(model_path)
     results = model.predict(image_path)
 
-    return results
+    with open(output_path / "results.json", "w") as file:
+        json.dump(results, file, indent=4)
