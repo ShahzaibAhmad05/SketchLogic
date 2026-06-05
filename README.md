@@ -12,7 +12,7 @@ It takes scanned jpg images of Handdrawn circuits on a plain paper as input.
 
 This project comes with `MIT LICENSE`. See [LICENSE]() file for more details.
 
-This system can be integrated in any circuit simulation software. It mainly has two parts:
+This system can be integrated in any circuit simulation software. For setup details, refer to the [Developer Setup](#developer-setup). It mainly has two parts:
 
 - ML Model
 
@@ -21,6 +21,9 @@ This can be either compiled with all the python dependencies into an executable,
 - Connector System
 
 This is purely python. A feasible option here is to compile it to `.exe` and run it via command-line args. OR a bitter approach would be to translate the entire system into your app's language.
+
+
+---
 
 
 ## ML Model for Detecting Logic Gates
@@ -62,13 +65,12 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 }
 ```
 
-<summary>
-  <details>How to re-Train the model yourself</details>
 
-- Get the dataset from [here]()
-- 
+### Last Training Session
 
-</summary>
+The model was last trained 05/06/2026 for ~4 hours on Kaggle. The Jupyter notebook can be viewed [here](). 
+
+<img />
 
 
 ---
@@ -76,3 +78,51 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 
 ## Connector for Detecting Circuit Connections
 
+
+
+
+---
+
+
+## Developer Setup
+
+- Clone the repository:
+
+```bash
+git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
+```
+
+- Download a [sample image]() and the [model weights](). Put them in these paths:
+
+```bash
+./Sketchlogic/model/SketchLogic.pt
+./Sketchlogic/temp.jpg
+```
+
+- Install requirements for python (make sure you have 3.11 or just configure it in venv):
+
+```bash
+pip install -r requirements.txt
+```
+
+- Run the model to generate inference for the image:
+
+```bash
+python -m model temp.jpg output.json
+```
+
+- Run the connector to generate wires and output the circuit:
+
+```bash
+python -m connector temp.jpg output.json circuit.json
+```
+
+
+---
+
+
+## What to do with the output json file?
+
+The last step we did in [Developer Setup]() gave us a circuit.json file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
+
+We are also working on making multiple converters for this format so it can be loaded into [proteus], [Logisim] and other circuit simulation software.
