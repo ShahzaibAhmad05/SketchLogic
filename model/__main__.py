@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import json
 
 
 def main() -> int:
@@ -24,7 +25,10 @@ def main() -> int:
         return -1
     
     from inference import infer
-    infer(image_path, output_json_path)
+    results = infer(image_path)
+
+    with open(output_json_path, "w") as file:
+        json.dump(results, file, indent=4)
 
     return 0
 
