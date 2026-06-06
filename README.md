@@ -80,6 +80,8 @@ The model was last trained 05/06/2026 for approximately 6.35 hours on Kaggle. Th
 
 <img src="https://drive.google.com/uc?export=view&id=1StQvNYJ5S1Dl0IWmfrYiu6ashUvirEdj" />
 <br />
+According to the confusion matrix bellow, the OR, NOR, XOR, XNOR (OR family) gates are continuously being missed by the model as background. We might want to work to fix this later on if we go with doing a dataset remake.
+<br />
 <img src="https://drive.google.com/uc?export=view&id=1WCEGoeG9l2GPmJ9VMFqHr0pfoJkYgEgk" />
 
 
