@@ -1,4 +1,4 @@
-# Image to Simulation Converter for Basic Logic Circuits
+# Sketch to Simulation Converter for Logic Circuits
 
 A sketch to simulation converter for logic circuits built through a lightweight and portable YOLO model and connection analysis algorithms.
 
@@ -30,12 +30,14 @@ This is purely python. A feasible option here is to compile it to `.exe` and run
 
 The scripts in `models/` can be used to train a computer vision model that is capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation in an image. (using OBB)
 
+**IMPORTANT:** One critical limitation with OBB (Oriented Bounding Box) is that it is only able to detect if the gate is horizontal or vertical. The exact angle has to be figured out by the `connector` module.
+
 
 ### YOLOv8 nano as a Starter
 
 YOLO is super lightweight and easy to fine-tune. The ultralytics library provides us with tooling to load, fine-tune, and export YOLO models which are pre-trained on the COCO dataset (80 classes). We fine-tune from this checkpoint to our logic gates detector in this script.
 
-Configuration for the model can be found in `model/training_script.py`.
+Configuration for the model can be found in `model/training_script.py`. 
 
 
 ### Farming GPUs from Kaggle 
@@ -68,10 +70,34 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 
 ### Last Training Session
 
-The model was last trained 05/06/2026 for ~4 hours on Kaggle. The Jupyter notebook can be viewed [here](). 
+The model was last trained 05/06/2026 for approximately 6.35 hours on Kaggle. The Jupyter notebook can be viewed [here](https://www.kaggle.com/code/shahzaibahmad05/sketchlogic-training-notebook). 
 
-<img />
 
+| epoch | time | train/box_loss | train/cls_loss | train/dfl_loss | train/angle_loss | precision | recall | mAP50 | mAP50-95 | val/box_loss | val/cls_loss | val/dfl_loss | val/angle_loss |
+|-------|------|----------------|----------------|----------------|------------------|-----------|--------|-------|----------|--------------|--------------|--------------|----------------|
+| 100 | 19931.4s | 0.394 | 0.299 | 1.047 | 0.004 | 0.993 | 0.988 | 0.995 | 0.892 | 0.510 | 0.428 | 0.677 | 0.002 |
+
+
+<img src="https://drive.google.com/uc?export=view&id=1StQvNYJ5S1Dl0IWmfrYiu6ashUvirEdj" />
+<br />
+<img src="https://drive.google.com/uc?export=view&id=1WCEGoeG9l2GPmJ9VMFqHr0pfoJkYgEgk" />
+
+
+### Model (module) Output format
+
+`model/` module in the repository as run by `python -m module` has this output format:
+
+```json
+{
+    "$id": 1,
+    "$type": "AndGate",
+    "CenterX": 626,
+    "CenterY": 405,
+    "Width": 176,
+    "Height": 148,
+    "Rotation": 0,
+}
+```
 
 ---
 
@@ -92,7 +118,7 @@ The model was last trained 05/06/2026 for ~4 hours on Kaggle. The Jupyter notebo
 git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 ```
 
-- Download a [sample image]() and the [model weights](). Put them in these paths:
+- Download a [sample image](https://drive.google.com/file/d/1oM1hXelDe4CP7UINKykob-5esfnC-Yg9/view?usp=sharing) and the [model weights](https://drive.google.com/file/d/1JoGrqKjKqVrckpMn2kMGk8Dhp9zJWugv/view?usp=sharing). Put them in these paths:
 
 ```bash
 ./Sketchlogic/model/SketchLogic.pt
@@ -108,12 +134,14 @@ pip install -r requirements.txt
 - Run the model to generate inference for the image:
 
 ```bash
+# <input_image_path> <output_json_path>
 python -m model temp.jpg output.json
 ```
 
 - Run the connector to generate wires and output the circuit:
 
 ```bash
+# <input_image_path> <previous_output_path> <output_json_path>
 python -m connector temp.jpg output.json circuit.json
 ```
 
