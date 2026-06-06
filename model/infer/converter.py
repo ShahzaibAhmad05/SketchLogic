@@ -23,9 +23,7 @@ def convert_to_serializable_dict(results: list) -> list[dict]:
             "CenterY": result["CenterY"],
             "Width": result["Width"],
             "Height": result["Height"],
-            "Rotation": snap_rotation(result["Rotation"]),
-            "Input" if class_to_name(result["Class"]) == "NotGate" else "Inputs": [],
-            "Output": []
+            "Rotation": snap_rotation(result["Rotation"])
         })
 
         i += 1
