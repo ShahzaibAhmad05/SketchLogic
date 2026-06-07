@@ -1,26 +1,43 @@
-# Sketch to Simulation Converter for Logic Circuits
+# Sketch to Simulation System
 
-A sketch to simulation converter for logic circuits built through a lightweight and portable YOLO model and connection analysis algorithms.
+A sketch to simulation converter for logic circuits built through a lightweight and portable model (fine-tuned from YOLO) and connection analysis algorithms.
 
-It takes scanned jpg images of Handdrawn circuits on a plain paper as input.
+
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![Avalonia](https://img.shields.io/badge/Avalonia-8B45BF?style=for-the-badge&logo=avalonia&logoColor=white)
 
 
 ---
 
 
-## Open-Source usage of this project
+## Current Capabilities
 
-This project comes with `MIT LICENSE`. See [LICENSE]() file for more details.
+This system is able to detect circuits made of the 7 logic gates (AND, OR, NOT, NOR, NAND, XOR, XNOR). The wiring algorithms cannot work with T-Junctions (a wire crossing over another) in wires but that too would be added soon.
 
-This system can be integrated in any circuit simulation software. For setup details, refer to the [Developer Setup](#developer-setup). It mainly has two parts:
+An example of the system's output
 
-- ML Model
+<img />
 
-This can be either compiled with all the python dependencies into an executable, or used directly inside your app's technical stack (if applicable). Refer to the inference script to figure out what this model outputs.
+<br />
 
-- Connector System
+*Image Credits: [IRis - Circuit Simulator](https://github.com/d-khalid/IRis)*
 
-This is purely python. A feasible option here is to compile it to `.exe` and run it via command-line args. OR a bitter approach would be to translate the entire system into your app's language.
+
+---
+
+
+## Integration in any Circuit Simulation Engine
+
+This project comes with `GPL LICENSE`. See [LICENSE]() file for more details. Following that, this system can be integrated in any circuit simulation software. For setup details, refer to the [Developer Setup](#developer-setup). It mainly has two modules (explained in the sections bellow this one):
+
+- `model/`
+
+This can be either compiled with all the python dependencies into an executable, or used directly inside your app's technical stack (if applicable). Refer to the section bellow to checkout out the output format.
+
+- `connector/`
+
+Connector takes the output of `model` and converts it to a simulatable json format. This is purely python. A feasible option here is to compile it to `.exe` and run it via command-line args. OR a bitter approach would be to translate the entire system into the target app's language.
 
 
 ---
@@ -28,30 +45,30 @@ This is purely python. A feasible option here is to compile it to `.exe` and run
 
 ## ML Model for Detecting Logic Gates
 
-The scripts in `models/` can be used to train a computer vision model that is capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation in an image. (using OBB)
+Capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation (x4 classes) in an image.
 
-**IMPORTANT:** One critical limitation with OBB (Oriented Bounding Box) is that it is only able to detect if the gate is horizontal or vertical. The exact angle has to be figured out by the `connector` module.
+**IMPORTANT:** A debatable option is to use OBB (Oriented Bounding Box). That way we would have lesser number of input classes and easier `model.train()` configuration. But then the exact angle has to be figured out by the `connector` module which quickly becomes a pain.
 
 
 ### YOLOv8 nano as a Starter
 
-YOLO is super lightweight and easy to fine-tune. The ultralytics library provides us with tooling to load, fine-tune, and export YOLO models which are pre-trained on the COCO dataset (80 classes). We fine-tune from this checkpoint to our logic gates detector in this script.
+YOLO is super lightweight and easy to fine-tune. The ultralytics library has the tooling to load, fine-tune, and export YOLO models which are pre-trained on the COCO dataset (80 classes). We fine-tune our logic gates detector from this checkpoint.
 
-Configuration for the model can be found in `model/training_script.py`. 
+Configuration for the training can be found in `model/training_script.py`. 
 
 
 ### Farming GPUs from Kaggle 
 
 Kaggle provides us with enough GPU support for running this script. Although there are other options available too, but [Kaggle](https://www.kaggle.com/) is currently offering more flexibility than any other GPU providers. (since we are working for free)
 
-With that said, the dataset is also uploaded to Kaggle. This will make our work significantly easier long-term.
+With that said, the [dataset](https://www.kaggle.com/datasets/shahzaibahmad05/logic-gates-data) is also uploaded to Kaggle. This will make our work significantly easier long-term.
 
 
 ### Dataset Collection & Annotation
 
-The dataset consists of publicily available logic circuit images and some other datasets that had an MIT License, and no requirements for citations, so it is legal.
+The dataset consists of publicily available logic circuit images and some other datasets that had an MIT License and no requirements for citations, so it is legal.
 
-For annotation, we have used [X-AnyLabelling]() which is a free and open-source tool. The dataset can be downloaded from [here](). Consider infering information about the dataset from `config.yaml`.
+For annotation, we have used [X-AnyLabelling](https://github.com/cvhub520/x-anylabeling) which is a free and open-source tool. Consider infering information about the dataset from `model/train/data/config.yaml`.
 
 IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com/CVHub520/X-AnyLabeling#citing):
 
@@ -79,9 +96,11 @@ The model was last trained 05/06/2026 for approximately 6.35 hours on Kaggle. Th
 
 
 <img src="https://drive.google.com/uc?export=view&id=1StQvNYJ5S1Dl0IWmfrYiu6ashUvirEdj" />
-<br />
+
 According to the confusion matrix bellow, the OR, NOR, XOR, XNOR (OR family) gates are continuously being missed by the model as background. We might want to work to fix this later on if we go with doing a dataset remake.
+
 <br />
+
 <img src="https://drive.google.com/uc?export=view&id=1WCEGoeG9l2GPmJ9VMFqHr0pfoJkYgEgk" />
 
 
@@ -106,8 +125,23 @@ According to the confusion matrix bellow, the OR, NOR, XOR, XNOR (OR family) gat
 
 ## Connector for Circuit Connections
 
+The raw image is made to go through these modules where we extract the details of the logic circuit.
 
 
+### Image Processing
+
+`binarize()` - Removes rgb channels from the image, now we have a binary image with just two colors, 0 and 255. The default threshold is currently set to 127.
+
+`bridge_gaps()` - Fills any gaps in between wires in the image. Heals wires that previous image processing might have broken. 
+
+`skeletonize()` - Narrows the lines in the image. This significantly improves performance later on.
+
+`color_boxes()` - Fill the gates bounding boxes as defined by the model's prediction with some color to make them invisible against wires.
+
+
+### Wire Detection
+
+`detect_wires()` - The function `color_boxes()` allows us to produce an image where only wires remain. These wires can be grouped together as open contours
 
 ---
 
@@ -151,8 +185,8 @@ python -m connector temp.jpg output.json circuit.json
 ---
 
 
-## What to do with the output json file?
+## What to do Now?
 
-The last step we did in [Developer Setup]() gave us a circuit.json file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
+The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.json` file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
 
-We are also working on making multiple converters for this format so it can be loaded into [proteus], [Logisim] and other circuit simulation software.
+We are also working on making multiple converters for this format so it can be loaded into [Proteus](), [Logisim]() and other circuit simulation software.
