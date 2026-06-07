@@ -3,9 +3,9 @@
 A sketch to simulation converter for logic circuits built through a lightweight and portable model (fine-tuned from YOLO) and connection analysis algorithms.
 
 
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
-![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![Avalonia](https://img.shields.io/badge/Avalonia-8B45BF?style=for-the-badge&logo=avalonia&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![YOLO](https://img.shields.io/badge/YOLO-00FFFF?style=for-the-badge&logo=yolo&logoColor=black)
+![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 
 
 ---
@@ -29,7 +29,7 @@ An example of the system's output
 
 ## Integration in any Circuit Simulation Engine
 
-This project comes with `GPL LICENSE`. See [LICENSE]() file for more details. Following that, this system can be integrated in any circuit simulation software. For setup details, refer to the [Developer Setup](#developer-setup). It mainly has two modules (explained in the sections bellow this one):
+This project comes with `GPL-3.0 LICENSE`. See [LICENSE]() file for more details. Following that, this system can be integrated in any circuit simulation software. For setup details, refer to the [Developer Setup](#developer-setup). It mainly has two modules (explained in the sections bellow this one):
 
 - `model/`
 
@@ -87,7 +87,7 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 
 ### Last Training Session
 
-The model was last trained 05/06/2026 for approximately 6.35 hours on Kaggle. The Jupyter notebook can be viewed [here](https://www.kaggle.com/code/shahzaibahmad05/sketchlogic-training-notebook). 
+The model was last trained 05/06/2026 for approximately 6.35 hours on Kaggle. The Jupyter notebook can be viewed [here](https://www.kaggle.com/code/shahzaibahmad05/sketchlogic-training-notebook).
 
 
 | epoch | time | train/box_loss | train/cls_loss | train/dfl_loss | train/angle_loss | precision | recall | mAP50 | mAP50-95 | val/box_loss | val/cls_loss | val/dfl_loss | val/angle_loss |
