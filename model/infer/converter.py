@@ -20,7 +20,7 @@ def convert_to_serializable_dict(results: list) -> list[dict]:
         rotation = class_to_rotation(result["Class"])
 
         output.append({
-            "$id": i,
+            "$id": str(i),
             "$type": class_name,
             "CenterX": result["CenterX"],
             "CenterY": result["CenterY"],
