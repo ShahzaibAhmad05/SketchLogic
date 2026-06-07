@@ -2,7 +2,7 @@ from ultralytics.models import YOLO
 
 
 def main():
-    model = YOLO("yolov8n-obb.pt")
+    model = YOLO("yolov8n.pt")
     model.train(
         project="runs/train",
         name="run",
@@ -11,6 +11,7 @@ def main():
         imgsz=1024,
         optimizer="AdamW",
         cos_lr=True,
+        degrees=10,
         plots=True
     )
 

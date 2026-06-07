@@ -13,6 +13,9 @@ If the file has approximately this format:
 
 then it is likely in AABB format. OBB format stores all four corners of the bounding box.
 That approach reduces our number of classes four-fold.
+
+NOTE:
+This script is currently not being used as OBB format has been dropped for now.
 """
 
 from pathlib import Path

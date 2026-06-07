@@ -20,21 +20,20 @@ def infer(image_path: Path, model_path: Path) -> list:
     model = YOLO(model_path)
     results = model.predict(image_path)[0]
 
-    if results.obb is None:
+    if not results.boxes:
         return []
 
     output = []
-    for i in range(len(results.obb.cls)):
-        x, y, w, h, r = results.obb.xywhr[i].tolist()
+    for i in range(len(results.boxes.cls)):
+        x, y, w, h = results.boxes.xywh[i].tolist()
 
         output.append({
-            "Class": int(results.obb.cls[i]),
-            "Confidence": float(results.obb.conf[i]),
+            "Class": int(results.boxes.cls[i]),
+            "Confidence": float(results.boxes.conf[i]),
             "CenterX": int(x),
             "CenterY": int(y),
             "Width": int(w),
-            "Height": int(h),
-            "Rotation": int(math.degrees(r))
+            "Height": int(h)
         })
 
     return output

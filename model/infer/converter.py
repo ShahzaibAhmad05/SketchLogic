@@ -16,14 +16,17 @@ def convert_to_serializable_dict(results: list) -> list[dict]:
     output = []
 
     for result in results:
+        class_name = class_to_name(result["Class"])
+        rotation = class_to_rotation(result["Class"])
+
         output.append({
             "$id": i,
-            "$type": class_to_name(result["Class"]),
+            "$type": class_name,
             "CenterX": result["CenterX"],
             "CenterY": result["CenterY"],
             "Width": result["Width"],
             "Height": result["Height"],
-            "Rotation": snap_rotation(result["Rotation"])
+            "Rotation": rotation
         })
 
         i += 1
@@ -50,12 +53,18 @@ def class_to_name(class_id: int) -> str:
         4: "NorGate",
         5: "XorGate",
         6: "XnorGate",
-    }[class_id]
+    }[class_id // 4]
 
 
-def snap_rotation(rotation: int) -> int:
+def class_to_rotation(class_id: int) -> int:
     """
-    Snaps the given rotation to the nearest 0 or 90 degrees.
+    Converts a class ID to a rotation angle for the inference results.
+
+    Args:
+        class_id (int): The class ID
+
+    Returns:
+        int: The rotation angle
     """
 
-    return round(rotation / 90) * 90
+    return round(class_id % 4) * 90
