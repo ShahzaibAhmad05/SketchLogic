@@ -1,4 +1,5 @@
 import cv2
+import json
 import numpy
 from pathlib import Path
 
@@ -40,3 +41,12 @@ def save_image(image: numpy.ndarray, save_path: Path) -> None:
     """
 
     cv2.imwrite(str(save_path), image.astype(numpy.uint8))
+
+
+def save_json(to_save: list | dict, save_path: Path) -> None:
+    """
+    Saves the given data to a JSON file.
+    """
+
+    with open(save_path, "w") as file:
+        json.dump(to_save, file, indent=4)

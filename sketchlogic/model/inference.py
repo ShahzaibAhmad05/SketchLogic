@@ -2,7 +2,7 @@ from pathlib import Path
 from ultralytics.models import YOLO
 
 
-def run(image_path: Path, model_path: Path) -> list:
+def run(image_path: Path, model_path: Path) -> tuple[list, int]:
     """
     Does inference on a single image file.
 
@@ -11,7 +11,7 @@ def run(image_path: Path, model_path: Path) -> list:
         model_path (Path): Path to the model file
 
     Returns:
-        list: A list of dictionaries containing the inference results
+        tuple[list, int]: A tuple containing a list of dictionaries containing the inference results and the next ID
     """
 
     if not model_path.exists():
@@ -21,7 +21,7 @@ def run(image_path: Path, model_path: Path) -> list:
     results = model.predict(image_path)[0]
 
     if not results.boxes:
-        return []
+        return [], 1
 
     output = []
     next_id = 1
@@ -33,7 +33,7 @@ def run(image_path: Path, model_path: Path) -> list:
         class_name = class_to_name(class_id)
         rotation = class_to_rotation(class_id)
 
-        output.append({
+        gate = {
             "$id": str(next_id),
             "$type": class_name,
             "CenterX": int(x),
@@ -41,11 +41,27 @@ def run(image_path: Path, model_path: Path) -> list:
             "Width": int(w),
             "Height": int(h),
             "Rotation": rotation
-        })
-
+        }
         next_id += 1
 
-    return output
+        if class_name == "NotGate":
+            gate["Input"] = {
+                "$id": str(next_id),
+                "Type": "Input"
+            }
+            next_id += 1
+        else:
+            gate["Inputs"] = []
+
+        gate["Output"] = {
+            "$id": str(next_id),
+            "Type": "Output"
+        }
+        next_id += 1
+
+        output.append(gate)
+
+    return output, next_id
 
 
 def class_to_name(class_id: int) -> str:
