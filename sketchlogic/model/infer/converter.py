@@ -1,8 +1,4 @@
-from typing import Any
-import math
-
-
-def convert_to_serializable_dict(results: list) -> list[dict]:
+def convert_to_output(results: list) -> list[dict]:
     """
     Converts the given results to a serializable dictionary.
 

@@ -1,6 +1,5 @@
 from pathlib import Path
 from ultralytics.models import YOLO
-import math
 
 
 def infer(image_path: Path, model_path: Path) -> list:
