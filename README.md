@@ -125,7 +125,7 @@ According to the confusion matrix bellow, the OR, NOR, XOR, XNOR (OR family) gat
 
 ## Connector for Circuit Connections
 
-The raw image is made to go through these modules where we extract the details of the logic circuit.
+The raw image is made to go through these sub-modules where we extract the details of the logic circuit.
 
 
 ### Image Processing
@@ -141,7 +141,17 @@ The raw image is made to go through these modules where we extract the details o
 
 ### Wire Detection
 
-`detect_wires()` - The function `color_boxes()` allows us to produce an image where only wires remain. These wires can be grouped together as open contours
+`detect_wires()` - The function `color_boxes()` allows us to produce an image where only points that belong to wires remain which can be grouped together as open contours to form wires.
+
+`generate()` - Uses the contours (lists of points) to generate wires and add it to the results. Uses a control snapping_range to determine at runtime if the wire should attach to a gate based on it's perpendicular distance to the gate's input/output side.
+
+
+### Output Conversion
+
+`remove_entries_from_gates()` - Incompatible entries such as Width and Height are removed from the json. These have to be managed by the circuit simulator at runtime.
+
+`clear_wire_points()` - Wait, really?
+
 
 ---
 
