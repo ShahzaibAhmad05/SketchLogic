@@ -17,6 +17,7 @@ model/train/data/images/
 model/train/data/labels/
 model/runs/
 X-AnyLabeling/
+sketchlogic/model/train/data
 **/*.zip
 model/*.pt
 whatsapp_images/
@@ -26,6 +27,11 @@ frontend/dist/
 frontend/.vite/
 frontend/*.log
 *.onnx
+**/SketchLogic.pt
+*.pt
+output.png
+*.iris
+
 
 .venv/
 venv/
