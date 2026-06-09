@@ -62,7 +62,14 @@ def connect(wires: list, model_results: list, next_id: int, snapping_range: int)
                         })
                         next_id += 1
 
-    return wires, model_results, next_id
+    connected_wires = []
+    for wire in wires:
+        if wire["MainInput"] == {} and wire["MainOutput"] == {}:
+            continue
+
+        connected_wires.append(wire)
+
+    return connected_wires, model_results, next_id
 
 
 def _get_side(side: int, center_x: int, center_y: int, width: int, height: int, rotation: int) -> tuple:
