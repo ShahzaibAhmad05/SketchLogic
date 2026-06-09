@@ -37,9 +37,9 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
         straightness_tolerance=25
     )
 
-    wires, model_results, next_id = sketchlogic.connector.wiring.connector.connect(
+    next_id = sketchlogic.connector.wiring.connector.connect(
         wires, model_results, next_id, 
-        snapping_range=10
+        max_range=10, debug=debug
     )
 
     io_results, wires, next_id = io_generator.generate(
@@ -52,10 +52,10 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
         image = image_handler.draw_points(image, wires)
         image = image_handler.draw_boxes(image, model_results)
         image = image_handler.draw_boxes(image, io_results)
-        image_handler.save_image(image, Path("wiring_test.png"))
+        image_handler.save_image(image, Path("connector_test.png"))
 
         print()
-        print(f"Connector Results:")
+        print(f"sketchlogic.connector.controller:")
         print(f"Contours detected: {len(contours)}")
         print(f"Wires detected: {len(wires)}")
         print(f"IOs detected: {len(io_results)}")
