@@ -30,6 +30,10 @@ def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: li
         center_x = x + w / 2
         center_y = y + h / 2
 
+        # find the closest wire to this contour and attach to it
+        closest_wire = None
+        closest_distance = float('inf')
+
         for wire in wires:
             if wire["MainInput"] != {} and wire["MainOutput"] != {}:
                 continue
@@ -40,39 +44,47 @@ def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: li
             if point is None:
                 continue
 
-            io = {
+            dist = math.sqrt((center_x - point[0]) ** 2 + (center_y - point[1]) ** 2)
+            if dist < closest_distance:
+                closest_distance = dist
+                closest_wire = wire
+
+        if closest_wire is None:
+            continue
+
+        io = {
+            "$id": str(next_id),
+            "CenterX": int(center_x),
+            "CenterY": int(center_y),
+            "Width": 20,
+            "Height": 20,
+        }
+        next_id += 1
+
+        if closest_wire["MainInput"] == {}:
+            io["$type"] = "Toggle"
+            io["State"] = "Low"
+            io["Output"] = {
                 "$id": str(next_id),
-                "CenterX": int(point[0]),
-                "CenterY": int(point[1]),
-                "Width": 20,
-                "Height": 20,
+                "Type": "Output"
             }
+            closest_wire["MainInput"]["$ref"] = str(next_id)
             next_id += 1
 
-            if wire["MainInput"] == {}:
-                io["$type"] = "Toggle"
-                io["State"] = "Low"
-                io["Output"] = {
-                    "$id": str(next_id),
-                    "Type": "Output"
-                }
-                wire["MainInput"]["$ref"] = str(next_id)
-                next_id += 1
+            io["Rotation"] = _get_gate_rotation(closest_wire["MainOutput"]["$ref"], model_results)
 
-                io["Rotation"] = _get_gate_rotation(wire["MainOutput"]["$ref"], model_results)
+        elif closest_wire["MainOutput"] == {}:
+            io["$type"] = "Probe"
+            io["Input"] = {
+                "$id": str(next_id),
+                "Type": "Input"
+            }
+            closest_wire["MainOutput"]["$ref"] = str(next_id)
+            next_id += 1
 
-            elif wire["MainOutput"] == {}:
-                io["$type"] = "Probe"
-                io["Input"] = {
-                    "$id": str(next_id),
-                    "Type": "Input"
-                }
-                wire["MainOutput"]["$ref"] = str(next_id)
-                next_id += 1
+            io["Rotation"] = _get_gate_rotation(closest_wire["MainInput"]["$ref"], model_results)
 
-                io["Rotation"] = (_get_gate_rotation(wire["MainInput"]["$ref"], model_results) + 180) % 360
-
-            output.append(io)
+        output.append(io)
 
     return output, wires, next_id
 
@@ -110,22 +122,22 @@ def _bulkiness_test(contour: numpy.ndarray, min_bulkiness: float) -> bool:
     return w >= min_bulkiness and h >= min_bulkiness
 
 
-def _get_closest_point(center_x: int, center_y: int, points: list, tolerance: int) -> tuple[int, int] | None:
+def _get_closest_point(center_x: int, center_y: int, points: list, max_distance: int) -> tuple[int, int] | None:
     """
-    Checks if the contour is close enough to any of the set of points.
+    Gets the point that is closest to the given (center_x, center_y) and within max_distance.
     
     Args:
         center_x (int): Center x coordinate of the contour.
         center_y (int): Center y coordinate of the contour.
         points (list): Points to check for validation.
-        tolerance (int): Tolerance threshold.
+        max_distance (int): Maximum distance threshold.
 
     Returns:
-        bool: True if the contour is close enough to any of the set of points, False otherwise.
+        tuple[int, int] | None: The closest point or None if no point within range.
     """
 
     closest = min(points, key=lambda p: (center_x - p[0]) ** 2 + (center_y - p[1]) ** 2)
-    if math.sqrt((center_x - closest[0]) ** 2 + (center_y - closest[1]) ** 2) <= tolerance:
+    if math.sqrt((center_x - closest[0]) ** 2 + (center_y - closest[1]) ** 2) <= max_distance:
         return closest
 
     return None
