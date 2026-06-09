@@ -98,7 +98,7 @@ def connect(wires: list, model_results: list, next_id: int, max_range: int, debu
     for gate in results_to_remove:
         model_results.remove(gate)
 
-    if debug and (results_to_remove or wires_to_remove):
+    if debug:
         print()
         print(f"sketchlogic.connector.wiring.connector:")
         print(f"{total_wires} wires attempted to connect to {total_results} components")
