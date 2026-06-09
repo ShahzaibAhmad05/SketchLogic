@@ -23,7 +23,7 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
     """
 
     image = image_handler.load_image(input_image_path)
-    image = image_handler.binarize(image)
+    image = image_handler.binarize(image, offset=100, debug=debug)
     image = image_handler.bridge_gaps(image, max_gap_size=10)
     image = image_handler.skeletonize(image)
 

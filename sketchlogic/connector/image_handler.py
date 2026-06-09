@@ -8,15 +8,28 @@ from skimage.morphology import skeletonize as skimage_skeletonize
 from pathlib import Path
 
 
-def binarize(image: numpy.ndarray) -> numpy.ndarray:
+def binarize(image: numpy.ndarray, offset: int, debug: bool = False) -> numpy.ndarray:
     """
     Binarizes the image.
 
     Args:
         image (numpy.ndarray): The image to binarize.
+        offset (int): The offset to add to the threshold. Pixels bellow threshold are left white.
+
+    Returns:
+        numpy.ndarray: The binarized image.
     """
 
-    _, binary = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY_INV)
+    darkest = int(numpy.min(image))
+    threshold = darkest + offset
+
+    if debug:
+        print()
+        print(f"sketchlogic.connector.image_handler:")
+        print(f"Darkest pixel: {darkest}")
+        print(f"Threshold: {threshold}")
+
+    _, binary = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY_INV)
     return binary
 
 
