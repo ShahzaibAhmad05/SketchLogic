@@ -23,6 +23,7 @@ model/*.pt
 whatsapp_images/
 **/*test.png
 **/*test.json
+images/
 
 frontend/node_modules/
 frontend/dist/
