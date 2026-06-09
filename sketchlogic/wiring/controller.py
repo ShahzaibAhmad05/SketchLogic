@@ -6,7 +6,7 @@ import sketchlogic.wiring.io as io
 import sketchlogic.wiring.wire_connector as wire_connector
 
 
-def run(input_image_path: Path, model_results: list, next_id: int) -> tuple[list, list, list, int]:
+def run(input_image_path: Path, model_results: list, next_id: int, debug: bool = False) -> tuple[list, list, list, int]:
     """
     Controller for the wiring module. This adds wiring to the model results.
 
@@ -33,28 +33,27 @@ def run(input_image_path: Path, model_results: list, next_id: int) -> tuple[list
 
     wires, next_id = wiring.generate(
         contours, next_id, 
-        optional_min_length=100, 
-        strict_min_length=30, 
-        straightness_tolerance=15
+        optional_min_side=200, 
+        strict_min_side=30, 
+        straightness_tolerance=25
     )
     wires, model_results, next_id = wire_connector.connect(wires, model_results, next_id, snapping_range=10)
 
     io_results, wires, next_id = io.generate(
         contours, wires, model_results, 
         next_id, min_bulkiness=20, 
-        snapping_range=100
+        snapping_range=150
     )
 
     # model_results, next_id = wiring.generate(wires, model_results, next_id, snapping_range=30)
     # model_results = converter.remove_entries_from_gates(model_results, ["Width", "Height"])
     # model_results = converter.clear_wire_points(model_results)
 
-
-    image = image_handler.draw_points(image, wires)
-    image = image_handler.draw_boxes(image, model_results)
-    image = image_handler.draw_boxes(image, io_results)
-
-    image_handler.save_image(image, Path("output.png"))
+    if debug:
+        image = image_handler.draw_points(image, wires)
+        image = image_handler.draw_boxes(image, model_results)
+        image = image_handler.draw_boxes(image, io_results)
+        image_handler.save_image(image, Path("wiring_test.png"))
 
 
     return model_results, wires, io_results, next_id
