@@ -6,8 +6,8 @@ import numpy
 def generate(
     contours: list[numpy.ndarray], 
     next_id: int, 
-    optional_min_length: int, 
-    strict_min_length: int,
+    optional_min_side: int, 
+    strict_min_side: int,
     straightness_tolerance: float
 ) -> tuple[list, int]:
     """
@@ -15,8 +15,8 @@ def generate(
 
     Args:
         contours (list[numpy.ndarray]): The contours to filter.
-        optional_min_length (int): The minimum length of the wire.
-        strict_min_length (int): The strict minimum length of the wire.
+        optional_min_side (int): Allows for contours that are larger than this.
+        strict_min_side (int): The strict minimum length of the wire.
         straightness_tolerance (float): The straightness tolerance of the wire.
 
     Returns:
@@ -26,8 +26,8 @@ def generate(
 
     output = []
     for contour in contours:
-        if not _has_minimum_side(contour, optional_min_length):
-            if (not _has_minimum_side(contour, strict_min_length) or 
+        if not _has_minimum_side(contour, optional_min_side):
+            if (not _has_minimum_side(contour, strict_min_side) or 
                 not _straightness_test(contour, straightness_tolerance)):
                 continue
         
