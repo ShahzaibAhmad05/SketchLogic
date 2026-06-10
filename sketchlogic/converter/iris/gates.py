@@ -7,12 +7,12 @@ def convert(model_results: list) -> None:
         gate["Rotation"] = float(gate["Rotation"])
 
         if gate["$type"] == "NotGate":
-            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 830)) - 20
-            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 800)) - 20
+            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"]), 830)) - 20
+            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"]), 800)) - 20
         else:
             multiplier = len(gate["Inputs"])
-            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 830)) - (multiplier * 20)
-            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 800)) - (multiplier * 20)
+            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"]), 830)) - (multiplier * 20)
+            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"]), 800)) - (multiplier * 20)
 
         gate["X"] = float(gate["X"])
         gate["Y"] = float(gate["Y"])
@@ -31,7 +31,7 @@ def _snap_to_grid(x: int | float) -> float:
     return round(x / 10) * 10
 
 
-def _scale(x: float, multiplier: float) -> float:
+def _scale(x: float, multiplier: float = 0.3) -> float:
     """
     Scales a value by a multiplier.
     """

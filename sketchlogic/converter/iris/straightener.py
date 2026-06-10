@@ -44,6 +44,11 @@ def refresh_component_pins(component: dict, fixed_pins: list, wires: list, compo
             attached_wire = _get_co_with_pin_ref(self_pin_ref, wires)
             attached_wires.append(attached_wire)
 
+            if not attached_wire:
+                attached_pin_refs.append(None)
+                attached_ios.append(None)
+                continue
+
             if attached_wire["MainInput"]["$ref"] == self_pin_ref:
                 attached_pin_refs.append(attached_wire["MainOutput"]["$ref"])
                 attached_ios.append(_get_co_with_pin_ref(attached_wire["MainOutput"]["$ref"], io))

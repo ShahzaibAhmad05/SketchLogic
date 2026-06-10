@@ -39,13 +39,13 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
 
     next_id = sketchlogic.connector.wiring.connector.connect(
         wires, model_results, next_id, 
-        max_range=10, debug=debug
+        max_range=25, debug=debug
     )
 
     io_results, wires, next_id = io_generator.generate(
         contours, wires, model_results, 
         next_id, min_bulkiness=20, 
-        snapping_range=150
+        snapping_range=150, debug=debug
     )
 
     if debug:

@@ -3,7 +3,7 @@ import math
 import cv2
 
 
-def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: list[dict], next_id: int, min_bulkiness: int, snapping_range: int) -> tuple[list, list, int]:
+def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: list[dict], next_id: int, min_bulkiness: int, snapping_range: int, debug: bool = False) -> tuple[list, list, int]:
     """
     Generates the toggles and probes based on a cluster test and a proximity test.
     
@@ -13,6 +13,8 @@ def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: li
         model_results (list[dict]): Model results to get the rotation from.
         next_id (int): Next id to use for the toggles and probes.
         min_bulkiness (int): Minimum bulkiness threshold.
+        snapping_range (int): The range to snap the toggles and probes to.
+        debug (bool): Whether to print debug information.
 
     Returns:
         list: The toggles and probes generated.
@@ -85,6 +87,20 @@ def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: li
             io["Rotation"] = _get_gate_rotation(closest_wire["MainInput"]["$ref"], model_results)
 
         output.append(io)
+
+    wires_to_remove = []
+    for wire in wires:
+        if ("MainInput" not in wire or wire["MainInput"] == {}) or ("MainOutput" not in wire or wire["MainOutput"] == {}):
+            wires_to_remove.append(wire)
+
+    for wire in wires_to_remove:
+        wires.remove(wire)
+
+    if debug:
+        print()
+        print(f"sketchlogic.connector.io_generator:")
+        print(f"wires removed: {len(wires_to_remove)}")
+        print(f"toggles and probes generated: {len(output)}")
 
     return output, wires, next_id
 
@@ -160,7 +176,7 @@ def _get_gate_rotation(ref: str, gates: list[dict]) -> int:
 
         if gate["$type"] == "NotGate" and gate["Input"]["$id"] == ref:
             return gate["Rotation"]
-        else:
+        elif gate["$type"].endswith("Gate") and gate["$type"] != "NotGate":
             for input in gate["Inputs"]:
                 if input["$id"] == ref:
                     return gate["Rotation"]

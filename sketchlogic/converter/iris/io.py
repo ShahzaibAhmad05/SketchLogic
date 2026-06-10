@@ -6,8 +6,8 @@ def convert(io_results: list) -> None:
     for io in io_results:
         io["Rotation"] = float(io["Rotation"])
 
-        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"], 0.3), 830)) - 10
-        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"], 0.3), 800)) - 10
+        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"]), 830)) - 10
+        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"]), 800)) - 10
 
         io["X"] = float(io["X"])
         io["Y"] = float(io["Y"])
@@ -26,7 +26,7 @@ def _snap_to_grid(x: int | float) -> float:
     return round(x / 10) * 10
 
 
-def _scale(x: float, multiplier: float) -> float:
+def _scale(x: float, multiplier: float = 0.3) -> float:
     """
     Scales a value by a multiplier.
     """
