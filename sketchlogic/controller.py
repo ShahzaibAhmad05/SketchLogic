@@ -20,3 +20,5 @@ def run(input_image_path: Path, output_json_path: Path) -> None:
 
     with open(output_json_path, "w") as file:
         json.dump(output, file, indent=4)
+
+    print()

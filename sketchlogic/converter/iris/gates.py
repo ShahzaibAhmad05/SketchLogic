@@ -1,4 +1,4 @@
-def add(output: list, model_results: list) -> list:
+def convert(model_results: list) -> None:
     """
     Adds the gates to the output.
     """
@@ -7,12 +7,12 @@ def add(output: list, model_results: list) -> list:
         gate["Rotation"] = float(gate["Rotation"])
 
         if gate["$type"] == "NotGate":
-            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 700)) - 20
-            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 700)) - 20
+            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 830)) - 20
+            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 800)) - 20
         else:
             multiplier = len(gate["Inputs"])
-            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 700)) - (multiplier * 20)
-            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 700)) - (multiplier * 20)
+            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 830)) - (multiplier * 20)
+            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 800)) - (multiplier * 20)
 
         gate["X"] = float(gate["X"])
         gate["Y"] = float(gate["Y"])
@@ -21,10 +21,6 @@ def add(output: list, model_results: list) -> list:
         del gate["Height"]
         del gate["CenterX"]
         del gate["CenterY"]
-
-        output.append(gate)
-
-    return output
 
 
 def _snap_to_grid(x: int | float) -> float:

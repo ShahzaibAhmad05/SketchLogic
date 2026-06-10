@@ -1,4 +1,4 @@
-def add(output: list, wires: list) -> list:
+def convert(wires: list) -> None:
     """
     Adds the wires to the output.
     """
@@ -8,6 +8,3 @@ def add(output: list, wires: list) -> list:
             continue
 
         wire["Points"] = []
-        output.append(wire)
-
-    return output

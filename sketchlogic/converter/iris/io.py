@@ -1,4 +1,4 @@
-def add(output: list, io_results: list) -> list:
+def convert(io_results: list) -> None:
     """
     Adds the io results to the output.
     """
@@ -6,8 +6,8 @@ def add(output: list, io_results: list) -> list:
     for io in io_results:
         io["Rotation"] = float(io["Rotation"])
 
-        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"], 0.3), 700)) - 20
-        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"], 0.3), 700)) - 20
+        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"], 0.3), 830)) - 10
+        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"], 0.3), 800)) - 10
 
         io["X"] = float(io["X"])
         io["Y"] = float(io["Y"])
@@ -16,10 +16,6 @@ def add(output: list, io_results: list) -> list:
         del io["Height"]
         del io["CenterX"]
         del io["CenterY"]
-
-        output.append(io)
-
-    return output
 
 
 def _snap_to_grid(x: int | float) -> float:
