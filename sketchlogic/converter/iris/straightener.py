@@ -69,9 +69,6 @@ def refresh_component_pins(component: dict, fixed_pins: list, wires: list, compo
                 x_diff = abs(p1[0] - p2[0])
                 y_diff = abs(p1[1] - p2[1])
 
-                if x_diff == space_factor or y_diff == space_factor:
-                    continue
-
                 is_vertical = x_diff < y_diff
                 if attached_io and attached_io["$type"] in ["Toggle", "Probe"]:
                     if component["$type"] == "NotGate":
