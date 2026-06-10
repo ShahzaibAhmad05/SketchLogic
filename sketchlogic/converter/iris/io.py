@@ -6,8 +6,11 @@ def add(output: list, io_results: list) -> list:
     for io in io_results:
         io["Rotation"] = float(io["Rotation"])
 
-        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"], 0.3), 700))
-        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"], 0.3), 700))
+        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"], 0.3), 700)) - 20
+        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"], 0.3), 700)) - 20
+
+        io["X"] = float(io["X"])
+        io["Y"] = float(io["Y"])
 
         del io["Width"]
         del io["Height"]

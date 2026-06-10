@@ -6,8 +6,16 @@ def add(output: list, model_results: list) -> list:
     for gate in model_results:
         gate["Rotation"] = float(gate["Rotation"])
 
-        gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 700))
-        gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 700))
+        if gate["$type"] == "NotGate":
+            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 700)) - 20
+            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 700)) - 20
+        else:
+            multiplier = len(gate["Inputs"])
+            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], 0.3), 700)) - (multiplier * 20)
+            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], 0.3), 700)) - (multiplier * 20)
+
+        gate["X"] = float(gate["X"])
+        gate["Y"] = float(gate["Y"])
 
         del gate["Width"]
         del gate["Height"]
