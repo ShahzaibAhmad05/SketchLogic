@@ -1,6 +1,4 @@
-import numpy
 import math
-import cv2
 
 
 def generate(wires: list, model_results: list, next_id: int, debug: bool) -> tuple[list, int]:
@@ -51,17 +49,36 @@ def generate(wires: list, model_results: list, next_id: int, debug: bool) -> tup
         end1 = points[0]
         end2 = points[-1]
 
-        valid_point = (
-            end1 if _point_to_point_distance(end1, (cx, cy)) > _point_to_point_distance(end2, (cx, cy)) 
-            else end2
-        )
+        if _point_to_point_distance(end1, (cx, cy)) > _point_to_point_distance(end2, (cx, cy)):
+            valid_point = end1
+            prev_point = points[1]
+        else:
+            valid_point = end2
+            prev_point = points[-2]
+
+        dx = valid_point[0] - prev_point[0]
+        dy = valid_point[1] - prev_point[1]
+
+        target_w = w / max(3, num_inputs)
+        target_h = h / max(3, num_inputs)
+
+        if abs(dx) > abs(dy):
+            if dx > 0:
+                valid_point = [valid_point[0] + (target_w / 2), valid_point[1]]
+            else:
+                valid_point = [valid_point[0] - (target_w / 2), valid_point[1]]
+        else:
+            if dy > 0:
+                valid_point = [valid_point[0], valid_point[1] + (target_h / 2)]
+            else:
+                valid_point = [valid_point[0], valid_point[1] - (target_h / 2)]
 
         io = {
             "$id": str(next_id),
             "CenterX": int(valid_point[0]),
             "CenterY": int(valid_point[1]),
-            "Width": w / max(3, num_inputs),
-            "Height": h / max(3, num_inputs),
+            "Width": target_w,
+            "Height": target_h,
             "Rotation": rotation,
         }
         next_id += 1
