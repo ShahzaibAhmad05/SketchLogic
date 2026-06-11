@@ -75,6 +75,7 @@ def generate(wires: list, model_results: list, next_id: int, debug: bool) -> tup
 
         io = {
             "$id": str(next_id),
+            "$type": "IO",
             "CenterX": int(valid_point[0]),
             "CenterY": int(valid_point[1]),
             "Width": target_w,
