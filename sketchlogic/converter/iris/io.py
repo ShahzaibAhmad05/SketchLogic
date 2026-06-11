@@ -1,24 +1,32 @@
-def convert(io_results: list, scale_factor: float = 0.3) -> None:
+def convert(io_results: list) -> None:
     """
     Adds the io results to the output.
     """
 
-    translation_x = -(io_results[0]["CenterX"] * scale_factor) + 900
-    translation_y = -(io_results[0]["CenterY"] * scale_factor) + 1000
-
     for io in io_results:
-        io["Rotation"] = float(io["Rotation"])
-
-        io["X"] = _snap_to_grid(_translate(_scale(io["CenterX"], scale_factor), translation_x)) - 10
-        io["Y"] = _snap_to_grid(_translate(_scale(io["CenterY"], scale_factor), translation_y)) - 10
-
-        io["X"] = float(io["X"])
-        io["Y"] = float(io["Y"])
+        io["X"] = io["CenterX"] - io["Width"] / 2
+        io["Y"] = io["CenterY"] - io["Height"] / 2
 
         del io["Width"]
         del io["Height"]
         del io["CenterX"]
         del io["CenterY"]
+
+        io["Rotation"] = float(io["Rotation"])
+        io["X"] = float(io["X"])
+        io["Y"] = float(io["Y"])
+        
+
+def resize(io_results: list, scale_factor: float) -> None:
+    """
+    Resizes the model results to the scale factor.
+    """
+
+    for component in io_results:
+        component["Width"] = 20
+        component["Height"] = 20
+        component["CenterX"] = _snap_to_grid(scale(component["CenterX"], scale_factor))
+        component["CenterY"] = _snap_to_grid(scale(component["CenterY"], scale_factor))
 
 
 def _snap_to_grid(x: int | float) -> float:
@@ -29,9 +37,9 @@ def _snap_to_grid(x: int | float) -> float:
     return round(x / 10) * 10
 
 
-def _scale(x: float, scale_factor: float) -> float:
+def scale(x: float, scale_factor: float) -> float:
     """
-    Scales a value by a multiplier.
+    Scales a value by a scale factor.
     """
 
     return round(x * scale_factor)
@@ -40,6 +48,6 @@ def _scale(x: float, scale_factor: float) -> float:
 def _translate(x: float, value: float) -> float:
     """
     Translates a value by a value.
-    """
+    """ 
 
     return x + value

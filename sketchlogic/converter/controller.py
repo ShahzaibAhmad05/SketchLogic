@@ -1,9 +1,10 @@
-import sketchlogic.converter.iris.gates as gates
+import sketchlogic.converter.iris.gates as gate_converter
 import sketchlogic.converter.iris.wires as wiring
 import sketchlogic.converter.iris.io as io_converter
 import sketchlogic.converter.iris.straightener as straightener
+import sketchlogic.connector.image_handler as image_handler
+import sketchlogic.converter.iris.scale_factor as scale_factor_calculator
 from pathlib import Path
-import cv2
 
 
 def run(model_results: list, wires: list, io_results: list, input_image_path: Path, debug: bool = False) -> list:
@@ -13,35 +14,34 @@ def run(model_results: list, wires: list, io_results: list, input_image_path: Pa
 
     output = []
 
-    w, h = 1000, 1000
-    if input_image_path.exists():
-        image = cv2.imread(str(input_image_path), cv2.IMREAD_GRAYSCALE)
-        if image is not None:
-            w, h = image.shape[:2]
+    scale_factor = scale_factor_calculator.calculate(model_results, per_component=80)
+    gate_converter.resize(model_results, scale_factor)
+    io_converter.resize(io_results, scale_factor)
+    wiring.resize(wires, scale_factor)
 
-    avg_dimension = (w + h) / 2
-    num_components = len(model_results)
-    scale_factor = (avg_dimension / 1000) * (0.2 * max(5, num_components))
-    gates.convert(model_results, scale_factor)
-    io_converter.convert(io_results, scale_factor)
+    if debug:
+        image = image_handler.load_image(input_image_path)
+        image = image_handler.draw_points(image, wires)
+        image = image_handler.draw_boxes(image, model_results)
+        image = image_handler.draw_boxes(image, io_results)
+        image_handler.save_image(image, Path("converter_test.png"))
 
     try:
-        straightener.straighten(model_results, io_results, wires, space_factor=30)
+        straightener.straighten(model_results, io_results, wires, space_factor=30, debug=debug)
     except Exception as e:
         if debug:
             print()
             print(f"sketchlogic.converter.controller:")
-            print(f"Error straightening: ")
-            print(e)
+            print(f"Error straightening: {e}")
 
-    wiring.convert(wires)
+    gate_converter.convert(model_results)
+    io_converter.convert(io_results)
+    wiring.clear(wires)
 
     for gate in model_results:
         output.append(gate)
-
     for io in io_results:
         output.append(io)
-
     for wire in wires:
         output.append(wire)
 

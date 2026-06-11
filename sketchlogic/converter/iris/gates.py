@@ -1,29 +1,41 @@
-def convert(model_results: list, scale_factor: float = 0.3) -> None:
+def convert(model_results: list) -> None:
     """
     Adds the gates to the output.
     """
 
-    translation_x = -(model_results[0]["CenterX"] * scale_factor) + 900
-    translation_y = -(model_results[0]["CenterY"] * scale_factor) + 1000
-
     for gate in model_results:
-        gate["Rotation"] = float(gate["Rotation"])
-
-        if gate["$type"] == "NotGate":
-            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], scale_factor), translation_x)) - 20
-            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], scale_factor), translation_y)) - 20
-        else:
-            multiplier = len(gate["Inputs"])
-            gate["X"] = _snap_to_grid(_translate(_scale(gate["CenterX"], scale_factor), translation_x)) - (multiplier * 20)
-            gate["Y"] = _snap_to_grid(_translate(_scale(gate["CenterY"], scale_factor), translation_y)) - (multiplier * 20)
-
-        gate["X"] = float(gate["X"])
-        gate["Y"] = float(gate["Y"])
+        gate["X"] = gate["CenterX"] - gate["Width"] / 2
+        gate["Y"] = gate["CenterY"] - gate["Height"] / 2
 
         del gate["Width"]
         del gate["Height"]
         del gate["CenterX"]
         del gate["CenterY"]
+
+        gate["Rotation"] = float(gate["Rotation"])
+        gate["X"] = float(gate["X"])
+        gate["Y"] = float(gate["Y"])
+        
+
+def resize(model_results: list, scale_factor: float) -> None:
+    """
+    Resizes the model results to the scale factor.
+    """
+
+    for component in model_results:
+        comp_type = component["$type"]
+        if not comp_type.endswith("Gate"):
+            continue
+
+        if comp_type == "NotGate":
+            component["Width"] = 40
+            component["Height"] = 40
+        else:
+            component["Width"] = len(component["Inputs"]) * 20
+            component["Height"] = len(component["Inputs"]) * 20
+
+        component["CenterX"] = _snap_to_grid(scale(component["CenterX"], scale_factor))
+        component["CenterY"] = _snap_to_grid(scale(component["CenterY"], scale_factor))
 
 
 def _snap_to_grid(x: int | float) -> float:
@@ -34,9 +46,9 @@ def _snap_to_grid(x: int | float) -> float:
     return round(x / 10) * 10
 
 
-def _scale(x: float, scale_factor: float) -> float:
+def scale(x: float, scale_factor: float) -> float:
     """
-    Scales a value by a multiplier.
+    Scales a value by a scale factor.
     """
 
     return round(x * scale_factor)
@@ -48,3 +60,20 @@ def _translate(x: float, value: float) -> float:
     """ 
 
     return x + value
+
+
+def _get_min_length(model_results: list) -> float:
+    """
+    Gets the minimum length from the model results.
+    """
+
+    min_length = float('inf')
+
+    for component in model_results:
+        if component["$type"] == "NotGate":
+            min_length = min(min_length, component["Width"], component["Height"])
+
+        elif component["$type"].endswith("Gate"):
+            min_length = min(min_length, component["Width"], component["Height"])
+
+    return min_length

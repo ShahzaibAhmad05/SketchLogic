@@ -1,15 +1,34 @@
-def straighten(model_results: list, io_results: list, wires: list, space_factor: int) -> None:
+import math
+
+
+def straighten(model_results: list, io_results: list, wires: list, space_factor: int, debug: bool) -> None:
     """
     Straightens the models and io if they have a 2 point wire in-between.
     """
 
+    straightened_counts = []
     for component in model_results:
-        refresh_component_pins(component, [], wires, model_results, io_results, space_factor)
+        straightened_count = refresh_component_pins(
+            component, [], 
+            wires, model_results, io_results, 
+            space_factor
+        )
+        straightened_counts.append(straightened_count)
+
+    if debug:
+        print()
+        print(f"sketchlogic.converter.iris.straightener:")
+        print(f"Straightened {sum(straightened_counts)} connections.")
 
 
-def refresh_component_pins(component: dict, fixed_pins: list, wires: list, components: list, io: list, space_factor: int) -> None:
+def refresh_component_pins(
+    component: dict, fixed_pins: list, 
+    wires: list, components: list, io: list, 
+    space_factor: int, straightened_count: int = 0
+) -> int:
     """
-    Refreshes the component attachments and their attachments recursively.
+    Refreshes the component attachments and their attachments recursively. Assumes the input 
+    components and io to have CenterX and CenterY and Height and Width.
 
     Args:
         component: The component to refresh the attachments of.
@@ -17,121 +36,149 @@ def refresh_component_pins(component: dict, fixed_pins: list, wires: list, compo
         wires: The wires in the circuit.
         components: The components in the circuit.
         io: The io in the circuit.
-        space_factor: The space factor to use for the new pins.
-
-    Returns:
-        None
+        space_factor: The minimum length to ensure for dual-point wires.
     """
 
-    if component["$type"].endswith("Gate"):
-        self_pin_refs = []
-        attached_wires = []
-        attached_pin_refs = []
-        attached_ios = []
+    self_pin_refs = _get_component_pin_refs(component, blacklist=fixed_pins)
+    if not self_pin_refs: return straightened_count
 
-        if component["$type"] == "NotGate":
-            if component["Input"]["$id"] not in fixed_pins:
-                self_pin_refs.append(component["Input"]["$id"])
+    attached_wires = []
+    attached_pin_refs = []
+    attached_ios = []
+
+    for self_pin_ref in self_pin_refs:
+        attached_wire = _get_co_with_pin_ref(self_pin_ref, wires)
+        attached_wires.append(attached_wire)
+
+        if attached_wire is None:
+            attached_pin_refs.append(None)
+            attached_ios.append(None)
+            continue
+
+        if attached_wire["MainInput"]["$ref"] == self_pin_ref:
+            attached_pin_refs.append(attached_wire["MainOutput"]["$ref"])
+            attached_ios.append(_get_co_with_pin_ref(attached_wire["MainOutput"]["$ref"], io))
         else:
-            for input in component["Inputs"]:
-                if input["$id"] not in fixed_pins: 
-                    self_pin_refs.append(input["$id"])
+            attached_pin_refs.append(attached_wire["MainInput"]["$ref"])
+            attached_ios.append(_get_co_with_pin_ref(attached_wire["MainInput"]["$ref"], io))
 
-        if component["Output"]["$id"] not in fixed_pins:
-            self_pin_refs.append(component["Output"]["$id"])
+    for attached_wire in attached_wires:
+        if attached_wire is None or len(attached_wire["Points"]) != 2:
+            continue
 
-        for self_pin_ref in self_pin_refs:
-            attached_wire = _get_co_with_pin_ref(self_pin_ref, wires)
-            attached_wires.append(attached_wire)
+        idx = attached_wires.index(attached_wire)
+        self_pin_ref = self_pin_refs[idx]
+        attached_pin_ref = attached_pin_refs[idx]
+        attached_io = attached_ios[idx]
 
-            if not attached_wire:
-                attached_pin_refs.append(None)
-                attached_ios.append(None)
-                continue
+        p1 = attached_wire["Points"][0]
+        p2 = attached_wire["Points"][1]
 
-            if attached_wire["MainInput"]["$ref"] == self_pin_ref:
-                attached_pin_refs.append(attached_wire["MainOutput"]["$ref"])
-                attached_ios.append(_get_co_with_pin_ref(attached_wire["MainOutput"]["$ref"], io))
-            else:
-                attached_pin_refs.append(attached_wire["MainInput"]["$ref"])
-                attached_ios.append(_get_co_with_pin_ref(attached_wire["MainInput"]["$ref"], io))
+        if _point_to_point_distance(p1, p2) >= space_factor:
+            continue
+        else:
+            straightened_count += 1
 
-        for attached_wire in attached_wires:
-            idx = attached_wires.index(attached_wire)
-            self_pin_ref = self_pin_refs[idx]
-            attached_pin_ref = attached_pin_refs[idx]
-            attached_io = attached_ios[idx]
+        x_diff = abs(p1[0] - p2[0])
+        y_diff = abs(p1[1] - p2[1])
 
-            if attached_wire and attached_wire["$type"] == "Wire":
-                p1 = attached_wire["Points"][0]
-                p2 = attached_wire["Points"][1]
-
-                x_diff = abs(p1[0] - p2[0])
-                y_diff = abs(p1[1] - p2[1])
-
-                is_vertical = x_diff < y_diff
-                if attached_io and attached_io["$type"] in ["Toggle", "Probe"]:
-                    if component["$type"] == "NotGate":
-                        if is_vertical:
-                            attached_io["X"] = component["X"] + 10
-                            if component["Y"] - attached_io["Y"] > 0:
-                                attached_io["Y"] = component["Y"] - 40 - space_factor
-                            else:
-                                attached_io["Y"] = component["Y"] + 60 + space_factor
-
-                        else:
-                            attached_io["Y"] = component["Y"] + 10
-                            if component["X"] - attached_io["X"] > 0:
-                                attached_io["X"] = component["X"] - 40 - space_factor
-                            else:
-                                attached_io["X"] = component["X"] + 60 + space_factor
-
+        is_vertical = x_diff < y_diff
+        if attached_io and attached_io["$type"] in ["Toggle", "Probe"]:
+            if component["$type"] == "NotGate":
+                if is_vertical:
+                    attached_io["CenterX"] = component["CenterX"]
+                    if component["Y"] - attached_io["Y"] > 0:
+                        attached_io["CenterY"] = component["CenterY"] - 30 - space_factor - 20
                     else:
-                        num_inputs = len(component["Inputs"])
-
-                        pin_idx_relative = (num_inputs - 1) / 2
-                        for input in component["Inputs"]:
-                            if input["$id"] == self_pin_ref:
-                                pin_idx_relative = component["Inputs"].index(input)
-
-                        if is_vertical:
-                            attached_io["X"] = component["X"] + (20 * pin_idx_relative)
-                            if component["Y"] - attached_io["Y"] > 0:
-                                attached_io["Y"] = component["Y"] - 40 - space_factor
-                            else:
-                                attached_io["Y"] = component["Y"] + 20 + (num_inputs * 20) + space_factor
-
-                        else:
-                            attached_io["Y"] = component["Y"] + (20 * pin_idx_relative)
-                            if component["X"] - attached_io["X"] > 0:
-                                attached_io["X"] = component["X"] - 40 - space_factor
-                            else:
-                                attached_io["X"] = component["X"] + 20 + (num_inputs * 20) + space_factor
+                        attached_io["CenterY"] = component["CenterY"] + 30 + space_factor + 20
 
                 else:
-                    attached_component = _get_co_with_pin_ref(attached_pin_ref, components)
-                    if attached_component:
-                        if (component["$type"] == "NotGate" or 
-                            (component["$type"].endswith("Gate") and len(component["Inputs"]) == 2)):
-                            if is_vertical:
-                                attached_component["X"] = component["X"]
-                                if component["Y"] - attached_component["Y"] > 0:
-                                    attached_component["Y"] = component["Y"] - 10 - space_factor
-                                else:
-                                    attached_component["Y"] = component["Y"] + 50 + space_factor
+                    attached_io["CenterY"] = component["CenterY"]
+                    if component["CenterX"] - attached_io["CenterX"] > 0:
+                        attached_io["CenterX"] = component["CenterX"] - 30 - space_factor - 20
+                    else:
+                        attached_io["CenterX"] = component["CenterX"] + 30 + space_factor + 20
 
-                            else:
-                                attached_component["Y"] = component["Y"]
-                                if component["X"] - attached_component["X"] > 0:
-                                    attached_component["X"] = component["X"] - 60 - space_factor
-                                else:
-                                    attached_component["X"] = component["X"] + 60 + space_factor
+            else:
+                num_inputs = len(component["Inputs"])
 
-                        fixed_pins.append(attached_pin_ref)
-                        refresh_component_pins(
-                            attached_component, fixed_pins, wires,
-                            components, io, space_factor
-                        )
+                pin_idx_relative = (num_inputs - 1) / 2
+                for input in component["Inputs"]:
+                    if input["$id"] == self_pin_ref:
+                        pin_idx_relative = component["Inputs"].index(input)
+
+                comp_y = component["CenterY"] - (component["Height"] / 2)
+                comp_x = component["CenterX"] - (component["Width"] / 2)
+
+                if is_vertical:
+                    attached_io["CenterX"] = comp_x + (20 * pin_idx_relative) + 10
+                    if component["CenterY"] - attached_io["CenterY"] > 0:
+                        attached_io["CenterY"] = comp_y - 40 - space_factor + 10
+                    else:
+                        attached_io["CenterY"] = comp_y + 20 + (num_inputs * 20) + space_factor + 10
+
+                else:
+                    attached_io["CenterY"] = comp_y + (20 * pin_idx_relative) + 10
+                    if component["CenterX"] - attached_io["CenterX"] > 0:
+                        attached_io["CenterX"] = comp_x - 40 - space_factor + 10
+                    else:
+                        attached_io["CenterX"] = comp_x + 20 + (num_inputs * 20) + space_factor + 10
+
+        else:
+            attached_component = _get_co_with_pin_ref(attached_pin_ref, components)
+            if attached_component:
+                if (component["$type"] == "NotGate" or 
+                    (component["$type"].endswith("Gate") and len(component["Inputs"]) == 2)):
+                    if is_vertical:
+                        attached_component["CenterX"] = component["CenterX"]
+                        if component["CenterY"] - attached_component["CenterY"] > 0:
+                            attached_component["CenterY"] = component["CenterY"] - 10 - space_factor
+                        else:
+                            attached_component["CenterY"] = component["CenterY"] + 50 + space_factor
+
+                    else:
+                        attached_component["CenterY"] = component["CenterY"]
+                        if component["CenterX"] - attached_component["CenterX"] > 0:
+                            attached_component["CenterX"] = component["CenterX"] - 60 - space_factor
+                        else:
+                            attached_component["CenterX"] = component["CenterX"] + 60 + space_factor
+
+                fixed_pins.append(attached_pin_ref)
+                refresh_component_pins(
+                    attached_component, fixed_pins, wires,
+                    components, io, space_factor, 
+                    straightened_count=straightened_count
+                )
+
+    return straightened_count
+
+
+def _get_component_pin_refs(component: dict, blacklist: list) -> list:
+    """
+    Gets the pin references of the component. Currently supports only gates.
+    """
+
+    comp_type = component["$type"]
+    self_pin_refs = []
+
+    if comp_type == "NotGate":
+        if component["Input"]["$id"] not in blacklist:
+            self_pin_refs.append(component["Input"]["$id"])
+
+        if component["Output"]["$id"] not in blacklist:
+            self_pin_refs.append(component["Output"]["$id"])
+
+    elif comp_type.endswith("Gate") and comp_type != "NotGate":
+        for input in component["Inputs"]:
+            if input["$id"] not in blacklist: 
+                self_pin_refs.append(input["$id"])
+
+        if component["Output"]["$id"] not in blacklist:
+            self_pin_refs.append(component["Output"]["$id"])
+    else:
+        return []
+
+    return self_pin_refs
 
 
 def _get_co_with_pin_ref(pin_ref: str, circuit_objects: list) -> dict:
@@ -185,3 +232,18 @@ def get_pin_with_ref(pin_ref: str, circuit_objects: list) -> dict:
                 return co
 
     return {}
+
+
+def _point_to_point_distance(p1: tuple[float, float], p2: tuple[float, float]) -> float:
+    """
+    Calculates the distance from a point to a point.
+    
+    Args:
+        p1 (tuple[float, float]): The first point.
+        p2 (tuple[float, float]): The second point.
+
+    Returns:
+        float: The distance from the first point to the second point.
+    """
+
+    return math.hypot(p1[0] - p2[0], p1[1] - p2[1])
