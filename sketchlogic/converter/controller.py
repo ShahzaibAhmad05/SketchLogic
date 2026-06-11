@@ -4,20 +4,28 @@ import sketchlogic.converter.iris.io as io_converter
 import sketchlogic.converter.iris.straightener as straightener
 import sketchlogic.connector.image_handler as image_handler
 import sketchlogic.converter.iris.scale_factor as scale_factor_calculator
+import sketchlogic.converter.iris.translate_factor as translate_factor_calculator
 from pathlib import Path
 
 
 def run(model_results: list, wires: list, io_results: list, input_image_path: Path, debug: bool = False) -> list:
     """
     Controller for the converter module.
+
+    NOTE: since translation is calculated based on the scale factor, it MUST be applied only after the
+    scale factor is applied. This has to be fixed soon.
     """
 
     output = []
 
     scale_factor = scale_factor_calculator.calculate(model_results, per_component=80)
-    gate_converter.resize(model_results, scale_factor)
-    io_converter.resize(io_results, scale_factor)
-    wiring.resize(wires, scale_factor)
+    translate_x, translate_y = translate_factor_calculator.calculate(
+        model_results, scale_factor, center_x=1000, center_y=1000
+    )
+
+    gate_converter.resize(model_results, scale_factor, translate_x, translate_y)
+    io_converter.resize(io_results, scale_factor, translate_x, translate_y)
+    wiring.resize(wires, scale_factor, translate_x, translate_y)
 
     if debug:
         image = image_handler.load_image(input_image_path)

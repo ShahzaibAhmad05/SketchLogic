@@ -17,16 +17,20 @@ def convert(io_results: list) -> None:
         io["Y"] = float(io["Y"])
         
 
-def resize(io_results: list, scale_factor: float) -> None:
+def resize(io_results: list, scale_factor: float, translate_x: float, translate_y: float) -> None:
     """
-    Resizes the model results to the scale factor.
+    Resizes the io results to the scale factor.
     """
 
     for component in io_results:
         component["Width"] = 20
         component["Height"] = 20
-        component["CenterX"] = _snap_to_grid(scale(component["CenterX"], scale_factor))
-        component["CenterY"] = _snap_to_grid(scale(component["CenterY"], scale_factor))
+        component["CenterX"] = _snap_to_grid(
+            _translate(scale(component["CenterX"], scale_factor), translate_x)
+        )
+        component["CenterY"] = _snap_to_grid(
+            _translate(scale(component["CenterY"], scale_factor), translate_y)
+        )
 
 
 def _snap_to_grid(x: int | float) -> float:

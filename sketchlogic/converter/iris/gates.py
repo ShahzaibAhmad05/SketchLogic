@@ -17,7 +17,7 @@ def convert(model_results: list) -> None:
         gate["Y"] = float(gate["Y"])
         
 
-def resize(model_results: list, scale_factor: float) -> None:
+def resize(model_results: list, scale_factor: float, translate_x: float, translate_y: float) -> None:
     """
     Resizes the model results to the scale factor.
     """
@@ -34,8 +34,12 @@ def resize(model_results: list, scale_factor: float) -> None:
             component["Width"] = len(component["Inputs"]) * 20
             component["Height"] = len(component["Inputs"]) * 20
 
-        component["CenterX"] = _snap_to_grid(scale(component["CenterX"], scale_factor))
-        component["CenterY"] = _snap_to_grid(scale(component["CenterY"], scale_factor))
+        component["CenterX"] = _snap_to_grid(
+            _translate(scale(component["CenterX"], scale_factor), translate_x)
+        )
+        component["CenterY"] = _snap_to_grid(
+            _translate(scale(component["CenterY"], scale_factor), translate_y)
+        )
 
 
 def _snap_to_grid(x: int | float) -> float:

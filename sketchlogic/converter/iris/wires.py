@@ -1,4 +1,6 @@
-def resize(wires: list, scale_factor: float) -> None:
+def resize(
+    wires: list, scale_factor: float, translate_x: float, translate_y: float
+) -> None:
     """
     Resizes the wire points to the scale factor.
     """
@@ -6,8 +8,8 @@ def resize(wires: list, scale_factor: float) -> None:
     for wire in wires:
         wire["Points"] = [
             (
-                _snap_to_grid(scale(point[0], scale_factor)),
-                _snap_to_grid(scale(point[1], scale_factor)),
+                _snap_to_grid(_translate(scale(point[0], scale_factor), translate_x)),
+                _snap_to_grid(_translate(scale(point[1], scale_factor), translate_y)),
             )
             for point in wire["Points"]
         ]
@@ -36,3 +38,11 @@ def scale(x: float, scale_factor: float) -> float:
     """
 
     return round(x * scale_factor)
+
+
+def _translate(x: float, value: float) -> float:
+    """
+    Translates a value by a value.
+    """
+
+    return x + value
