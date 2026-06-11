@@ -8,20 +8,24 @@ from skimage.morphology import skeletonize as skimage_skeletonize
 from pathlib import Path
 
 
-def binarize(image: numpy.ndarray, offset: int, debug: bool = False) -> numpy.ndarray:
+def binarize(image: numpy.ndarray, offset: int, non_dark_offset: int, debug: bool = False) -> numpy.ndarray:
     """
     Binarizes the image.
 
     Args:
         image (numpy.ndarray): The image to binarize.
         offset (int): The offset to add to the threshold. Pixels bellow threshold are left white.
-
+        non_dark_offset (int): The offset to add instead if the darkest pixel is not 0.
     Returns:
         numpy.ndarray: The binarized image.
     """
 
     darkest = int(numpy.min(image))
-    threshold = darkest + offset
+
+    if darkest == 0:
+        threshold = darkest + offset
+    else:
+        threshold = darkest + non_dark_offset
 
     if debug:
         print()

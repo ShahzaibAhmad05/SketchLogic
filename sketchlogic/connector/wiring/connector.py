@@ -24,6 +24,7 @@ def connect(wires: list, model_results: list, next_id: int, max_range: int, debu
         comp_type = component["$type"]
         cx, cy = component["CenterX"], component["CenterY"]
         w, h = component["Width"], component["Height"]
+        comp_rotation = component["Rotation"]
 
         if not comp_type.endswith("Gate"):
             continue
