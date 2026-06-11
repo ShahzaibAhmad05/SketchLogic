@@ -28,6 +28,8 @@ def draw_results(image: numpy.ndarray, results: list) -> None:
         cx, cy, w, h = result["CenterX"], result["CenterY"], result["Width"], result["Height"]
         x = int(cx - w / 2)
         y = int(cy - h / 2)
+        w = int(w)
+        h = int(h)
 
         label = f'{result["$type"]} {result["Rotation"]}'
 

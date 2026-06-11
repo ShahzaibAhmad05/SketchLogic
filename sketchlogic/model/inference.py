@@ -36,10 +36,10 @@ def run(image_path: Path, model_path: Path) -> tuple[list, int]:
         gate = {
             "$id": str(next_id),
             "$type": class_name,
-            "CenterX": int(x),
-            "CenterY": int(y),
-            "Width": int(w),
-            "Height": int(h),
+            "CenterX": float(x),
+            "CenterY": float(y),
+            "Width": float(w),
+            "Height": float(h),
             "Rotation": rotation
         }
         next_id += 1
