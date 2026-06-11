@@ -18,7 +18,7 @@ def run(image_path: Path, model_path: Path) -> tuple[list, int]:
         raise FileNotFoundError(f"Model not found: {model_path}")
 
     model = YOLO(model_path)
-    results = model.predict(image_path, iou=0.3, conf=0.4)[0]
+    results = model.predict(image_path, iou=0.5, agnostic_nms=True)[0]
 
     if not results.boxes:
         return [], 1
