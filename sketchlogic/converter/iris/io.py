@@ -13,8 +13,8 @@ def convert(io_results: list) -> None:
         del io["CenterY"]
 
         io["Rotation"] = float(io["Rotation"])
-        io["X"] = float(io["X"])
-        io["Y"] = float(io["Y"])
+        io["X"] = float(round(io["X"]))
+        io["Y"] = float(round(io["Y"]))
         
 
 def resize(io_results: list, scale_factor: float, translate_x: float, translate_y: float) -> None:

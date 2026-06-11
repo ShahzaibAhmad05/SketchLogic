@@ -1,7 +1,7 @@
 import math
 
 
-def straighten(model_results: list, io_results: list, wires: list, space_factor: int, debug: bool) -> None:
+def straighten(model_results: list, io_results: list, wires: list, min_wire_length: int, debug: bool) -> None:
     """
     Straightens the models and io if they have a 2 point wire in-between.
     """
@@ -11,7 +11,7 @@ def straighten(model_results: list, io_results: list, wires: list, space_factor:
         straightened_count = refresh_component_pins(
             component, [], 
             wires, model_results, io_results, 
-            space_factor
+            min_wire_length
         )
         straightened_counts.append(straightened_count)
 
@@ -24,7 +24,7 @@ def straighten(model_results: list, io_results: list, wires: list, space_factor:
 def refresh_component_pins(
     component: dict, fixed_pins: list, 
     wires: list, components: list, io: list, 
-    space_factor: int, straightened_count: int = 0
+    min_wire_length: int, straightened_count: int = 0
 ) -> int:
     """
     Refreshes the component attachments and their attachments recursively. Assumes the input 
@@ -36,7 +36,7 @@ def refresh_component_pins(
         wires: The wires in the circuit.
         components: The components in the circuit.
         io: The io in the circuit.
-        space_factor: The minimum length to ensure for dual-point wires.
+        min_wire_length: The minimum length to ensure for dual-point wires.
     """
 
     self_pin_refs = _get_component_pin_refs(component, blacklist=fixed_pins)
@@ -50,7 +50,7 @@ def refresh_component_pins(
         attached_wire = _get_co_with_pin_ref(self_pin_ref, wires)
         attached_wires.append(attached_wire)
 
-        if attached_wire is None:
+        if attached_wire is None or attached_wire == {}:
             attached_pin_refs.append(None)
             attached_ios.append(None)
             continue
@@ -63,8 +63,9 @@ def refresh_component_pins(
             attached_ios.append(_get_co_with_pin_ref(attached_wire["MainInput"]["$ref"], io))
 
     for attached_wire in attached_wires:
-        if attached_wire is None or len(attached_wire["Points"]) != 2:
+        if attached_wire is None or attached_wire == {} or len(attached_wire["Points"]) != 2:
             continue
+        straightened_count += 1
 
         idx = attached_wires.index(attached_wire)
         self_pin_ref = self_pin_refs[idx]
@@ -74,10 +75,8 @@ def refresh_component_pins(
         p1 = attached_wire["Points"][0]
         p2 = attached_wire["Points"][1]
 
-        if _point_to_point_distance(p1, p2) >= space_factor:
-            continue
-        else:
-            straightened_count += 1
+        wire_length = _point_to_point_distance(p1, p2)
+        additional_length = wire_length if wire_length > min_wire_length else min_wire_length
 
         x_diff = abs(p1[0] - p2[0])
         y_diff = abs(p1[1] - p2[1])
@@ -88,16 +87,16 @@ def refresh_component_pins(
                 if is_vertical:
                     attached_io["CenterX"] = component["CenterX"]
                     if component["Y"] - attached_io["Y"] > 0:
-                        attached_io["CenterY"] = component["CenterY"] - 30 - space_factor - 20
+                        attached_io["CenterY"] = component["CenterY"] - 30 - additional_length - 20
                     else:
-                        attached_io["CenterY"] = component["CenterY"] + 30 + space_factor + 20
+                        attached_io["CenterY"] = component["CenterY"] + 30 + additional_length + 20
 
                 else:
                     attached_io["CenterY"] = component["CenterY"]
                     if component["CenterX"] - attached_io["CenterX"] > 0:
-                        attached_io["CenterX"] = component["CenterX"] - 30 - space_factor - 20
+                        attached_io["CenterX"] = component["CenterX"] - 30 - additional_length - 20
                     else:
-                        attached_io["CenterX"] = component["CenterX"] + 30 + space_factor + 20
+                        attached_io["CenterX"] = component["CenterX"] + 30 + additional_length + 20
 
             else:
                 num_inputs = len(component["Inputs"])
@@ -113,16 +112,16 @@ def refresh_component_pins(
                 if is_vertical:
                     attached_io["CenterX"] = comp_x + (20 * pin_idx_relative) + 10
                     if component["CenterY"] - attached_io["CenterY"] > 0:
-                        attached_io["CenterY"] = comp_y - 40 - space_factor + 10
+                        attached_io["CenterY"] = comp_y - 40 - additional_length + 10
                     else:
-                        attached_io["CenterY"] = comp_y + 20 + (num_inputs * 20) + space_factor + 10
+                        attached_io["CenterY"] = comp_y + 20 + (num_inputs * 20) + additional_length + 10
 
                 else:
                     attached_io["CenterY"] = comp_y + (20 * pin_idx_relative) + 10
                     if component["CenterX"] - attached_io["CenterX"] > 0:
-                        attached_io["CenterX"] = comp_x - 40 - space_factor + 10
+                        attached_io["CenterX"] = comp_x - 40 - additional_length + 10
                     else:
-                        attached_io["CenterX"] = comp_x + 20 + (num_inputs * 20) + space_factor + 10
+                        attached_io["CenterX"] = comp_x + 20 + (num_inputs * 20) + additional_length + 10
 
         else:
             attached_component = _get_co_with_pin_ref(attached_pin_ref, components)
@@ -132,21 +131,21 @@ def refresh_component_pins(
                     if is_vertical:
                         attached_component["CenterX"] = component["CenterX"]
                         if component["CenterY"] - attached_component["CenterY"] > 0:
-                            attached_component["CenterY"] = component["CenterY"] - 10 - space_factor
+                            attached_component["CenterY"] = component["CenterY"] - 10 - additional_length
                         else:
-                            attached_component["CenterY"] = component["CenterY"] + 50 + space_factor
+                            attached_component["CenterY"] = component["CenterY"] + 50 + additional_length
 
                     else:
                         attached_component["CenterY"] = component["CenterY"]
                         if component["CenterX"] - attached_component["CenterX"] > 0:
-                            attached_component["CenterX"] = component["CenterX"] - 60 - space_factor
+                            attached_component["CenterX"] = component["CenterX"] - 60 - additional_length
                         else:
-                            attached_component["CenterX"] = component["CenterX"] + 60 + space_factor
+                            attached_component["CenterX"] = component["CenterX"] + 60 + additional_length
 
                 fixed_pins.append(attached_pin_ref)
                 refresh_component_pins(
                     attached_component, fixed_pins, wires,
-                    components, io, space_factor, 
+                    components, io, min_wire_length, 
                     straightened_count=straightened_count
                 )
 

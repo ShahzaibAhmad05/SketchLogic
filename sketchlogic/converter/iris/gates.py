@@ -13,8 +13,8 @@ def convert(model_results: list) -> None:
         del gate["CenterY"]
 
         gate["Rotation"] = float(gate["Rotation"])
-        gate["X"] = float(gate["X"])
-        gate["Y"] = float(gate["Y"])
+        gate["X"] = float(round(gate["X"]))
+        gate["Y"] = float(round(gate["Y"]))
         
 
 def resize(model_results: list, scale_factor: float, translate_x: float, translate_y: float) -> None:
