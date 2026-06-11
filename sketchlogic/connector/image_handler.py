@@ -67,6 +67,8 @@ def color_boxes(image: numpy.ndarray, boxes: list[dict], color: int) -> numpy.nd
 
         x = int(center_x - w / 2)
         y = int(center_y - h / 2)
+        w = int(w)
+        h = int(h)
 
         new_image[y:y+h, x:x+w] = color
 
@@ -93,6 +95,15 @@ def save_image(image: numpy.ndarray, image_path: Path) -> None:
     cv2.imwrite(str(image_path), image.astype(numpy.uint8))
 
 
+def create_blank(width: int, height: int) -> numpy.ndarray:
+    """
+    Creates a blank image.
+    """
+
+    image = numpy.ones((height, width, 3), dtype=numpy.uint8) * 255
+    return image
+
+
 def draw_points(image: numpy.ndarray, wires: list) -> numpy.ndarray:
     """
     Draws points on the image.
@@ -105,7 +116,8 @@ def draw_points(image: numpy.ndarray, wires: list) -> numpy.ndarray:
         numpy.ndarray: The image with the points drawn on it.
     """
 
-    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+    if len(image.shape) == 2:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
     for wire in wires:
         for point in wire["Points"]:
@@ -143,6 +155,9 @@ def draw_boxes(image: numpy.ndarray, boxes: list) -> numpy.ndarray:
     Returns:
         numpy.ndarray: The image with the boxes drawn on it.
     """
+
+    if len(image.shape) == 2:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
     for box in boxes:
         cx, cy, w, h = box["CenterX"], box["CenterY"], box["Width"], box["Height"]
