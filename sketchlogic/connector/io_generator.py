@@ -3,182 +3,137 @@ import math
 import cv2
 
 
-def generate(contours: list[numpy.ndarray], wires: list[dict], model_results: list[dict], next_id: int, min_bulkiness: int, snapping_range: int, debug: bool = False) -> tuple[list, list, int]:
+def generate(wires: list, model_results: list, next_id: int, debug: bool) -> tuple[list, int]:
     """
-    Generates the toggles and probes based on a cluster test and a proximity test.
-    
+    Generates the toggles and probes wherever the wires are disconnected.
+
     Args:
-        contours (list[numpy.ndarray]): Contours to generate the toggles and probes from.
-        wires (list[dict]): Nearby wires to check for validation.
-        model_results (list[dict]): Model results to get the rotation from.
+        wires (list): Wires to generate the toggles and probes for.
+        model_results (list): Model results to compare endpoints with
         next_id (int): Next id to use for the toggles and probes.
-        min_bulkiness (int): Minimum bulkiness threshold.
-        snapping_range (int): The range to snap the toggles and probes to.
         debug (bool): Whether to print debug information.
 
     Returns:
-        list: The toggles and probes generated.
-        list: The wires with the toggles and probes connected.
         int: The next id to use for the circuit objects.
     """
 
     output = []
-    for contour in contours:
-        if not _cluster_test(contour) or not _bulkiness_test(contour, min_bulkiness):
+    toggles_generated = 0
+    probes_generated = 0
+
+    for wire in wires:
+        points = wire["Points"]
+        mainInput = wire["MainInput"]
+        mainOutput = wire["MainOutput"]
+
+        if (mainInput == {} and mainOutput == {}) or (mainInput != {} and mainOutput != {}):
             continue
 
-        x, y, w, h = cv2.boundingRect(contour)
-
-        center_x = x + w / 2
-        center_y = y + h / 2
-
-        # find the closest wire to this contour and attach to it
-        closest_wire = None
-        closest_distance = float('inf')
-
-        for wire in wires:
-            if wire["MainInput"] != {} and wire["MainOutput"] != {}:
-                continue
-            if wire["MainInput"] == {} and wire["MainOutput"] == {}:
-                continue
-
-            point = _get_closest_point(int(center_x), int(center_y), wire["Points"], snapping_range)
-            if point is None:
-                continue
-
-            dist = math.sqrt((center_x - point[0]) ** 2 + (center_y - point[1]) ** 2)
-            if dist < closest_distance:
-                closest_distance = dist
-                closest_wire = wire
-
-        if closest_wire is None:
+        if mainInput != {}:
+            ref_comp = _get_co_with_pin_ref(mainInput["$ref"], model_results)
+        elif mainOutput != {}:
+            ref_comp = _get_co_with_pin_ref(mainOutput["$ref"], model_results)
+        else:
             continue
+
+        cx, cy = ref_comp["CenterX"], ref_comp["CenterY"]
+        w, h = ref_comp["Width"], ref_comp["Height"]
+        rotation = ref_comp["Rotation"]
+        comp_type = ref_comp["$type"]
+
+        if comp_type == "NotGate":
+            num_inputs = 1
+        elif comp_type.endswith("Gate") and comp_type != "NotGate":
+            num_inputs = len(ref_comp["Inputs"])
+        else:
+            continue
+
+        end1 = points[0]
+        end2 = points[-1]
+
+        valid_point = (
+            end1 if _point_to_point_distance(end1, (cx, cy)) > _point_to_point_distance(end2, (cx, cy)) 
+            else end2
+        )
 
         io = {
             "$id": str(next_id),
-            "CenterX": int(center_x),
-            "CenterY": int(center_y),
-            "Width": 20,
-            "Height": 20,
+            "CenterX": int(valid_point[0]),
+            "CenterY": int(valid_point[1]),
+            "Width": w / max(3, num_inputs),
+            "Height": h / max(3, num_inputs),
+            "Rotation": rotation,
         }
         next_id += 1
 
-        if closest_wire["MainInput"] == {}:
+        if mainInput == {}:
             io["$type"] = "Toggle"
             io["State"] = "Low"
             io["Output"] = {
                 "$id": str(next_id),
                 "Type": "Output"
             }
-            closest_wire["MainInput"]["$ref"] = str(next_id)
+            mainInput["$ref"] = str(next_id)
             next_id += 1
+            toggles_generated += 1
 
-            io["Rotation"] = _get_gate_rotation(closest_wire["MainOutput"]["$ref"], model_results)
-
-        elif closest_wire["MainOutput"] == {}:
+        elif mainOutput == {}:
             io["$type"] = "Probe"
             io["Input"] = {
                 "$id": str(next_id),
                 "Type": "Input"
             }
-            closest_wire["MainOutput"]["$ref"] = str(next_id)
+            mainOutput["$ref"] = str(next_id)
             next_id += 1
-
-            io["Rotation"] = _get_gate_rotation(closest_wire["MainInput"]["$ref"], model_results)
+            probes_generated += 1
 
         output.append(io)
-
-    wires_to_remove = []
-    for wire in wires:
-        if ("MainInput" not in wire or wire["MainInput"] == {}) or ("MainOutput" not in wire or wire["MainOutput"] == {}):
-            wires_to_remove.append(wire)
-
-    for wire in wires_to_remove:
-        wires.remove(wire)
 
     if debug:
         print()
         print(f"sketchlogic.connector.io_generator:")
-        print(f"wires removed: {len(wires_to_remove)}")
-        print(f"toggles and probes generated: {len(output)}")
+        print(f"Toggles generated: {toggles_generated}")
+        print(f"Probes generated: {probes_generated}")
+    
+    return output, next_id
 
-    return output, wires, next_id
 
-
-def _cluster_test(contour: numpy.ndarray) -> bool:
+def _point_to_point_distance(p1: tuple[float, float], p2: tuple[float, float]) -> float:
     """
-    Checks if the contour is a close cluster of points.
+    Calculates the distance from a point to a point.
     
     Args:
-        contour (numpy.ndarray): Contour to check for validation.
+        p1 (tuple[float, float]): The first point.
+        p2 (tuple[float, float]): The second point.
 
     Returns:
-        bool: True if the contour is a close cluster of points, False otherwise.
+        float: The distance from the first point to the second point.
     """
 
-    _, _, w, h = cv2.boundingRect(contour)
-    ratio = max(w, h) / min(w, h)
-
-    return ratio < 2.0
+    return math.hypot(p1[0] - p2[0], p1[1] - p2[1])
 
 
-def _bulkiness_test(contour: numpy.ndarray, min_bulkiness: float) -> bool:
+def _get_co_with_pin_ref(pin_ref: str, circuit_objects: list) -> dict:
     """
-    Checks if the contour is bulky enough.
-    
-    Args:
-        contour (numpy.ndarray): Contour to check for validation.
-        min_bulkiness (float): Minimum bulkiness threshold.
-
-    Returns:
-        bool: True if the contour is bulky enough, False otherwise.
+    Gets the circuit object with the given pin reference id.
     """
 
-    _, _, w, h = cv2.boundingRect(contour)
-    return w >= min_bulkiness and h >= min_bulkiness
+    for co in circuit_objects:
+        if co["$type"] == "Wire":
+            if co["MainInput"]["$ref"] == pin_ref or co["MainOutput"]["$ref"] == pin_ref:
+                return co
 
+        if co["$type"] in ["NotGate", "Probe"]:
+            if co["Input"]["$id"] == pin_ref:
+                return co
 
-def _get_closest_point(center_x: int, center_y: int, points: list, max_distance: int) -> tuple[int, int] | None:
-    """
-    Gets the point that is closest to the given (center_x, center_y) and within max_distance.
-    
-    Args:
-        center_x (int): Center x coordinate of the contour.
-        center_y (int): Center y coordinate of the contour.
-        points (list): Points to check for validation.
-        max_distance (int): Maximum distance threshold.
+        if co["$type"].endswith("Gate") and co["$type"] != "NotGate":
+            for input in co["Inputs"]:
+                if input["$id"] == pin_ref:
+                    return co
 
-    Returns:
-        tuple[int, int] | None: The closest point or None if no point within range.
-    """
+        if co["$type"].endswith("Gate") or co["$type"] == "Toggle":
+            if co["Output"]["$id"] == pin_ref:
+                return co
 
-    closest = min(points, key=lambda p: (center_x - p[0]) ** 2 + (center_y - p[1]) ** 2)
-    if math.sqrt((center_x - closest[0]) ** 2 + (center_y - closest[1]) ** 2) <= max_distance:
-        return closest
-
-    return None
-
-
-def _get_gate_rotation(ref: str, gates: list[dict]) -> int:
-    """
-    Gets the rotation of a gate based on the given reference id.
-    
-    Args:
-        ref (str): The reference id of the gate.
-
-    Returns:
-        int: The rotation of the gate.
-    """
-
-    for gate in gates:
-        if gate["Output"]["$id"] == ref:
-            return gate["Rotation"]
-
-        if gate["$type"] == "NotGate" and gate["Input"]["$id"] == ref:
-            return gate["Rotation"]
-        elif gate["$type"].endswith("Gate") and gate["$type"] != "NotGate":
-            for input in gate["Inputs"]:
-                if input["$id"] == ref:
-                    return gate["Rotation"]
-
-    return 0
+    return {}

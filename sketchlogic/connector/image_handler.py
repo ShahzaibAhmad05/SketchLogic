@@ -146,6 +146,7 @@ def draw_boxes(image: numpy.ndarray, boxes: list) -> numpy.ndarray:
 
     for box in boxes:
         cx, cy, w, h = box["CenterX"], box["CenterY"], box["Width"], box["Height"]
+        w, h = int(w), int(h)
 
         x = int(cx - w / 2)
         y = int(cy - h / 2)

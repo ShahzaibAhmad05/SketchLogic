@@ -16,7 +16,7 @@ def run(input_image_path: Path, output_json_path: Path) -> None:
         input_image_path, model_results, next_id, debug=True
     )
 
-    output = sketchlogic.converter.controller.run(model_results, wires, io_results, debug=True)
+    output = sketchlogic.converter.controller.run(model_results, wires, io_results, input_image_path, debug=True)
 
     with open(output_json_path, "w") as file:
         json.dump(output, file, indent=4)
