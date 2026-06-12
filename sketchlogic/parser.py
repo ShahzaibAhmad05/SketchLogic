@@ -29,6 +29,11 @@ def parse_args() -> argparse.Namespace:
         default =False,
         help="enable debug mode",
     )
+    parser.add_argument(
+        "--target",
+        default="iris",
+        help="target model",
+    )
 
     return parser.parse_args()
 
