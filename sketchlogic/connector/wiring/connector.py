@@ -37,6 +37,11 @@ def connect(wires: list, model_results: list, next_id: int, max_range: int, debu
             num_pins_to_add = max(min_num_pins, len(nearby_wires))
 
             pin_positions = _divide_segment(s1, s2, num_pins_to_add)
+
+            # THIS IS A PATCH FOR PIN SWAPPING OF 90 DEGREE GATES
+            if side == "left" and comp_rotation == 90 and len(pin_positions) > 1:
+                pin_positions = list(reversed(pin_positions))
+
             if comp_type != "NotGate" and side == "left":
                 next_id = _add_input_pins(component, num_pins_to_add, next_id)
 
