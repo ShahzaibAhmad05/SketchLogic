@@ -86,7 +86,7 @@ def refresh_component_pins(
             if component["$type"] == "NotGate":
                 if is_vertical:
                     attached_io["CenterX"] = component["CenterX"]
-                    if component["Y"] - attached_io["Y"] > 0:
+                    if component["CenterY"] - attached_io["CenterY"] > 0:
                         attached_io["CenterY"] = component["CenterY"] - 30 - additional_length - 20
                     else:
                         attached_io["CenterY"] = component["CenterY"] + 30 + additional_length + 20
