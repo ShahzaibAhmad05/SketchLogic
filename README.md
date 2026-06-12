@@ -31,13 +31,16 @@ The system will output the detected circuit(s) in a simulation software compatib
 
 Examples:
 
+<img height="300" alt="sketch" src="https://github.com/user-attachments/assets/d9fcfb4a-60a5-41da-a6ab-6697400d0876" />
+<img height="300" alt="simulation" src="https://github.com/user-attachments/assets/eb3b09d5-6d5f-4507-b6d4-d6940265cd4c" />
+
+<img height="240" alt="sketch" src="https://github.com/user-attachments/assets/c9310d11-d471-4b0b-97f1-89addbb17a0b" />
+<img height="240" alt="simulation" src="https://github.com/user-attachments/assets/63a9c119-e507-4737-92f2-1f0ec9370b03" />
+
+<br />
 <br />
 
-<img />
-
-<br />
-
-*Image Credits: [IRis - Circuit Simulator](https://github.com/d-khalid/IRis)*
+> *Images Credit: [IRis](https://github.com/d-khalid/IRis)*
 
 
 ---
@@ -45,7 +48,7 @@ Examples:
 
 ## Integration with any Circuit Simulation Software
 
-This project comes with a `GPL-3.0 LICENSE`. See the [LICENSE](https://github.com/ShahzaibAhmad05/SketchLogic?tab=GPL-3.0-1-ov-file) file for more details. Following that, this system can be integrated in any circuit simulation software with just a few steps.
+This project comes with a `GPL-3.0 LICENSE`. See the [LICENSE](https://github.com/ShahzaibAhmad05/SketchLogic?tab=GPL-3.0-1-ov-file) file for more details. Following that, this system can be integrated in a circuit simulation software with just a few steps.
 
 The whole system is defined as a module named `sketchlogic`, and can be compiled using [pyinstaller](https://github.com/pyinstaller/pyinstaller) or similar tools. The compiled version can then be shipped with the software as an optional or required feature.
 
