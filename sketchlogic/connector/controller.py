@@ -31,7 +31,7 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
 
     contours = contour_handler.detect_all(
         wires_skeleton_image, min_length=30, 
-        approximation=0.03
+        corners_approximation=0.03
     )
 
     wires, discarded_contours, next_id = sketchlogic.connector.wiring.generator.generate(
