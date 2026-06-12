@@ -15,12 +15,23 @@ A Sketch to Simulation Converter for logic circuits that uses a fine-tuned YOLO 
 
 ### Input
 
-Handdraw a simple logic circuit on blank paper (no lines) consisting of gates (AND, OR, NOT, NAND, NOR, XOR, XNOR). No cross-overs allowed on wires. Use any suitable app to scan the image. 
+Handdraw a simple logic circuit on blank paper consisting of gates (AND, OR, NOT, NAND, NOR, XOR, XNOR). A few things to keep in mind when drawing a circuit on paper:
 
-- Make sure to have the least amount of noise possible (for better accuracy + performance). 
-- Make sure the sketch itself is spacious enough for the model to map out wires.
+- Make sure the paper is truly blank and has no guidelines on it.
+- Make sure the drawing is spacious enough. Sketches/images being too compact drop the accuracy significantly.
+- Cutting/overwriting on the sketch reduces performance.
+- No wires should cross-over. Wire extensions are currently not supported.
 
-An example of the system's output:
+If you have ensured all of the points mentioned above, then the output should have around 90% accuracy. Slight imperfections can be dealt with by doing edits to the design in the target circuit simulation software.
+
+
+### Output
+
+The system will output the detected circuit(s) in a simulation software compatible format. Currently, only `.iris` format is supported (which is compatible with [IRis](https://github.com/d-khalid/IRis). But we plan to add support for [Logisim Evolution](https://github.com/logisim-evolution/logisim-evolution) soon.
+
+Examples:
+
+<br />
 
 <img />
 
@@ -32,48 +43,27 @@ An example of the system's output:
 ---
 
 
-## Integration in any Circuit Simulation Engine
+## Integration with any Circuit Simulation Software
 
-This project comes with `GPL-3.0 LICENSE`. See [LICENSE]() file for more details. Following that, this system can be integrated in any circuit simulation software. For setup details, refer to the [Developer Setup](#developer-setup). It mainly has two modules (explained in the sections bellow this one):
+This project comes with a `GPL-3.0 LICENSE`. See the [LICENSE](https://github.com/ShahzaibAhmad05/SketchLogic?tab=GPL-3.0-1-ov-file) file for more details. Following that, this system can be integrated in any circuit simulation software with just a few steps.
 
-- `model/`
+The whole system is defined as a module named `sketchlogic`, and can be compiled using [pyinstaller](https://github.com/pyinstaller/pyinstaller) or similar tools. The compiled version can then be shipped with the software as an optional or required feature.
 
-This can be either compiled with all the python dependencies into an executable, or used directly inside your app's technical stack (if applicable). Refer to the section bellow to checkout out the output format.
-
-- `connector/`
-
-Connector takes the output of `model` and converts it to a simulatable json format. This is purely python. A feasible option here is to compile it to `.exe` and run it via command-line args. OR a bitter approach would be to translate the entire system into the target app's language.
+The compiled size for an exe may go upto a few hundred MBs due to our usage of `ultralytics`. We are currently working to make this process easier by shifting to `onnxruntime` instead of `ultralytics` for the inference. But that will take quite a bit of time as it needs a lot of manual work which ultralytics is doing for us currently.
 
 
 ---
 
 
-## ML Model for Detecting Logic Gates
+## System Workflow (explained with sub-modules)
 
-Capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation (x4 classes) in an image.
+### Model
 
-**IMPORTANT:** A debatable option is to use OBB (Oriented Bounding Box). That way we would have lesser number of input classes and easier `model.train()` configuration. But then the exact angle has to be figured out by the `connector` module which quickly becomes a pain.
+Capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation (x4 classes, totalling 28) in an image. The configuration for fine-tuning YOLO is simple and can be found in `./sketchlogic/model/train/training.py`.
 
+The dataset used for fine-tuning was compiled using publicily available images of logic circuits. We collected a dataset of 2,500 such images, annotated it using a custom-annotation tool, involving a lot of manual work. Any further annotation is preffered to be done by `X-AnyLabelling` on dataset updates.
 
-### YOLOv8 nano as a Starter
-
-YOLO is super lightweight and easy to fine-tune. The ultralytics library has the tooling to load, fine-tune, and export YOLO models which are pre-trained on the COCO dataset (80 classes). We fine-tune our logic gates detector from this checkpoint.
-
-Configuration for the training can be found in `model/training_script.py`. 
-
-
-### Farming GPUs from Kaggle 
-
-Kaggle provides us with enough GPU support for running this script. Although there are other options available too, but [Kaggle](https://www.kaggle.com/) is currently offering more flexibility than any other GPU providers. (since we are working for free)
-
-With that said, the [dataset](https://www.kaggle.com/datasets/shahzaibahmad05/logic-gates-data) is also uploaded to Kaggle. This will make our work significantly easier long-term.
-
-
-### Dataset Collection & Annotation
-
-The dataset consists of publicily available logic circuit images and some other datasets that had an MIT License and no requirements for citations, so it is legal.
-
-For annotation, we have used [X-AnyLabelling](https://github.com/cvhub520/x-anylabeling) which is a free and open-source tool. Consider infering information about the dataset from `model/train/data/config.yaml`.
+There is one issue here, that is the plots for the last training session have been lost. They may be added here if training is run again. The dataset can be downloaded from [here](https://drive.google.com/file/d/1H22YKo60RVP0wAn1gruZzJOcp0HdeSIo/view?usp=sharing) for anyone interested.
 
 IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com/CVHub520/X-AnyLabeling#citing):
 
@@ -90,40 +80,10 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 ```
 
 
-### Last Training Session
+### Connector
 
-The model was last trained 05/06/2026 for approximately 6.35 hours on Kaggle. The Jupyter notebook can be viewed [here](https://www.kaggle.com/code/shahzaibahmad05/sketchlogic-training-notebook).
+This is responsible for wire and input/output pins detection, and attaching
 
-
-| epoch | time | train/box_loss | train/cls_loss | train/dfl_loss | train/angle_loss | precision | recall | mAP50 | mAP50-95 | val/box_loss | val/cls_loss | val/dfl_loss | val/angle_loss |
-|-------|------|----------------|----------------|----------------|------------------|-----------|--------|-------|----------|--------------|--------------|--------------|----------------|
-| 100 | 19931.4s | 0.394 | 0.299 | 1.047 | 0.004 | 0.993 | 0.988 | 0.995 | 0.892 | 0.510 | 0.428 | 0.677 | 0.002 |
-
-
-<img src="https://drive.google.com/uc?export=view&id=1StQvNYJ5S1Dl0IWmfrYiu6ashUvirEdj" />
-
-According to the confusion matrix bellow, the OR, NOR, XOR, XNOR (OR family) gates are continuously being missed by the model as background. We might want to work to fix this later on if we go with doing a dataset remake.
-
-<br />
-
-<img src="https://drive.google.com/uc?export=view&id=1WCEGoeG9l2GPmJ9VMFqHr0pfoJkYgEgk" />
-
-
-### Model (module) Output format
-
-`model/` module in the repository as run by `python -m module` has this output format:
-
-```json
-{
-    "$id": 1,
-    "$type": "AndGate",
-    "CenterX": 626,
-    "CenterY": 405,
-    "Width": 176,
-    "Height": 148,
-    "Rotation": 0,
-}
-```
 
 ---
 
