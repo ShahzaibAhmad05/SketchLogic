@@ -32,7 +32,7 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
 
     wires, discarded_contours, next_id = sketchlogic.connector.wiring.generator.generate(
         contours, next_id, 
-        optional_min_side=200, 
+        optional_min_side=80, 
         strict_min_side=30, 
         straightness_tolerance=25,
         debug=debug
