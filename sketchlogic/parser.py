@@ -23,6 +23,12 @@ def parse_args() -> argparse.Namespace:
         type=_file_path,
         help="path to the output JSON file",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        default =False,
+        help="enable debug mode",
+    )
 
     return parser.parse_args()
 
