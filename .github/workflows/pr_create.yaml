@@ -17,14 +17,14 @@ jobs:
             const contributor = pr.user.login;
             const body = pr.body || "";
 
-            if (contributor === author)
-              return;
-
             await github.rest.reactions.createForIssue({
               ...context.repo,
               issue_number: pr.number,
               content: "eyes"
             });
+
+            if (contributor === author)
+              return;
 
             await github.rest.pulls.requestReviewers({
               ...context.repo,
@@ -38,8 +38,7 @@ jobs:
               await github.rest.issues.createComment({
                 ...context.repo,
                 issue_number: pr.number,
-                body: `@${contributor} Thank you for the pull request. Please also mention 
-                  the issue that this pr resolves.`
+                body: `@${contributor} Thank you for the pull request. Please also mention what issue this pr resolves.`
               });
             }
 
@@ -47,8 +46,7 @@ jobs:
               await github.rest.issues.createComment({
                 ...context.repo,
                 issue_number: pr.number,
-                body: `@${contributor} tysm for the pull request! The maintainer 
-                  has been notified and will review it soon.`
+                body: `@${contributor} tysm for the pull request! The maintainer has been notified and will review it soon.`
               });
             }
             
