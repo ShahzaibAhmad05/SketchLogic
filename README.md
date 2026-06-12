@@ -55,7 +55,7 @@ The compiled size for an exe may go upto a few hundred MBs due to our usage of `
 ---
 
 
-## System Workflow (explained with sub-modules)
+## System Workflow
 
 ### Model
 
@@ -82,35 +82,16 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 
 ### Connector
 
-This is responsible for wire and input/output pins detection, and attaching... **incomplete from here**
+This is responsible for wire detection, input/output pins detection, and attaching IO components (toggles, probes, etc) with wires whose one end is connected to gates. 
+
+We start in this module by image processing using `image_handler`, applying binarization, skeletonization, gap healing, contour detection, wire generation from those contours, connecting wires with gates, and generating IO components. 
+
+Basically, this is the core of the system. But it's accuracy relies heavily on whether the `Model` module was able to draw the bounding boxes around components properly.
 
 
-The raw image is made to go through these sub-modules where we extract the details of the logic circuit.
+### Converter
 
-
-### Image Processing
-
-`binarize()` - Removes rgb channels from the image, now we have a binary image with just two colors, 0 and 255. The default threshold is currently set to 127.
-
-`bridge_gaps()` - Fills any gaps in between wires in the image. Heals wires that previous image processing might have broken. 
-
-`skeletonize()` - Narrows the lines in the image. This significantly improves performance later on.
-
-`color_boxes()` - Fill the gates bounding boxes as defined by the model's prediction with some color to make them invisible against wires.
-
-
-### Wire Detection
-
-`detect_wires()` - The function `color_boxes()` allows us to produce an image where only points that belong to wires remain which can be grouped together as open contours to form wires.
-
-`generate()` - Uses the contours (lists of points) to generate wires and add it to the results. Uses a control snapping_range to determine at runtime if the wire should attach to a gate based on it's perpendicular distance to the gate's input/output side.
-
-
-### Output Conversion
-
-`remove_entries_from_gates()` - Incompatible entries such as Width and Height are removed from the json. These have to be managed by the circuit simulator at runtime.
-
-`clear_wire_points()` - Wait, really?
+This sub-module contains logic for conversion of the results from the `Connector` into a simulatable format. It applies advanced scaling, translation and key-value conversion. This is the sub-module we work on when we want to add support for a new format.
 
 
 ---
@@ -148,6 +129,6 @@ python -m sketchlogic temp.jpg output.iris
 ---
 
 
-## What to do Now?
+## What to do with the output file?
 
 The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
