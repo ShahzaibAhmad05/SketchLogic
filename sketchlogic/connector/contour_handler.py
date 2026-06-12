@@ -2,14 +2,14 @@ import cv2
 import numpy
 
 
-def detect_all(image: numpy.ndarray, min_length: int, approximation: float) -> list[numpy.ndarray]:
+def detect_all(image: numpy.ndarray, min_length: int, corners_approximation: float) -> list[numpy.ndarray]:
     """
     Detects the contours in the image.
 
     Args:
         image (numpy.ndarray): The image to detect the contours in.
         min_length (int): The minimum length of the contour.
-        approximation (float): The approximation factor for the contour.
+        corners_approximation (float): The approximation factor for the contour.
 
     Returns:
         list: The detected contours.
@@ -25,7 +25,7 @@ def detect_all(image: numpy.ndarray, min_length: int, approximation: float) -> l
     for contour in contours:
         contour = cv2.approxPolyDP(
             contour, closed=False,
-            epsilon=approximation * cv2.arcLength(contour, closed=False)
+            epsilon=corners_approximation * cv2.arcLength(contour, closed=False)
         )
 
         if max(cv2.boundingRect(contour)[2:]) >= min_length:
