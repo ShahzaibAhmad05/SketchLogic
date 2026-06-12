@@ -171,7 +171,7 @@ def draw_boxes(image: numpy.ndarray, boxes: list, color: tuple[int, int, int]) -
         x = int(cx - w / 2)
         y = int(cy - h / 2)
 
-        label = f'{box["$type"]} {box["Rotation"]}'
+        label = f'{box["$type"]}_{box["Rotation"]}'
 
         cv2.rectangle(image, (x, y), (x + w, y + h), color, 2)
         cv2.putText(image, label, (x + 6, y + 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, color, 2)

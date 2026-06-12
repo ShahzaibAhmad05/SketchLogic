@@ -28,7 +28,11 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
     image = image_handler.skeletonize(image)
 
     wires_skeleton_image = image_handler.color_boxes(image, model_results, color=0)
-    contours = contour_handler.detect_all(wires_skeleton_image, min_side_length=30)
+
+    contours = contour_handler.detect_all(
+        wires_skeleton_image, min_length=30, 
+        approximation=0.03
+    )
 
     wires, discarded_contours, next_id = sketchlogic.connector.wiring.generator.generate(
         contours, next_id, 

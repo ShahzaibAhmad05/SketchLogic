@@ -30,11 +30,6 @@ def generate(
     discarded_contours = []
 
     for contour in contours:
-        contour = cv2.approxPolyDP(
-            contour, closed=False,
-            epsilon=0.01*cv2.arcLength(contour, closed=False)
-        )
-
         if not _has_minimum_side(contour, optional_min_side):
             if (not _has_minimum_side(contour, strict_min_side) or 
                 not _straightness_test(contour, straightness_tolerance)):
