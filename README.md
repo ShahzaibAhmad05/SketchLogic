@@ -82,13 +82,8 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 
 ### Connector
 
-This is responsible for wire and input/output pins detection, and attaching
+This is responsible for wire and input/output pins detection, and attaching... **incomplete from here**
 
-
----
-
-
-## Connector for Circuit Connections
 
 The raw image is made to go through these sub-modules where we extract the details of the logic circuit.
 
@@ -142,18 +137,11 @@ git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
 pip install -r requirements.txt
 ```
 
-- Run the model to generate inference for the image:
+- Run the system to convert the sketch in the sample image to a simulation:
 
 ```bash
 # <input_image_path> <output_json_path>
-python -m model temp.jpg output.json
-```
-
-- Run the connector to generate wires and output the circuit:
-
-```bash
-# <input_image_path> <previous_output_path> <output_json_path>
-python -m connector temp.jpg output.json circuit.json
+python -m sketchlogic temp.jpg output.iris
 ```
 
 
@@ -162,6 +150,4 @@ python -m connector temp.jpg output.json circuit.json
 
 ## What to do Now?
 
-The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.json` file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
-
-We are also working on making multiple converters for this format so it can be loaded into [Proteus](), [Logisim]() and other circuit simulation software.
+The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
