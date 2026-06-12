@@ -30,6 +30,11 @@ def generate(
     discarded_contours = []
 
     for contour in contours:
+        contour = cv2.approxPolyDP(
+            contour, closed=False,
+            epsilon=0.01*cv2.arcLength(contour, closed=False)
+        )
+
         if not _has_minimum_side(contour, optional_min_side):
             if (not _has_minimum_side(contour, strict_min_side) or 
                 not _straightness_test(contour, straightness_tolerance)):
@@ -37,12 +42,8 @@ def generate(
                     {"Points": [(int(pt[0][0]), int(pt[0][1])) for pt in contour]}
                 )
                 continue
-        
-        wire_points = cv2.approxPolyDP(
-            contour, closed=False,
-            epsilon=0.01*cv2.arcLength(contour, closed=False)
-        )
-        wire_points = [(int(pt[0][0]), int(pt[0][1])) for pt in wire_points]
+
+        wire_points = [(int(pt[0][0]), int(pt[0][1])) for pt in contour]
 
         if _straightness_test(contour, straightness_tolerance) and len(wire_points) > 2:
             wire_points = remove_collinear_points(wire_points)

@@ -14,5 +14,9 @@ def detect_all(image: numpy.ndarray, min_side_length: int) -> list[numpy.ndarray
         list: The detected contours.
     """
 
-    contours, _ = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    contours, _ = cv2.findContours(
+        image, mode=cv2.RETR_LIST, 
+        method=cv2.CHAIN_APPROX_NONE
+    )
+
     return [c for c in contours if max(cv2.boundingRect(c)[2:]) >= min_side_length]
