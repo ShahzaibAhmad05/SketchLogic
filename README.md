@@ -1,6 +1,6 @@
 # Sketch to Simulation System
 
-A sketch to simulation converter for logic circuits built through a lightweight and portable model (fine-tuned from YOLO) and connection analysis algorithms.
+A Sketch to Simulation Converter for logic circuits that uses a fine-tuned YOLO model to detect components and image analysis to make circuit connections through wires.
 
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -13,9 +13,14 @@ A sketch to simulation converter for logic circuits built through a lightweight 
 
 ## Current Capabilities
 
-This system is able to detect circuits made of the 7 logic gates (AND, OR, NOT, NOR, NAND, XOR, XNOR). The wiring algorithms cannot work with T-Junctions (a wire crossing over another) in wires but that too would be added soon.
+### Input
 
-An example of the system's output
+Handdraw a simple logic circuit on blank paper (no lines) consisting of gates (AND, OR, NOT, NAND, NOR, XOR, XNOR). No cross-overs allowed on wires. Use any suitable app to scan the image. 
+
+- Make sure to have the least amount of noise possible (for better accuracy + performance). 
+- Make sure the sketch itself is spacious enough for the model to map out wires.
+
+An example of the system's output:
 
 <img />
 
