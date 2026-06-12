@@ -30,14 +30,15 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
     wires_skeleton_image = image_handler.color_boxes(image, model_results, color=0)
     contours = contour_handler.detect_all(wires_skeleton_image, min_side_length=30)
 
-    wires, next_id = sketchlogic.connector.wiring.generator.generate(
+    wires, discarded_contours, next_id = sketchlogic.connector.wiring.generator.generate(
         contours, next_id, 
         optional_min_side=200, 
         strict_min_side=30, 
-        straightness_tolerance=25
+        straightness_tolerance=25,
+        debug=debug
     )
 
-    next_id = sketchlogic.connector.wiring.connector.connect(
+    removed_wires, next_id = sketchlogic.connector.wiring.connector.connect(
         wires, model_results, next_id, 
         max_range=25, debug=debug
     )
@@ -47,9 +48,13 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
     )
 
     if debug:
-        image = image_handler.draw_points(image, wires)
-        image = image_handler.draw_boxes(image, model_results)
-        image = image_handler.draw_boxes(image, io_results)
+        image = image_handler.draw_points(image, wires, color=(255, 0, 0))
+        image = image_handler.draw_points(image, discarded_contours, color=(0, 0, 50))
+        image = image_handler.draw_points(image, removed_wires, color=(0, 0, 255))
+
+        image = image_handler.draw_boxes(image, model_results, color=(255, 0, 0))
+        image = image_handler.draw_boxes(image, io_results, color=(255, 0, 0))
+
         image_handler.save_image(image, Path("connector_test.png"))
 
         print()

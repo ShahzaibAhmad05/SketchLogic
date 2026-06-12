@@ -1,7 +1,7 @@
 import math
 
 
-def connect(wires: list, model_results: list, next_id: int, max_range: int, debug: bool = False) -> int:
+def connect(wires: list, model_results: list, next_id: int, max_range: int, debug: bool = False) -> tuple[list, int]:
     """
     Connects the wires with the model results.
 
@@ -13,7 +13,7 @@ def connect(wires: list, model_results: list, next_id: int, max_range: int, debu
         debug (bool): Whether to print debug information.
 
     Returns:
-        tuple[list, list, int]: A tuple containing the connected wires, the model results, and the next id.
+        tuple[list, int]: A tuple containing the connected wires and the next id.
     """
 
     total_wires = len(wires)
@@ -78,7 +78,7 @@ def connect(wires: list, model_results: list, next_id: int, max_range: int, debu
             print(f"{len(wires_to_remove)} wires had to be removed.")
             print(f"please avoid passing disconnected wires here.")
 
-    return next_id
+    return wires_to_remove, next_id
 
 
 def _add_input_pins(component: dict, num_pins: int, next_id: int) -> int:

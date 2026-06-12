@@ -108,13 +108,14 @@ def create_blank(width: int, height: int) -> numpy.ndarray:
     return image
 
 
-def draw_points(image: numpy.ndarray, wires: list) -> numpy.ndarray:
+def draw_points(image: numpy.ndarray, wires: list, color: tuple[int, int, int]) -> numpy.ndarray:
     """
     Draws points on the image.
 
     Args:
         image (numpy.ndarray): The image to draw the points on.
         wires (list): The wires to draw the points on.
+        color (tuple[int, int, int]): The color to draw the points in. BGR format.
 
     Returns:
         numpy.ndarray: The image with the points drawn on it.
@@ -125,7 +126,7 @@ def draw_points(image: numpy.ndarray, wires: list) -> numpy.ndarray:
 
     for wire in wires:
         for point in wire["Points"]:
-            cv2.circle(image, (point[0], point[1]), 5, (0, 0, 255), 2)
+            cv2.circle(image, (point[0], point[1]), 5, color, 2)
 
     return image
 
@@ -148,7 +149,7 @@ def bridge_gaps(image: numpy.ndarray, max_gap_size: int = 5) -> numpy.ndarray:
     return healed_image
 
 
-def draw_boxes(image: numpy.ndarray, boxes: list) -> numpy.ndarray:
+def draw_boxes(image: numpy.ndarray, boxes: list, color: tuple[int, int, int]) -> numpy.ndarray:
     """
     Draws boxes on the image.
     
@@ -172,7 +173,7 @@ def draw_boxes(image: numpy.ndarray, boxes: list) -> numpy.ndarray:
 
         label = f'{box["$type"]} {box["Rotation"]}'
 
-        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
-        cv2.putText(image, label, (x + 6, y + 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.rectangle(image, (x, y), (x + w, y + h), color, 2)
+        cv2.putText(image, label, (x + 6, y + 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, color, 2)
 
     return image

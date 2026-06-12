@@ -8,8 +8,9 @@ def generate(
     next_id: int, 
     optional_min_side: int, 
     strict_min_side: int,
-    straightness_tolerance: float
-) -> tuple[list, int]:
+    straightness_tolerance: float,
+    debug: bool = False
+) -> tuple[list, list, int]:
     """
     Filters the wires based on the minimum length and straightness.
 
@@ -18,17 +19,23 @@ def generate(
         optional_min_side (int): Allows for contours that are larger than this.
         strict_min_side (int): The strict minimum length of the wire.
         straightness_tolerance (float): The straightness tolerance of the wire.
+        debug (bool): Whether to print debug information.
 
     Returns:
-        list[numpy.ndarray]: The filtered wires.
+        tuple[list, list, int]: A tuple containing the filtered wires, discarded contours, and the next id.
         int: The next id to use for the circuit objects.
     """
 
     output = []
+    discarded_contours = []
+
     for contour in contours:
         if not _has_minimum_side(contour, optional_min_side):
             if (not _has_minimum_side(contour, strict_min_side) or 
                 not _straightness_test(contour, straightness_tolerance)):
+                discarded_contours.append(
+                    {"Points": [(int(pt[0][0]), int(pt[0][1])) for pt in contour]}
+                )
                 continue
         
         wire_points = cv2.approxPolyDP(
@@ -49,7 +56,13 @@ def generate(
         })
         next_id += 1
 
-    return output, next_id
+    if debug:
+        print()
+        print(f"sketchlogic.connector.wiring.generator:")
+        print(f"Wires generated: {len(output)}")
+        print(f"Discarded contours: {len(discarded_contours)}")
+
+    return output, discarded_contours, next_id
 
 
 def _has_minimum_side(contour: MatLike, min_side: int) -> bool:

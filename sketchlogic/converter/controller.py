@@ -30,9 +30,9 @@ def run(model_results: list, wires: list, io_results: list, debug: bool = False)
 
     if debug:
         image = image_handler.create_blank(width=2000, height=2000)
-        image = image_handler.draw_points(image, wires)
-        image = image_handler.draw_boxes(image, model_results)
-        image = image_handler.draw_boxes(image, io_results)
+        image = image_handler.draw_points(image, wires, color=(255, 0, 0))
+        image = image_handler.draw_boxes(image, model_results, color=(255, 0, 0))
+        image = image_handler.draw_boxes(image, io_results, color=(255, 0, 0))
         image_handler.save_image(image, Path("converter_test.png"))
 
     try:
