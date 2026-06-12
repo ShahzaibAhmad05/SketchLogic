@@ -23,7 +23,6 @@ jobs:
             const contributor = context.payload.comment.user.login;
             const assignees = context.payload.issue.assignees;
 
-            if (contributor === author) return;
             if (!keyLines.some(k => commentText.includes(k))) return;
 
             await github.rest.reactions.createForIssue({
@@ -49,11 +48,8 @@ jobs:
             if (data.total_count >= maxIssuesPerContributor) {
               const message = 
                 data.total_count == 1 
-                ? `@${contributor} you are already assigned to issue ${data.items[0].number}.\n\n
-                  If you have an open PR for that issue, please wait for it to merge first.` 
-                : `@${contributor} you are already assigned to multiple issues aka 
-                  ${data.items.map(i => `#${i.number}`)}.\n\n If you have open PRs for
-                  those issues, please wait for one of them to merge first.`;
+                ? `@${contributor} you are already assigned to issue ${data.items[0].number}.\n\nIf you have an open PR for that issue, please wait for it to merge first.` 
+                : `@${contributor} you are already assigned to multiple issues aka ${data.items.map(i => `#${i.number}`)}.\n\n If you have open PRs for those issues, please wait for one of them to merge first.`;
 
               await github.rest.issues.createComment({
                 ...context.repo,
@@ -73,5 +69,5 @@ jobs:
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: issueNumber,
-              body: `@${contributor} you have been assigned to this issue.`
+              body: `@${contributor} this issue has been assigned to you. If you still have questions, feel free to ask here.`
             });
