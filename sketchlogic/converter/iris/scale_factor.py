@@ -1,12 +1,12 @@
-def calculate(components: list, per_component: int) -> float:
+def calculate(components: list, io: list, per_component: int, per_io: int) -> float:
     """
     Calculates the scale factor based on the model results.
     """
 
-    min_x, min_y = _get_min_point(components)
-    max_x, max_y = _get_max_point(components)
+    min_x, min_y = _get_min_point(components + io)
+    max_x, max_y = _get_max_point(components + io)
 
-    required_max_side = len(components) * per_component
+    required_max_side = len(components) * per_component + len(io) * per_io
     current_max_side = max(max_x - min_x, max_y - min_y)
     
     return required_max_side / current_max_side

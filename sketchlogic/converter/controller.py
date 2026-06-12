@@ -16,7 +16,10 @@ def run(model_results: list, wires: list, io_results: list, debug: bool = False)
     scale factor is applied. This has to be fixed soon.
     """
 
-    scale_factor = scale_factor_calculator.calculate(components=model_results + io_results, per_component=60)
+    scale_factor = scale_factor_calculator.calculate(
+        model_results, io_results, per_component=60, per_io=20
+    )
+
     translate_x, translate_y = translate_factor_calculator.calculate(
         model_results, scale_factor, center_x=1000, center_y=1000
     )
