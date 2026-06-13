@@ -2,7 +2,6 @@ from pathlib import Path
 import sketchlogic.model.controller
 import sketchlogic.connector.controller
 import sketchlogic.converter.controller
-from sketchlogic.parser import parse_args
 import json
 
 
