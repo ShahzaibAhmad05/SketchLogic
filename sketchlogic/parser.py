@@ -29,6 +29,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="enable debugging (outputs test files and prints logs)",
     )
+    parser.add_argument(
+        "--target",
+        default="iris",
+        help="target simulation software",
+    )
 
     return parser.parse_args()
 
