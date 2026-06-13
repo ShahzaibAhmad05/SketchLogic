@@ -4,9 +4,10 @@ import sketchlogic.connector.wiring.generator
 import sketchlogic.connector.wiring.connector
 import sketchlogic.connector.contour_handler as contour_handler
 import sketchlogic.connector.io_generator as io_generator
+import numpy
 
 
-def run(input_image_path: Path, model_results: list, next_id: int, debug: bool = False) -> tuple[list, list, list, int]:
+def run(image: numpy.ndarray, model_results: list, next_id: int, debug: bool = False) -> tuple[list, list, list, int]:
     """
     Controller for the wiring module. This adds wiring to the model results.
 
@@ -14,7 +15,7 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
         CenterX, CenterY, Width, Height, Rotation
 
     Args:
-        input_image_path (Path): Path to the input image.
+        image (numpy.ndarray): The image to add wiring to.
         model_results (list): The model results to add wiring to.
         next_id (int): The next id to use for the wiring.
 
@@ -22,7 +23,6 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
         tuple[list, list, list, int]: A tuple containing the model results, wires, io results, and the next id.
     """
 
-    image = image_handler.load_image(input_image_path)
     image = image_handler.binarize(image, offset=100, non_dark_offset=150, debug=debug)
     image = image_handler.bridge_gaps(image, max_gap_size=10)
     image = image_handler.skeletonize(image)
@@ -52,12 +52,12 @@ def run(input_image_path: Path, model_results: list, next_id: int, debug: bool =
     )
 
     if debug:
-        image = image_handler.draw_points(image, wires, color=(255, 0, 0))
-        image = image_handler.draw_points(image, discarded_contours, color=(0, 0, 50))
-        image = image_handler.draw_points(image, removed_wires, color=(0, 0, 255))
+        image = image_handler.draw_points(image, wires, color=(200, 0, 0))
+        image = image_handler.draw_points(image, discarded_contours, color=(0, 0, 100))
+        image = image_handler.draw_points(image, removed_wires, color=(0, 0, 200))
 
-        image = image_handler.draw_boxes(image, model_results, color=(255, 0, 0))
-        image = image_handler.draw_boxes(image, io_results, color=(255, 0, 0))
+        image = image_handler.draw_boxes(image, model_results, color=(200, 0, 0))
+        image = image_handler.draw_boxes(image, io_results, color=(200, 0, 0))
 
         image_handler.save_image(image, Path("connector_test.png"))
 

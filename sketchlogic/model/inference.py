@@ -1,14 +1,15 @@
 from pathlib import Path
 from ultralytics.models import YOLO
+import numpy
 
 
-def run(image_path: Path, model_path: Path) -> tuple[list, int]:
+def run(image: numpy.ndarray, model_path: Path) -> tuple[list, int]:
     """
     Does inference on a single image file.
 
     Args:
-        image_path (Path): Path to the image file
-        model_path (Path): Path to the model file
+        image (numpy.ndarray): The image to run inference on
+        model_path (Path): The path to the model file
 
     Returns:
         tuple[list, int]: A tuple containing a list of dictionaries containing the inference results and the next ID
@@ -18,7 +19,7 @@ def run(image_path: Path, model_path: Path) -> tuple[list, int]:
         raise FileNotFoundError(f"Model not found: {model_path}")
 
     model = YOLO(model_path)
-    results = model.predict(image_path, iou=0.5, agnostic_nms=True)[0]
+    results = model.predict(image, iou=0.5, agnostic_nms=True)[0]
 
     if not results.boxes:
         return [], 1
