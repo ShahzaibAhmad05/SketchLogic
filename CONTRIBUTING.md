@@ -28,6 +28,36 @@ It is perfectly fine to backspace the template structure and draft your issue/PR
 
 ---
 
+## Developer Setup
+
+- Clone the repository:
+
+```bash
+git clone https://github.com/ShahzaibAhmad05/SketchLogic.git
+```
+
+- Download a [sample image](https://drive.google.com/file/d/1oM1hXelDe4CP7UINKykob-5esfnC-Yg9/view?usp=sharing) and the [model weights](https://drive.google.com/file/d/1JoGrqKjKqVrckpMn2kMGk8Dhp9zJWugv/view?usp=sharing). Put them in these paths:
+
+```bash
+./Sketchlogic/model/SketchLogic.pt
+./Sketchlogic/temp.jpg
+```
+
+- Install requirements for python (make sure you have 3.11 or just configure it in venv):
+
+```bash
+pip install -r requirements.txt
+```
+
+- Run the system to convert the sketch in the sample image to a simulation:
+
+```bash
+# <input_image_path> <output_json_path>
+python -m sketchlogic temp.jpg output.iris
+```
+
+
+---
 
 ## Code Formatting
 
