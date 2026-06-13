@@ -3,7 +3,7 @@ import numpy
 from pathlib import Path
 
 
-def load_image(image_path: Path) -> numpy.ndarray:
+def load(image_path: Path) -> numpy.ndarray:
     """
     Loads the image from the given path into a numpy array.
 
@@ -27,7 +27,7 @@ def load_image(image_path: Path) -> numpy.ndarray:
     return image
 
 
-def save_image(image: numpy.ndarray, save_path: Path) -> None:
+def save(image: numpy.ndarray, save_path: Path) -> None:
     """
     Saves the image to the given path.
 
@@ -82,3 +82,29 @@ def draw_component_boxes(
 
         cv2.rectangle(image, (x, y), (x + w, y + h), box_color, 2)
         cv2.putText(image, label, (x + 6, y + 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, font_color, 2)
+
+
+def enhance(image: numpy.ndarray) -> numpy.ndarray:
+    """
+    Enhances the image by removing shadows and noise.
+
+    Args:
+        image (numpy.ndarray): The image to enhance.
+
+    Returns:
+        numpy.ndarray: The enhanced image.
+    """
+
+    grayscale_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    grayscale_img = cv2.fastNlMeansDenoising(grayscale_img, h=10)
+    thresh_img = cv2.adaptiveThreshold(
+        grayscale_img, 255,
+        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY,
+        blockSize=51, C=10
+    )
+
+    blurred = cv2.GaussianBlur(thresh_img, (11, 11), sigmaX=0)
+    _, final = cv2.threshold(blurred, 127, 255, cv2.THRESH_BINARY)
+
+    return final
