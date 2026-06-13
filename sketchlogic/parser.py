@@ -9,7 +9,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="sketchlogic",
-        description="Convert a sketch to a simulation.",
+        description="Convert an image to a simulation.",
     )
 
     parser.add_argument(
@@ -21,13 +21,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "output_json_path",
         type=_file_path,
-        help="path to the output JSON file",
+        help="path to write the output file to",
     )
+
     parser.add_argument(
         "--debug",
         action="store_true",
-        default =False,
-        help="enable debug mode",
+        help="enable debugging (outputs test files and prints logs)",
     )
 
     return parser.parse_args()
