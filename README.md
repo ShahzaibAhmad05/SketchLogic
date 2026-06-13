@@ -64,7 +64,7 @@ The compiled size for an exe may go upto a few hundred MBs due to our usage of `
 
 Capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation (x4 classes, totalling 28) in an image. The configuration for fine-tuning YOLO is simple and can be found in `./sketchlogic/model/train/training.py`.
 
-The dataset used for fine-tuning was compiled using publicily available images of logic circuits. We collected a dataset of 2,500 such images, annotated it using a custom-annotation tool, involving a lot of manual work. Any further annotation is preffered to be done by `X-AnyLabelling` on dataset updates.
+The dataset used for fine-tuning was compiled using publicly available images of logic circuits. We collected a dataset of 2,500 such images, annotated it using a custom-annotation tool, involving a lot of manual work. Any further annotation is preferred to be done by `X-AnyLabelling` on dataset updates.
 
 There is one issue here, that is the plots for the last training session have been lost. They may be added here if training is run again. The dataset can be downloaded from [here](https://drive.google.com/file/d/1H22YKo60RVP0wAn1gruZzJOcp0HdeSIo/view?usp=sharing) for anyone interested.
 
@@ -134,4 +134,4 @@ python -m sketchlogic temp.jpg output.iris
 
 ## What to do with the output file?
 
-The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly plug-able into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
+The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly pluggable into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
