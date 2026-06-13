@@ -32,7 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--target",
         default="iris",
-        help="target model",
+        help="target simulation software",
     )
 
     return parser.parse_args()
