@@ -1,20 +1,24 @@
 ---
 name: Feature-Change Request
-about: Suggest a change in an existing feature
+about: suggest a change in existing features
 title: ''
 labels: change, good first issue
 assignees: ''
 
 ---
 
-## What needs to change
+## What to change
 
-- describe in bullet points
+- 
+
 
 ## Why does it need to change
 
-- describe in bullet points
+- 
 
-> [!NOTE]
-> **CONTRIBUTIONS ARE WELCOME!**
-> If you want to get this issue assigned to you. Just comment `assign this issue to me`. You will be assigned to the issue instantly via GitHub-actions bot.
+
+### Contributing
+
+> If you want to get this issue assigned to you. Just comment `I want to work on this issue`. You will be assigned to the issue instantly via GitHub-actions bot.
+>
+> Also please use IDE-integrated LLMs responsibly. LLMs output low quality code (redundant, not clean, not scalable and so on) and such PRs will be turned down without warning.

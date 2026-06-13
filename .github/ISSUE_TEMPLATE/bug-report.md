@@ -1,20 +1,29 @@
 ---
 name: Bug Report
-about: Reporting bugs in existing code
-title: ''
-labels: bug, good first issue
+about: reporting bugs in existing code
+title: 'bug report'
+labels: good first issue, bug
 assignees: ''
 
 ---
 
 ## The Problem
 
-- describe in bullet points
+- 
 
-## Suggested Solution (Optional)
 
-- describe in bullet points
+## Steps to reproduce
 
-> [!NOTE]
-> **CONTRIBUTIONS ARE WELCOME!**
-> If you want to get this issue assigned to you. Just comment `assign this issue to me`. You will be assigned to the issue instantly via GitHub-actions bot.
+- 
+
+
+## Suggested Solution
+
+- 
+
+
+### Contributing
+
+> If you want to get this issue assigned to you. Just comment `I want to work on this issue`. You will be assigned to the issue instantly via GitHub-actions bot.
+>
+> Also please use IDE-integrated LLMs responsibly. LLMs output low quality code (redundant, not clean, not scalable and so on) and such PRs will be turned down without warning.
