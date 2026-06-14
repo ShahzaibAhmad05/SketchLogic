@@ -100,6 +100,4 @@ This sub-module contains logic for conversion of the results from the `Connector
 ---
 
 
-## What to do with the output file?
 
-The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly pluggable into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.

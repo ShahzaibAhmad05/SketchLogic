@@ -72,3 +72,7 @@ python -m sketchlogic temp.jpg output.iris
 ## Questions
 
 Feel free to ask questions in issues or discussions. The maintainer will always reply considering the question is appropriate and valid in common sense.
+
+## What to do with the output file?
+
+The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly pluggable into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
