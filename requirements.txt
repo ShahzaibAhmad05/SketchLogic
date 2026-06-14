@@ -1,2 +1,3 @@
-ultralytics
-scikit-image
+numpy==1.24.3
+opencv-python==4.8.0.74
+Pillow==10.0.0
