@@ -1,4 +1,4 @@
 numpy==1.24.3
 opencv-python==4.8.0.74
-ultralytics 8.4.67
+ultralytics==8.4.67
 scikit-image==0.26.0
