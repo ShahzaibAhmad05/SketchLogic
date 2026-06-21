@@ -103,9 +103,3 @@ Basically, this is the core of the system. But it's accuracy relies heavily on w
 ### Converter
 
 This sub-module contains logic for conversion of the results from the `Connector` into a simulatable format. It applies advanced scaling, translation and key-value conversion. This is the sub-module we work on when we want to add support for a new format.
-
-
----
-
-
-
