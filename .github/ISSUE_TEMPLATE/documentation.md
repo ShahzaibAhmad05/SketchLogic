@@ -17,7 +17,7 @@ assignees: ''
 -
 
 
-### Contributing
+## Contributing
 
 > If you want to get this issue assigned to you. Just comment `I want to work on this issue`. You will be assigned to the issue instantly via GitHub-actions bot.
 >

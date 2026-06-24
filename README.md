@@ -44,7 +44,13 @@ Examples:
 
 This project comes with a `GPL-3.0 LICENSE`. See the [LICENSE](https://github.com/ShahzaibAhmad05/SketchLogic?tab=GPL-3.0-1-ov-file) file for more details. Following that, this system can be integrated in a circuit simulation software with just a few steps.
 
-The whole system is defined as a module named `sketchlogic`, and can be compiled using [pyinstaller](https://github.com/pyinstaller/pyinstaller) or similar tools. The compiled version can then be shipped with the software as an optional or required feature.
+The whole system is defined as a module named `sketchlogic`, which is compiled using [pyinstaller](https://github.com/pyinstaller/pyinstaller) and can be found in the latest release. The compiled `.exe` file can be shipped with the software as an optional or required feature.
+
+The last pyinstaller command used to build the `.exe` was:
+
+```
+pyinstaller --onefile --add-data "sketchlogic/model/SketchLogic.pt;." --name sketchlogic sketchlogic/__main__.py
+```
 
 The compiled size for an exe may go upto a few hundred MBs due to our usage of `ultralytics`. We are currently working to make this process easier by shifting to `onnxruntime` instead of `ultralytics` for the inference. But that will take quite a bit of time as it needs a lot of manual work which ultralytics is doing for us currently.
 
