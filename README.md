@@ -2,14 +2,11 @@
 
 A Sketch to Simulation Converter for logic circuits that uses a fine-tuned YOLO model to detect components and image analysis to make circuit connections through wires.
 
-
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![YOLO](https://img.shields.io/badge/YOLO-00FFFF?style=for-the-badge&logo=yolo&logoColor=black)
 ![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 
-
 ---
-
 
 ## Current Capabilities
 
@@ -22,12 +19,11 @@ Handdraw a simple logic circuit on blank paper consisting of gates (AND, OR, NOT
 - Cutting/overwriting on the sketch reduces performance.
 - No wires should cross-over. Wire extensions are currently not supported.
 
-If you have ensured all of the points mentioned above, then the output should have around 90% accuracy. Slight imperfections can be dealt with by doing edits to the design in the target circuit simulation software.
-
+If you have ensured all of the points mentioned above, then the output is expected to have 80-95% accuracy. If the accuracy falls bellow the specified range, report it immediately via [issues](https://github.com/ShahzaibAhmad05/SketchLogic/issues) along the the image of your sketch. **Such issues will be given top priority** and the fixes in the pipeline will be incorporated within 48 to 72 hours of the issue being reported.
 
 ### Output
 
-The system will output the detected circuit(s) in a simulation software compatible format. Currently, only `.iris` format is supported (which is compatible with [IRis](https://github.com/d-khalid/IRis). But we plan to add support for [Logisim Evolution](https://github.com/logisim-evolution/logisim-evolution) soon.
+The system will output the detected circuit(s) in a simulation software compatible format. Currently, only `.iris` format is supported (which is compatible with [IRis](https://github.com/d-khalid/IRis)). But we plan to add support for [Logisim Evolution](https://github.com/logisim-evolution/logisim-evolution) soon.
 
 Examples:
 
@@ -40,11 +36,9 @@ Examples:
 <br />
 <br />
 
-> *Images Credit: [IRis](https://github.com/d-khalid/IRis)*
-
+> _Images Credit: [IRis](https://github.com/d-khalid/IRis)_
 
 ---
-
 
 ## Integration with any Circuit Simulation Software
 
@@ -60,15 +54,17 @@ pyinstaller --onefile --add-data "sketchlogic/model/SketchLogic.pt;." --name ske
 
 The compiled size for an exe may go upto a few hundred MBs due to our usage of `ultralytics`. We are currently working to make this process easier by shifting to `onnxruntime` instead of `ultralytics` for the inference. But that will take quite a bit of time as it needs a lot of manual work which ultralytics is doing for us currently.
 
-Another option we are looking at is shifting to OpenCV and dropping `YOLO` entirely, but keep in mind this will take a lot of time and re-evaluation of the logic.
-
-
 ---
-
 
 ## System Workflow
 
-### Model
+### Image Pre-processing
+
+The image from the path provided in the arguments goes through an enhancement filter which applies `grayscale`, `denoising`, `binarization`, `smoothening`, and `re-binarization` respectively through `cvtColor()`, `fastNlMeansDenoising()`, `adaptiveThreshold()`, `GuassianBlur()` and `threshold()` provided by OpenCV.
+
+This is meant to remove noise from and smoothen, the image into having just two distinguish-able colors, white and black. Removing as much noise as possible improves performance of the pipeline later on, because filtering the wires out of all the contours in the image is relatively computationally expensive.
+
+### YOLO Model
 
 Capable of detecting 7 basic logic gates (AND, OR, NAND, NOR, NOT, XOR, XNOR) and their orientation (x4 classes, totalling 28) in an image. The configuration for fine-tuning YOLO is simple and can be found in `./sketchlogic/model/train/training.py`.
 
@@ -90,16 +86,20 @@ IMPORTANT CITATION here as requested by X-AnyLabelling [here](https://github.com
 }
 ```
 
-
 ### Connector
 
-This is responsible for wire detection, input/output pins detection, and attaching IO components (toggles, probes, etc) with wires whose one end is connected to gates. 
+This is responsible for wire detection, input/output pins detection, and attaching IO components (toggles, probes, etc) with wires whose one end is connected to gates.
 
-We start in this module by image processing using `image_handler`, applying binarization, skeletonization, gap healing, contour detection, wire generation from those contours, connecting wires with gates, and generating IO components. 
+We start in this module by image processing using `image_handler`, applying binarization, skeletonization, gap healing, contour detection, wire generation from those contours, connecting wires with gates, and generating IO components.
 
 Basically, this is the core of the system. But it's accuracy relies heavily on whether the `Model` module was able to draw the bounding boxes around components properly.
-
 
 ### Converter
 
 This sub-module contains logic for conversion of the results from the `Connector` into a simulatable format. It applies advanced scaling, translation and key-value conversion. This is the sub-module we work on when we want to add support for a new format.
+
+---
+
+## What to do with the output file?
+
+The last step we did in [Developer Setup](#developer-setup) gave us a `circuit.iris` file in a format that allows simulation of the circuit. This file is currently directly pluggable into [IRis](https://github.com/d-khalid/IRis) to generate a simulation. Just setup the app, load the file into it, and see the magic.
